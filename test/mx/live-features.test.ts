@@ -3,7 +3,7 @@
  */
 import type { RelayState } from '../../app/utils/mx/live'
 import { describe, expect, it } from 'vitest'
-import { liveDeskFrom, loadLiveDeskState, ownerStatusFrom } from '../../app/utils/mx/companion'
+import { createLiveDeskSource, liveDeskFrom, loadLiveDeskState, ownerStatusFrom } from '../../app/utils/mx/companion'
 import { withWindowTitlePolicy } from '../../app/utils/mx/home'
 import { loadInsights, parseInsightsContent, renderInsights } from '../../app/utils/mx/insights'
 import { coreAckOf, coreEventOf, presenceListOf, presenceReportOf, relayCoreFrame, roomFrame } from '../../app/utils/mx/live'
@@ -280,5 +280,76 @@ describe('中继：这一篇的更新、删除与评论编辑（§28.2）', () =
 		expect(relayCoreFrame(frame('comment.update', { id: '184872548264054784', reported: true }), roomState())).toBeUndefined()
 		expect(relayCoreFrame(frame('comment.update', { id: 'x', text: 'y' }), roomState())).toBeUndefined()
 		expect(relayCoreFrame(frame('comment.update', { id: '184872548264054784', text: 'y' }), roomState({ comments: undefined }))).toBeUndefined()
+	})
+})
+
+describe('「此刻」的全站缓存与按版本号回源', () => {
+	/** 假时钟：sleep 直接把时间往后拨；core 每回源一次版本号就是当时的 `revision` */
+	function setup() {
+		let t = 0
+		let revision = 1
+		const loads: number[] = []
+		const sleeps: number[] = []
+		const stateFor = createLiveDeskSource({
+			load: async () => {
+				loads.push(t)
+				return { epoch: 'e', revision }
+			},
+			now: () => t,
+			sleep: async (ms) => {
+				sleeps.push(ms)
+				t += ms
+			},
+		})
+		const advance = (ms: number) => {
+			t += ms
+		}
+		const publish = (next: number) => {
+			revision = next
+		}
+		return { stateFor, loads, sleeps, advance, publish }
+	}
+
+	it('缓存期内直接给缓存的；推送的版本号不比缓存新也不回源', async () => {
+		const { stateFor, loads, advance } = setup()
+		await stateFor()
+		advance(5000)
+		expect(await stateFor()).toEqual({ epoch: 'e', revision: 1 })
+		expect(await stateFor('e:1')).toEqual({ epoch: 'e', revision: 1 })
+		expect(loads).toHaveLength(1)
+		advance(15_000)
+		await stateFor()
+		expect(loads).toHaveLength(2)
+	})
+
+	it('站长 2 秒内连着变两次：第二次等到间隔过去再回源，拿到的是新的，不是旧的', async () => {
+		const { stateFor, loads, sleeps, advance, publish } = setup()
+		await stateFor()
+		publish(2)
+		expect(await stateFor('e:2')).toEqual({ epoch: 'e', revision: 2 })
+		advance(500)
+		publish(3)
+		expect(await stateFor('e:3')).toEqual({ epoch: 'e', revision: 3 })
+		expect(sleeps).toEqual([1500])
+		expect(loads).toEqual([0, 0, 2000])
+	})
+
+	it('同时来的请求只回源一次', async () => {
+		const { stateFor, loads, publish } = setup()
+		await stateFor()
+		publish(2)
+		const states = await Promise.all([stateFor('e:2'), stateFor('e:2'), stateFor('e:2')])
+		expect(states).toEqual(Array.from({ length: 3 }, () => ({ epoch: 'e', revision: 2 })))
+		expect(loads).toHaveLength(2)
+	})
+
+	it('版本号是乱填的（永远比 core 的新）：每 2 秒最多回源一次，等几轮还不行就给现有的', async () => {
+		const { stateFor, loads } = setup()
+		await stateFor()
+		for (let i = 0; i < 5; i++)
+			expect(await stateFor('e:999')).toEqual({ epoch: 'e', revision: 1 })
+		const gaps = loads.slice(1).map((at, i) => at - loads[i]!)
+		expect(gaps.every(gap => gap >= 2000 || gap === 0)).toBe(true)
+		expect(await stateFor('bad')).toEqual({ epoch: 'e', revision: 1 })
 	})
 })

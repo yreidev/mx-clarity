@@ -119,6 +119,71 @@ export async function loadLiveDeskState(client: MxClient) {
 	return objectOf(raw)?.state ?? raw
 }
 
+function versionOf(state: unknown) {
+	const { epoch, revision } = (state ?? {}) as { epoch?: unknown, revision?: unknown }
+	return { epoch: typeof epoch === 'string' ? epoch : '', revision: typeof revision === 'number' ? revision : -1 }
+}
+
+/** 推送里的版本号（`<epoch>:<revision>`）比这份状态新吗：换了 epoch，或同一 epoch 下版本号更大 */
+function isNewerRevision(rev: string, state: unknown) {
+	const [epoch = '', raw = ''] = rev.split(':')
+	const revision = Number(raw)
+	if (!epoch || epoch.length > 64 || !Number.isSafeInteger(revision) || revision < 0)
+		return false
+	const current = versionOf(state)
+	return epoch !== current.epoch || revision > current.revision
+}
+
+interface LiveDeskSourceOptions {
+	load: () => Promise<unknown>
+	/** 缓存多久（毫秒） */
+	ttl?: number
+	/** 两次按版本号回源至少隔多久（毫秒） */
+	gap?: number
+	now?: () => number
+	sleep?: (ms: number) => Promise<void>
+}
+
+/**
+ * core 公开状态的全站缓存：缓存期内直接给缓存的。浏览器收到实时推送后带着新的版本号来取，缓存里的比它旧就回源；
+ * 同一时间只回源一次，两次按版本号回源至少隔 `gap`（版本号由访客随意填，不能拿来刷 core）。
+ * 没到间隔时等到间隔过去再回源，不直接给旧的：浏览器不会再来取，旧的状态会一直挂在侧栏上（站长 2 秒内连着变两次时就会这样）
+ */
+export function createLiveDeskSource({ load, ttl = 15_000, gap = 2000, now = Date.now, sleep = ms => new Promise(resolve => setTimeout(resolve, ms)) }: LiveDeskSourceOptions) {
+	let cached: { state: unknown, at: number } | undefined
+	let inflight: Promise<unknown> | undefined
+	let forcedAt = Number.NEGATIVE_INFINITY
+
+	function refresh() {
+		inflight ??= load().catch(() => null).then((state) => {
+			cached = { state, at: now() }
+			return state
+		}).finally(() => {
+			inflight = undefined
+		})
+		return inflight
+	}
+
+	return async function stateFor(rev?: string): Promise<unknown> {
+		if (!cached || now() - cached.at >= ttl)
+			return refresh()
+		// 等的时候别人可能已经取到了、或正在取：每轮都重新看；最多等三轮，还不行就给现有的
+		for (let round = 0; round < 3; round++) {
+			if (!rev || !isNewerRevision(rev, cached.state))
+				return cached.state
+			if (inflight)
+				return inflight
+			const wait = forcedAt + gap - now()
+			if (wait <= 0) {
+				forcedAt = now()
+				return refresh()
+			}
+			await sleep(wait)
+		}
+		return cached.state
+	}
+}
+
 /** 设置站长状态的请求体（照 Shiro、Yohaku 的 `shiro/status`）：表情 8 字内、一句话 60 字内、有效期 60 秒到 30 天（秒） */
 export function parseOwnerStatusInput(body: unknown): { emoji: string, desc: string, ttl: number } | string {
 	const input = objectOf(body) ?? {}

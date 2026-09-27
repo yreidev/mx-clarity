@@ -413,10 +413,9 @@ describe.skipIf(!chrome)('浏览器', () => {
 	it('鼠标停在正文的下划线上：手形光标，弹出这一段评论的预览；点下去打开这一段的讨论（预览收起）；段落边栏打开段落的讨论', async () => {
 		const page = await context.newPage()
 		await page.goto(`${theme.url}${PATH}`, { waitUntil: 'networkidle' })
-		// 下划线画好了：找到「反引号」在页面上的位置点一下
+		// 等下划线画好：找到「反引号」在页面上的位置点一下
+		await page.waitForFunction(() => (globalThis as { CSS?: { highlights?: Map<string, unknown> } }).CSS?.highlights?.has('mx-comment'), undefined, { timeout: 20_000 })
 		const point = await page.evaluate(async (blockId) => {
-			for (let i = 0; i < 50 && !(globalThis as { CSS?: { highlights?: Map<string, unknown> } }).CSS?.highlights?.has('mx-comment'); i++)
-				await new Promise(resolve => setTimeout(resolve, 100))
 			const block = document.querySelector(`[data-block-id="${blockId}"]`)!
 			const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT)
 			let text = walker.nextNode() as Text
@@ -426,7 +425,8 @@ describe.skipIf(!chrome)('浏览器', () => {
 			const range = document.createRange()
 			range.setStart(text, at)
 			range.setEnd(text, at + 3)
-			block.scrollIntoView({ block: 'center' })
+			// 站点开着平滑滚动：要立即滚到位，否则下面量到的是滚动前的坐标，点下去落空（排版高度随字体变，CI 上要滚一大段）
+			block.scrollIntoView({ block: 'center', behavior: 'instant' })
 			const rect = range.getBoundingClientRect()
 			return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
 		}, BLOCK)
@@ -454,9 +454,9 @@ describe.skipIf(!chrome)('浏览器', () => {
 		await phone.route('**/*', route => route.request().url().startsWith(theme.url) ? route.continue() : route.abort())
 		const page = await phone.newPage()
 		await page.goto(`${theme.url}${PATH}`, { waitUntil: 'networkidle' })
+		// 先等划词的下划线画出来再点：没画出来时点下去什么也不会发生，只会在后面等抽屉时超时，看不出原因
+		await page.waitForFunction(() => (globalThis as { CSS?: { highlights?: Map<string, unknown> } }).CSS?.highlights?.has('mx-comment'), undefined, { timeout: 20_000 })
 		const point = await page.evaluate(async (blockId) => {
-			for (let i = 0; i < 50 && !(globalThis as { CSS?: { highlights?: Map<string, unknown> } }).CSS?.highlights?.has('mx-comment'); i++)
-				await new Promise(resolve => setTimeout(resolve, 100))
 			const block = document.querySelector(`[data-block-id="${blockId}"]`)!
 			const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT)
 			let text = walker.nextNode() as Text
@@ -466,7 +466,8 @@ describe.skipIf(!chrome)('浏览器', () => {
 			const range = document.createRange()
 			range.setStart(text, at)
 			range.setEnd(text, at + 3)
-			block.scrollIntoView({ block: 'center' })
+			// 站点开着平滑滚动：要立即滚到位，否则下面量到的是滚动前的坐标，点下去落空（排版高度随字体变，CI 上要滚一大段）
+			block.scrollIntoView({ block: 'center', behavior: 'instant' })
 			const rect = range.getBoundingClientRect()
 			return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
 		}, BLOCK)
