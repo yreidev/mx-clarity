@@ -1,0 +1,64 @@
+<script setup lang="ts">
+const layoutStore = useLayoutStore()
+const t = useT()
+
+// 页面完成异步 setup 后才注册具名插槽；水合前等待，避免重复插入 SSR 侧栏。
+const layoutSlots = inject<{ ready: Promise<void> }>(Symbol.for('dxup:layout-slots'))
+if (layoutSlots)
+	await layoutSlots.ready
+</script>
+
+<template>
+<BlogMask
+	:show="layoutStore.state === 'aside'"
+	class="widescreen-only"
+	@click="layoutStore.close()"
+/>
+
+<!-- 不能用 Transition 实现弹出收起动画，因为宽屏状态始终显示 -->
+<!-- 如果为空数组则隐藏 -->
+<aside id="blog-aside" :class="{ show: layoutStore.state === 'aside' }" :aria-label="t('site.sidebarWidgets')">
+	<slot />
+</aside>
+</template>
+
+<style lang="scss" scoped>
+#blog-aside {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	overflow: auto;
+	padding: 0.5rem;
+	z-index: var(--z-index-popover);
+
+	@media (max-width: $breakpoint-widescreen) {
+		position: fixed;
+		inset-inline-end: 0;
+		top: 0;
+		width: 320px;
+		height: auto;
+		max-width: 100%;
+		max-height: 100%;
+		transform: var(--transform-end-far);
+		transition: transform 0.2s;
+
+		// TODO 留 padding-bottom 避让 BlogPanel
+
+		> :deep(.blog-widget) {
+			padding: 0.5rem;
+			border-radius: 1rem;
+			box-shadow: var(--box-shadow-1), var(--box-shadow-2);
+			background-color: var(--ld-bg-blur);
+			backdrop-filter: blur(0.5rem);
+		}
+
+		&.show {
+			transform: none;
+		}
+	}
+
+	&:empty {
+		display: none;
+	}
+}
+</style>

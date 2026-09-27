@@ -1,0 +1,11 @@
+{
+  "contentDoesntExist": "コンテンツが存在しないか、削除されています",
+  "contentServiceTemporarily": "コンテンツサービスは一時的に利用できません。しばらくしてからもう一度お試しください",
+  "invalidSignature": "署名が正しくありません",
+  "pleaseSubmitSites": "このサイトのページから送信してください",
+  "requestTooLarge": "リクエストが大きすぎます",
+  "siteErrorInvalid": "サイトのプログラムエラー：リクエストパラメーターが不正です",
+  "siteMisconfigurationFront": "サイトの設定エラー：フロントエンドが認証の必要なAPIを呼び出しました",
+  "tooManyRequests": "リクエストが多すぎます。しばらくしてからもう一度お試しください",
+  "youreClickingToo": "クリックが速すぎます。少し時間をおいてからお試しください"
+}

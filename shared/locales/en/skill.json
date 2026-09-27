@@ -1,0 +1,7 @@
+{
+  "aiSkill": "An AI Skill from {site}",
+  "copyPrompt": "Copy prompt",
+  "pleaseReadFollow": "Please read and follow this Skill: {url}",
+  "skillNotFound": "Skill not found",
+  "viewRawMarkdown": "View raw Markdown"
+}

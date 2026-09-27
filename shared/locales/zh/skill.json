@@ -1,0 +1,7 @@
+{
+  "aiSkill": "{site}的 AI Skill",
+  "copyPrompt": "复制提示词",
+  "pleaseReadFollow": "请阅读并遵循这份 Skill：{url}",
+  "skillNotFound": "这个 Skill 不存在",
+  "viewRawMarkdown": "查看原始 markdown"
+}

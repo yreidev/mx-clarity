@@ -1,0 +1,7 @@
+{
+  "aiSkill": "{site}のAI Skill",
+  "copyPrompt": "プロンプトをコピー",
+  "pleaseReadFollow": "このSkillを読んで、その内容に従ってください：{url}",
+  "skillNotFound": "このSkillは存在しません",
+  "viewRawMarkdown": "元のMarkdownを見る"
+}

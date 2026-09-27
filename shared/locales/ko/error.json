@@ -1,0 +1,11 @@
+{
+  "contentDoesntExist": "존재하지 않거나 삭제된 콘텐츠입니다.",
+  "contentServiceTemporarily": "지금은 콘텐츠 서비스를 이용할 수 없습니다. 잠시 후 다시 시도해 주세요.",
+  "invalidSignature": "서명이 올바르지 않습니다.",
+  "pleaseSubmitSites": "이 사이트의 페이지에서 제출해 주세요.",
+  "requestTooLarge": "요청이 너무 큽니다.",
+  "siteErrorInvalid": "사이트 프로그램 오류: 요청 매개변수가 올바르지 않습니다.",
+  "siteMisconfigurationFront": "사이트 설정 오류: 프런트엔드가 인증이 필요한 API를 호출했습니다.",
+  "tooManyRequests": "요청이 너무 잦습니다. 잠시 후 다시 시도해 주세요.",
+  "youreClickingToo": "너무 빨리 누르고 있습니다. 잠시 쉬었다가 다시 시도해 주세요."
+}

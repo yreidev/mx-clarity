@@ -1,0 +1,30 @@
+{
+  "data": {
+    "id": "183590000000000103",
+    "title": "Lexical 独立页",
+    "slug": "lexical-page",
+    "subtitle": "正文用 Lexical 写的独立页",
+    "text": "## 起因\n\n周末整理书架，顺手写一篇示例日记。\n\n- 把书按类别分好\n- 清理旧杂志\n- 贴上新标签\n\n```sh\nls ~/books | wc -l\n```\n\n## 结果\n\n一切顺利，找书比原来快。",
+    "content": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"起因\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"heading\",\"version\":1,\"$\":{\"blockId\":\"jfcREA4H\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"周末整理书架，顺手写一篇示例日记。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1,\"$\":{\"blockId\":\"r-F-9UDL\"},\"textFormat\":0,\"textStyle\":\"\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"把书按类别分好\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"listitem\",\"version\":1,\"value\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"清理旧杂志\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"listitem\",\"version\":1,\"value\":2},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"贴上新标签\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"listitem\",\"version\":1,\"value\":3}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"list\",\"version\":1,\"$\":{\"blockId\":\"sxBkL7bi\"},\"listType\":\"bullet\",\"start\":1,\"tag\":\"ul\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"2awlJu__\"},\"code\":\"ls ~/books | wc -l\",\"language\":\"sh\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"结果\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"heading\",\"version\":1,\"$\":{\"blockId\":\"TfQG3uvi\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"一切顺利，找书比原来快。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1,\"$\":{\"blockId\":\"H8s8oMO0\"},\"textFormat\":0,\"textStyle\":\"\"}],\"direction\":null,\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}",
+    "content_format": "lexical",
+    "images": null,
+    "meta": null,
+    "order": 3,
+    "created_at": "2026-09-24T02:24:50.279Z",
+    "modified_at": null
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "183590000000000103": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "enrichments": {}
+  }
+}

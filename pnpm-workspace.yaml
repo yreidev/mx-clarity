@@ -1,0 +1,100 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  oxc-resolver: true
+  rolldown: true
+  sharp: true
+  unrs-resolver: true
+  vue-demi: true
+
+catalogs:
+  content:
+    '@bikariya/shiki': ^0.0.8
+    '@nuxtjs/mdc': ^0.23.1
+    github-slugger: ^2.0.0
+    '@nuxtjs/seo': ^5.3.14
+    '@shikijs/colorized-brackets': ^4.4.3
+    '@shikijs/transformers': ^4.4.3
+    '@types/mdast': ^4.0.4
+    abcjs: ^6.7.0
+    mdast-util-from-markdown: ^2.0.3
+    mdast-util-gfm: ^3.1.0
+    micromark-extension-gfm: ^3.0.0
+    mermaid: ^11.17.2
+    nuxt-llms: ^0.2.0
+    plain-shiki: ^0.3.2
+    rehype-katex: ^7.0.1
+    remark-math: ^6.0.0
+    shiki: ^4.4.3
+  framework:
+    ci-info: ^4.4.0
+    nuxt: ^4.5.2
+    pinia: ^4.0.3
+    sass-embedded: ^1.104.0
+    typescript: ^6.0.3
+    vue: ^3.5.42
+    vue-router: ^5.3.1
+  quality:
+    '@antfu/eslint-config': ^9.5.1
+    '@nuxt/a11y': 1.0.0-alpha.1
+    '@nuxt/hints': ^1.1.4
+    '@zinkawaii/stylelint-config': ^0.5.2
+    eslint: ^10.10.0
+    playwright-core: ^1.63.0
+    postcss-scss: ^4.0.9
+    stylelint: ^17.15.0
+    vitest: ^5.0.1
+    vue-tsc: ^3.3.11
+    ws: ^8.21.3
+    '@types/ws': ^8.18.1
+  ui:
+    '@bikariya/image-viewer': ^0.0.8
+    '@bikariya/modals': ^0.0.8
+    '@iconify-json/catppuccin': ^1.2.17
+    '@iconify-json/line-md': ^1.2.16
+    '@iconify-json/ri': ^1.2.10
+    '@iconify-json/simple-icons': ^1.2.94
+    '@iconify-json/tabler': ^1.2.38
+    '@nuxt/icon': ^2.5.1
+    '@nuxt/image': ^2.1.0
+    '@nuxtjs/color-mode': ^4.0.1
+    embla-carousel-autoplay: ^8.6.0
+    embla-carousel-vue: ^8.6.0
+    embla-carousel-wheel-gestures: ^8.1.0
+    maplibre-gl: ^6.11.2
+    thumbhash: ^0.1.1
+    vue-tippy: ^6.7.1
+  util:
+    '@pinia/nuxt': ^1.0.2
+    '@vueuse/core': ^14.4.0
+    '@vueuse/nuxt': ^14.4.0
+    '@vueuse/router': ^14.4.0
+    es-toolkit: ^1.52.0
+    parse-domain: ^8.4.0
+    rimraf: ^6.1.3
+    site-config-stack: ^4.2.3
+    temporal-polyfill: ^1.0.4
+
+engineStrict: true
+
+patchedDependencies:
+  # 语法与 oniguruma 引擎从本地的 shiki 加载，不在运行时从 esm.sh 拉不带版本的代码
+  '@bikariya/shiki': patches/@bikariya__shiki.patch
+  # 图片支持配置 1.5x 像素密度
+  '@nuxt/image': patches/@nuxt__image.patch
+  # h3 的 H3Error、H3Event 已由 export * 导出，重复的具名导入在打包时报「导入了但没用到」
+  '@nuxt/nitro-server': patches/@nuxt__nitro-server.patch
+  # 代码块不将 tab 转为空格
+  # 行内代码 props.code 传入原文
+  '@nuxtjs/mdc': patches/@nuxtjs__mdc.patch
+  # IPX 的 Sharp 无法处理 ICO ，但改变运行时 NuxtImg provider 有类型问题 https://github.com/nuxt/image/issues/2174
+  ipx: patches/ipx.patch
+  # adoptedStyleSheet ::highlight 高亮选择器
+  plain-shiki: patches/plain-shiki.patch
+
+shamefullyHoist: true
+catalog:
+  '@haklex/rich-headless': 0.42.1
+  '@lexical/headless': 0.49.0
+  '@mx-space/api-client': 5.12.0
+  lexical: 0.49.0

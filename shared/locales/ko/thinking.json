@@ -1,0 +1,14 @@
+{
+  "allThinking": "모든 사색",
+  "comment": "댓글",
+  "couldntLoadThinking": "지금은 사색을 불러올 수 없습니다",
+  "dislike": "싫어요 ({count})",
+  "dislikedClickAgain": "싫어요 누름 ({count}), 다시 누르면 취소",
+  "failedLoadRetry": "불러오지 못했습니다. 다시 시도",
+  "like": "좋아요 ({count})",
+  "likedClickAgain": "좋아요 누름 ({count}), 다시 누르면 취소",
+  "loadMore": "더 불러오기",
+  "noThinkingPosts": "아직 사색이 없습니다.",
+  "thinking": "사색: {excerpt}",
+  "thinkingFrom": "{site}의 사색입니다."
+}

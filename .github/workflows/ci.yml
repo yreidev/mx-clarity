@@ -1,0 +1,49 @@
+# lint → 类型检查 → 两个离线探针 → 单测 → 构建 → 页面级测试。
+# scripts/probe/live.mjs 要连真实的 mx-space core，不进 CI，升级 core 前在本地跑。
+# 镜像工作流（docker.yml）先调用这里，检查通过了才构建推送。
+# action 固定到提交 SHA（行尾是版本号）：标签可以被改指，SHA 不能
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # 版本取 package.json 的 packageManager
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      # .nuxt 下的 tsconfig 由 install 时的 nuxt prepare 生成；页面与组件（.vue）由 vue-tsc 检查
+      - run: pnpm typecheck
+      - run: pnpm probe:api
+      - run: pnpm probe:lexical
+      - run: pnpm test
+      # 构建时连不上 core 是正常的：数据都在运行时取
+      - run: pnpm build
+      # 页面级测试：假 core 加构建好的主题，浏览器用运行环境自带的 Chrome（找不到就失败，不悄悄跳过）
+      - run: pnpm test:e2e
+        env:
+          E2E_REQUIRE_BROWSER: '1'

@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "id": "184854046262169600",
+      "name": "示例项目",
+      "description": "一个示例项目的简介。",
+      "preview_url": null,
+      "doc_url": "https://example.test/docs",
+      "project_url": "https://example.test/project",
+      "images": null,
+      "avatar": "https://cravatar.cn/avatar/5?d=retro",
+      "text": null,
+      "created_at": "2026-09-24T02:23:59.052Z"
+    },
+    {
+      "id": "184854046341861376",
+      "name": "另一个示例项目",
+      "description": "只有预览地址的项目。",
+      "preview_url": "https://example.test/preview",
+      "doc_url": null,
+      "project_url": null,
+      "images": null,
+      "avatar": null,
+      "text": null,
+      "created_at": "2026-09-24T02:23:59.070Z"
+    }
+  ]
+}

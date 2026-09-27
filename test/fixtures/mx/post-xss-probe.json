@@ -1,0 +1,56 @@
+{
+  "data": {
+    "id": "183620000000000001",
+    "title": "XSS 样例",
+    "slug": "xss-probe",
+    "text": "正常段落。\n\n<script>alert(1)</script>\n\n<img src=x onerror=alert(2)>\n\n[点我](javascript:alert(3))\n\n<a href=\"https://evil.example\" target=\"_blank\">外链</a>\n\n<iframe src=\"https://evil.example\"></iframe>\n\n<node type=\"stock\" data='{\"x\":\"</script><script>alert(4)</script>\"}' />\n",
+    "content": null,
+    "content_format": "markdown",
+    "summary": null,
+    "images": null,
+    "meta": null,
+    "tags": [
+      "security"
+    ],
+    "modified_at": null,
+    "category_id": "183582728225034240",
+    "copyright": true,
+    "is_published": true,
+    "is_premium": false,
+    "read_count": 0,
+    "like_count": 0,
+    "pin_at": null,
+    "pin_order": null,
+    "created_at": "2026-09-21T00:34:51.037Z",
+    "category": {
+      "id": "183582728225034240",
+      "name": "技术",
+      "slug": "tech",
+      "type": 0
+    }
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "183620000000000001": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "interaction": {
+      "is_liked": false
+    },
+    "enrichments": {},
+    "insights": {
+      "has_in_locale": false
+    },
+    "related": [],
+    "tts": {
+      "available": false
+    }
+  }
+}

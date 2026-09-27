@@ -1,0 +1,19 @@
+{
+  "all": "전체",
+  "compact": "빼곡",
+  "dayYearElapsed": "올해 {day}일째 · {percent}% 지남",
+  "diaryEntries": "일기 {n}편",
+  "filter": "필터",
+  "memories": "기억",
+  "monthEntries": "{month}월, {n}편",
+  "monthLabel": "{month}월",
+  "nothingHereYet": "아직 내용이 없습니다",
+  "nothingMatches": "조건에 맞는 내용이 없습니다",
+  "overview": "한눈",
+  "posts": "글 {n}편",
+  "posts2": "글",
+  "postsDiaryEntries": "{site}의 글과 일기를 시간순으로 모았습니다.",
+  "relaxed": "여유",
+  "timelineCantLoaded": "지금은 타임라인을 불러올 수 없습니다",
+  "view": "보기 방식"
+}

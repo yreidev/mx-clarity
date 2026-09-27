@@ -1,0 +1,6 @@
+{
+  "error": {
+    "code": "NOTE_FORBIDDEN",
+    "message": "Please do not peek at private notes"
+  }
+}

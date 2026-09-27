@@ -1,0 +1,19 @@
+{
+  "all": "すべて",
+  "compact": "コンパクト",
+  "dayYearElapsed": "今年の{day}日目 · {percent}%経過",
+  "diaryEntries": "日記{n}件",
+  "filter": "絞り込み",
+  "memories": "思い出",
+  "monthEntries": "{month}月、{n}件",
+  "monthLabel": "{month}月",
+  "nothingHereYet": "まだ何もありません",
+  "nothingMatches": "条件に合う内容がありません",
+  "overview": "概要",
+  "posts": "記事{n}件",
+  "posts2": "記事",
+  "postsDiaryEntries": "{site}の記事と日記を時系列で並べています。",
+  "relaxed": "ゆったり",
+  "timelineCantLoaded": "現在、タイムラインを読み込めません",
+  "view": "表示"
+}

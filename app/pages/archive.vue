@@ -1,0 +1,240 @@
+<script setup lang="ts">
+import type { ArticleProps } from '~/types/article'
+import { groupBy } from 'es-toolkit/array'
+import { sumBy } from 'es-toolkit/math'
+import { mapValues } from 'es-toolkit/object'
+
+const { data: site } = useMxSite()
+const t = useT()
+const uiLang = useUiLang()
+useSeoMeta({
+	title: () => t('common.archive'),
+	description: () => t('archive.archiveAllPosts', { site: site.value.title }),
+})
+const { data: theme } = useMxTheme()
+const timeZone = useSiteTimeZone()
+const birthYear = computed(() => theme.value.birthYear)
+const showTuning = ref(false)
+const spacing = ref(0)
+const column = ref(1)
+
+const tuningRef = useTemplateRef('tuning-panel')
+useAvoidTarget(tuningRef, showTuning)
+
+const { data: listRaw } = await useMxPosts()
+const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw)
+const { category, categories, listCategorized } = useCategory(listSorted)
+
+const listGrouped = computed(() => {
+	const groupList = Object.entries(groupBy(listCategorized.value, getArticleYear))
+	return isAscending.value ? groupList : groupList.reverse()
+})
+
+// 不能使用 /api/stats，因为可能切换分组方式
+const yearlyWordCount = computed(() =>
+	mapValues(Object.fromEntries(listGrouped.value), (articles) => {
+		const total = sumBy(articles, countedWordsOf)
+		return formatNumber(total, uiLang.value)
+	}),
+)
+
+function getArticleYear(article: ArticleProps) {
+	try {
+		return toZonedTemporal(article[sortOrder.value] as string, timeZone.value).year.toString()
+	}
+	catch {
+		return ''
+	}
+}
+</script>
+
+<template>
+<template #aside>
+	<WidgetBlogStats />
+	<WidgetMostRead />
+	<WidgetBlogLog />
+</template>
+
+<div class="archive proper-height">
+	<p class="archive-tags">
+		<UtilLink to="/posts/tag">
+			<Icon name="tabler:tags" /> {{ t('common.allTags') }}
+		</UtilLink>
+		<UtilLink to="/timeline">
+			<Icon name="tabler:timeline" /> {{ t('common.timeline') }}
+		</UtilLink>
+	</p>
+
+	<PostOrderToggle
+		v-model:is-ascending="isAscending"
+		v-model:sort-order="sortOrder"
+		v-model:category="category"
+		:categories
+	>
+		<ZSecret>
+			<ZToggle
+				v-model="showTuning"
+				:label="t('archive.density')"
+			/>
+		</ZSecret>
+	</PostOrderToggle>
+
+	<section
+		v-for="[year, yearGroup] in listGrouped"
+		:key="year"
+		class="archive-group"
+		:class="{ 'hide-info': column > 1 }"
+		:style="{
+			'--archive-item-gap': `${spacing}em`,
+			'--archive-item-column': column,
+		}"
+	>
+		<div class="archive-title">
+			<h2 class="archive-year">
+				{{ year }}
+			</h2>
+
+			<div v-if="birthYear" class="archive-age">
+				<span>{{ Number(year) - birthYear }}</span>
+				<span class="age-label">{{ t('archive.yO') }}</span>
+			</div>
+
+			<div class="archive-info">
+				<span>{{ t('common.words', { n: yearlyWordCount[year] ?? '' }) }}</span>
+				<span>{{ t('archive.posts', { n: yearGroup?.length ?? 0 }) }}</span>
+			</div>
+		</div>
+
+		<TransitionGroup tag="menu" class="archive-list" name="float-in">
+			<PostArchive
+				v-for="article, index in yearGroup"
+				:key="article.path"
+				v-bind="article"
+				:to="article.path"
+				:show-category="column < 3"
+				:use-updated="sortOrder === 'updated'"
+				:style="getFixedDelay(index * 0.03)"
+			/>
+		</TransitionGroup>
+	</section>
+
+	<div v-if="showTuning" ref="tuning-panel" class="archive-tuning card">
+		<ZSlider
+			v-model="spacing"
+			:label="t('archive.spacing')"
+			:spring-min="-0.4"
+			:spring-max="0.1"
+			:list="['-0.3', '0']"
+			min="-1"
+			max=".2"
+			step=".1"
+		/>
+
+		<ZSlider
+			v-model="column"
+			:label="t('archive.columns')"
+			min="1"
+			max="8"
+		/>
+	</div>
+</div>
+</template>
+
+<style lang="scss" scoped>
+.archive-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1.2em;
+	margin: 1rem 1rem 0;
+	font-size: 0.9em;
+
+	> a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+		color: var(--c-text-2);
+
+		&:hover {
+			color: var(--c-primary);
+		}
+	}
+}
+
+.archive {
+	padding: 1rem; // 防止内部 outline 被 mask
+	mask-image: linear-gradient(#FFF 50%, #FFF7);
+}
+
+.archive-group {
+	margin: 1rem 0 3rem;
+
+	> .archive-list {
+		display: grid;
+		grid-template-columns: repeat(var(--archive-item-column), 1fr);
+		column-gap: calc((5 - var(--archive-item-column)) * 0.2em);
+	}
+
+	&.hide-info :deep(.dim-hover) {
+		display: none;
+	}
+}
+
+.archive-tuning {
+	position: sticky;
+	bottom: min(2em, 5%);
+
+	> .z-slider {
+		margin: 0.5em 0.8em;
+	}
+}
+
+.archive-title {
+	display: flex;
+	justify-content: space-between;
+	gap: 1em;
+	position: sticky;
+	opacity: 0.5;
+	top: 0;
+	font-size: min(1.5em, 5vw);
+	color: transparent;
+	transition: color 0.2s;
+
+	&::selection, :hover > & {
+		color: var(--c-text-3);
+	}
+
+	:hover > & .archive-age {
+		opacity: 0;
+	}
+
+	> .archive-year, .archive-age {
+		margin-bottom: -0.3em;
+		mask-image: linear-gradient(#FFF 50%, transparent);
+		font-family: var(--font-stroke-free);
+		font-size: 3em;
+		font-variant-numeric: tabular-nums;
+		font-weight: 800;
+		line-height: 1;
+		z-index: -1;
+		-webkit-text-stroke: 1px var(--c-text-3);
+	}
+
+	> .archive-age {
+		position: absolute;
+		inset-inline-end: 0;
+		transition: opacity 0.2s;
+
+		> .age-label {
+			font-size: 0.5em;
+			vertical-align: super;
+		}
+	}
+
+	> .archive-info {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		column-gap: 0.5em;
+	}
+}
+</style>

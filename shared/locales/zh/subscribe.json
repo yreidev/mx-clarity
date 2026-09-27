@@ -1,0 +1,14 @@
+{
+  "chooseWhatWant": "请选择要订阅的内容",
+  "couldntSubscribePlease": "订阅没有成功，请稍后再试",
+  "emailSubscription": "邮件订阅",
+  "getEmailWhenever": "发布新内容时给你发一封邮件。",
+  "invalidEmailSubscription": "邮箱或订阅内容不对",
+  "invalidEmailUp": "邮箱格式不对，最多 50 字",
+  "newDiaryEntries": "新日记",
+  "newPosts": "新文章",
+  "ownerHasntEnabled": "站长还没开放邮件订阅",
+  "subscribe": "订阅",
+  "whatSubscribe": "订阅内容",
+  "youreSubscribedTheres": "订阅好了。退订链接在每封邮件的底部"
+}

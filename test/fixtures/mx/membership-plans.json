@@ -1,0 +1,19 @@
+{
+  "data": {
+    "enabled": true,
+    "plans": [
+      {
+        "plan": "monthly"
+      },
+      {
+        "plan": "yearly"
+      }
+    ],
+    "apple_iap": {
+      "enabled": false
+    },
+    "article_purchase": {
+      "enabled": true
+    }
+  }
+}

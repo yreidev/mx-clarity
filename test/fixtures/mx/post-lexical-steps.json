@@ -1,0 +1,60 @@
+{
+  "data": {
+    "id": "186000000000000102",
+    "title": "示例：分步骤的长文",
+    "slug": "sample-step-by-step",
+    "text": "## 安装 CLI（Node.js 18+）\n\n先确认本机装好了 Node.js 18 以上的版本，然后安装示例命令行工具。\n\n```sh\nnode --version && npm --version\nnpm install -g example-cli@latest\n```\n\n**注意：**全局安装需要管理员权限，也可以改用 `npx` 临时运行。\n\n下面的内容只有购买后才能看到完整版，其中提到的 hiddenword 是一个示例关键词。\n\n## 配置：example.config.json\n\n1. 打开 [https://example.com/docs/config](https://example.com/docs/config)\n2. 按文档新建一个配置文件。\n3. 填入下面的内容：\n\n```json\n{\n  \"name\": \"example\",\n  \"port\": 8080,\n  \"features\": [\"search\", \"feed\"],\n  \"token\": \"<your-token>\"\n}\n```\n\n### JSON 里不能写注释\n\n想给配置加说明，可以另外写一个 README，和配置文件放在一起。\n\n### 用环境变量覆盖\n\n```sh\nEXAMPLE_PORT=9090 example-cli serve\nexport EXAMPLE_TOKEN='<your-token>' && example-cli check | grep -i ok\n```\n\n## 2 个脚本：启动与停止\n\n把常用的命令写成脚本，省得每次手敲：\n\n```sh\n#!/bin/sh\nset -e\n\nAPP_DIR=\"$HOME/.example\"\n\nstart() {\n  mkdir -p \"$APP_DIR\" && cd \"$APP_DIR\"\n  nohup example-cli serve --port \"${PORT:-8080}\" > server.log 2>&1 &\n  echo \"started at $(date '+%F %T')\"\n}\n\nstop() {\n  pkill -f 'example-cli serve' || true\n}\n\ncase \"$1\" in\n  start) start ;;\n  stop) stop ;;\n  *) echo \"usage: $0 {start|stop}\" >&2; exit 1 ;;\nesac\n```\n\n保存为 `example.sh`，然后执行：\n\n```sh\nchmod +x example.sh && ./example.sh start\n```\n\n## Troubleshooting：端口与日志\n\n端口被占用时换一个端口；日志的位置和查看方法见下面这段，\n它是从说明文档里原样复制过来的：\n\n````\n日志默认写在 ~/.example/server.log。\n想看实时输出，可以这样：\n\n```sh\ntail -f ~/.example/server.log\n```\n````\n\n- 端口被占用：换一个端口再试。\n- 看不到日志：先确认服务真的启动了。\n\n## 小结\n\n到这里，示例服务就跑起来了。*其余配置可以按需调整。*",
+    "content": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"安装 CLI（Node.js 18+）\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"9uAEupmQ\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"先确认本机装好了 Node.js 18 以上的版本，然后安装示例命令行工具。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"IJkVy_k5\"},\"textFormat\":0,\"textStyle\":\"\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"q1ERlssL\"},\"code\":\"node --version && npm --version\\nnpm install -g example-cli@latest\",\"language\":\"sh\"},{\"children\":[{\"detail\":0,\"format\":1,\"mode\":\"normal\",\"style\":\"\",\"text\":\"注意：\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"全局安装需要管理员权限，也可以改用 \",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":16,\"mode\":\"normal\",\"style\":\"\",\"text\":\"npx\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\" 临时运行。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"fhA9NZRB\"},\"textFormat\":0,\"textStyle\":\"\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"下面的内容只有购买后才能看到完整版，其中提到的 hiddenword 是一个示例关键词。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"Q9DjiWP_\"},\"textFormat\":0,\"textStyle\":\"\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"配置：example.config.json\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"ILfPIDGP\"},\"tag\":\"h2\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"打开 \",\"type\":\"text\",\"version\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"https://example.com/docs/config\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"link\",\"rel\":null,\"target\":null,\"title\":null,\"url\":\"https://example.com/docs/config\"}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"按文档新建一个配置文件。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":2},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"填入下面的内容：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":3}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"MrLMXEqO\"},\"listType\":\"number\",\"start\":1,\"tag\":\"ol\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"W91tgEXR\"},\"code\":\"{\\n  \\\"name\\\": \\\"example\\\",\\n  \\\"port\\\": 8080,\\n  \\\"features\\\": [\\\"search\\\", \\\"feed\\\"],\\n  \\\"token\\\": \\\"<your-token>\\\"\\n}\",\"language\":\"json\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"JSON 里不能写注释\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"eSVm07E0\"},\"tag\":\"h3\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"想给配置加说明，可以另外写一个 README，和配置文件放在一起。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"ZD4fobcc\"},\"textFormat\":0,\"textStyle\":\"\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"用环境变量覆盖\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"gtUTiQhj\"},\"tag\":\"h3\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"uknL-Uuh\"},\"code\":\"EXAMPLE_PORT=9090 example-cli serve\\nexport EXAMPLE_TOKEN='<your-token>' && example-cli check | grep -i ok\",\"language\":\"sh\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"2 个脚本：启动与停止\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"wWpCEw0Z\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"把常用的命令写成脚本，省得每次手敲：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"pUqUCRZc\"},\"textFormat\":0,\"textStyle\":\"\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"SOsdsVAH\"},\"code\":\"#!/bin/sh\\nset -e\\n\\nAPP_DIR=\\\"$HOME/.example\\\"\\n\\nstart() {\\n  mkdir -p \\\"$APP_DIR\\\" && cd \\\"$APP_DIR\\\"\\n  nohup example-cli serve --port \\\"${PORT:-8080}\\\" > server.log 2>&1 &\\n  echo \\\"started at $(date '+%F %T')\\\"\\n}\\n\\nstop() {\\n  pkill -f 'example-cli serve' || true\\n}\\n\\ncase \\\"$1\\\" in\\n  start) start ;;\\n  stop) stop ;;\\n  *) echo \\\"usage: $0 {start|stop}\\\" >&2; exit 1 ;;\\nesac\",\"language\":\"sh\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"保存为 \",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":16,\"mode\":\"normal\",\"style\":\"\",\"text\":\"example.sh\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"，然后执行：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"fM2T2giA\"},\"textFormat\":0,\"textStyle\":\"\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"ict_BtZh\"},\"code\":\"chmod +x example.sh && ./example.sh start\",\"language\":\"sh\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Troubleshooting：端口与日志\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"eLS3vutv\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"端口被占用时换一个端口；日志的位置和查看方法见下面这段，\",\"type\":\"text\",\"version\":1},{\"type\":\"linebreak\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"它是从说明文档里原样复制过来的：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"RI_TCor9\"},\"textFormat\":0,\"textStyle\":\"\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"1b1uoQIc\"},\"code\":\"日志默认写在 ~/.example/server.log。\\n想看实时输出，可以这样：\\n\\n```sh\\ntail -f ~/.example/server.log\\n```\",\"language\":\"\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"端口被占用：换一个端口再试。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"看不到日志：先确认服务真的启动了。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":2}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"GfpG5XxJ\"},\"listType\":\"bullet\",\"start\":1,\"tag\":\"ul\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"小结\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"hTwr5m8L\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"到这里，示例服务就跑起来了。\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":2,\"mode\":\"normal\",\"style\":\"\",\"text\":\"其余配置可以按需调整。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"yqQ8aFSF\"},\"textFormat\":0,\"textStyle\":\"\"}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"root\"}}",
+    "content_format": "lexical",
+    "summary": "这篇示例文章讲安装、配置和启动脚本，带链接、空语言的代码块和嵌在代码块里的围栏，也用来演示付费文章。",
+    "images": [],
+    "meta": {},
+    "tags": [
+      "示例",
+      "步骤",
+      "长文",
+      "付费",
+      "预览"
+    ],
+    "modified_at": "2022-06-23T09:10:00.000Z",
+    "category_id": "186000000000000202",
+    "copyright": true,
+    "is_published": true,
+    "is_premium": false,
+    "read_count": 0,
+    "like_count": 0,
+    "pin_at": null,
+    "pin_order": null,
+    "created_at": "2022-06-21T13:15:00.000Z",
+    "category": {
+      "id": "186000000000000202",
+      "name": "随笔",
+      "slug": "essay",
+      "type": 0
+    }
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "186000000000000102": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "interaction": {
+      "is_liked": false
+    },
+    "enrichments": {},
+    "insights": {
+      "has_in_locale": false
+    },
+    "related": [],
+    "tts": {
+      "available": false
+    }
+  }
+}

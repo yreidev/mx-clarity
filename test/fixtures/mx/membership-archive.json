@@ -1,0 +1,28 @@
+{
+  "data": {
+    "posts": [
+      {
+        "id": "186000000000000102",
+        "title": "示例：分步骤的长文",
+        "slug": "sample-step-by-step",
+        "category": {
+          "slug": "essay"
+        },
+        "created_at": "2022-06-21T13:15:00.000Z",
+        "entitlement": "membership",
+        "free_until": "2026-09-23T05:15:22Z"
+      },
+      {
+        "id": "186000000000000101",
+        "title": "示例：列表里的代码块",
+        "slug": "sample-list-code",
+        "category": {
+          "slug": "tools"
+        },
+        "created_at": "2022-02-16T06:30:00.000Z",
+        "entitlement": "free-window",
+        "free_until": "2026-09-26T05:15:22Z"
+      }
+    ]
+  }
+}

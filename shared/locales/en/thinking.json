@@ -1,0 +1,14 @@
+{
+  "allThinking": "All Thinking",
+  "comment": "Comment",
+  "couldntLoadThinking": "Couldn't load Thinking right now",
+  "dislike": "Dislike ({count})",
+  "dislikedClickAgain": "Disliked ({count}). Click again to undo",
+  "failedLoadRetry": "Failed to load. Retry",
+  "like": "Like ({count})",
+  "likedClickAgain": "Liked ({count}). Click again to undo",
+  "loadMore": "Load more",
+  "noThinkingPosts": "No Thinking posts yet.",
+  "thinking": "Thinking: {excerpt}",
+  "thinkingFrom": "Thinking from {site}."
+}

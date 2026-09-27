@@ -1,0 +1,14 @@
+{
+  "allThinking": "すべてのつぶやき",
+  "comment": "コメント",
+  "couldntLoadThinking": "現在、つぶやきを読み込めません",
+  "dislike": "よくない（{count}）",
+  "dislikedClickAgain": "よくない済み（{count}）、もう一度クリックで取り消し",
+  "failedLoadRetry": "読み込みに失敗しました。再試行",
+  "like": "いいね（{count}）",
+  "likedClickAgain": "いいね済み（{count}）、もう一度クリックで取り消し",
+  "loadMore": "さらに読み込む",
+  "noThinkingPosts": "まだつぶやきがありません",
+  "thinking": "つぶやき：{excerpt}",
+  "thinkingFrom": "{site}のつぶやき。"
+}

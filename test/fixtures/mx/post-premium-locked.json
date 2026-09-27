@@ -1,0 +1,77 @@
+{
+  "data": {
+    "id": "186000000000000102",
+    "title": "示例：分步骤的长文",
+    "slug": "sample-step-by-step",
+    "text": "## 安装 CLI（Node.js 18+）\n\n先确认本机装好了 Node.js 18 以上的版本，然后安装示例命令行工具。\n\n```sh\nnode --version && npm --version\nnpm install -g example-cli@latest\n```",
+    "content": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"安装 CLI（Node.js 18+）\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"9uAEupmQ\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"先确认本机装好了 Node.js 18 以上的版本，然后安装示例命令行工具。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"IJkVy_k5\"},\"textFormat\":0,\"textStyle\":\"\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"q1ERlssL\"},\"code\":\"node --version && npm --version\\nnpm install -g example-cli@latest\",\"language\":\"sh\"}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"root\"}}",
+    "content_format": "lexical",
+    "summary": "这篇示例文章讲安装、配置和启动脚本，带链接、空语言的代码块和嵌在代码块里的围栏，也用来演示付费文章。",
+    "images": [],
+    "meta": {
+      "paywall": {
+        "freeUntil": "2026-09-23T05:15:22Z",
+        "previewBlocks": 3,
+        "purchaseEnabled": true
+      }
+    },
+    "tags": [
+      "示例",
+      "步骤",
+      "长文",
+      "付费",
+      "预览"
+    ],
+    "modified_at": "2022-06-23T09:10:00.000Z",
+    "category_id": "186000000000000202",
+    "copyright": true,
+    "is_published": true,
+    "is_premium": true,
+    "read_count": 1,
+    "like_count": 0,
+    "pin_at": null,
+    "pin_order": null,
+    "created_at": "2022-06-21T13:15:00.000Z",
+    "category": {
+      "id": "186000000000000202",
+      "name": "随笔",
+      "slug": "essay",
+      "type": 0
+    }
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "186000000000000102": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "interaction": {
+      "is_liked": false
+    },
+    "enrichments": {},
+    "insights": {
+      "has_in_locale": false
+    },
+    "related": [],
+    "paywall": {
+      "locked": true,
+      "preview_blocks": 3,
+      "free_until": "2026-09-23T05:15:22Z",
+      "entitlement": {
+        "reason": "locked"
+      },
+      "purchase": {
+        "enabled": true
+      }
+    },
+    "tts": {
+      "available": false
+    }
+  }
+}

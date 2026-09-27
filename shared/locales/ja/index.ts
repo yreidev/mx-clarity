@@ -1,0 +1,20 @@
+/** 这一语言的界面文字：每个命名空间一个 JSON，键是 `命名空间.id`。由 `shared/utils/i18n.ts` 读取 */
+import archive from './archive.json'
+import comment from './comment.json'
+import common from './common.json'
+import content from './content.json'
+import error from './error.json'
+import friends from './friends.json'
+import membership from './membership.json'
+import note from './note.json'
+import post from './post.json'
+import projects from './projects.json'
+import says from './says.json'
+import search from './search.json'
+import site from './site.json'
+import skill from './skill.json'
+import subscribe from './subscribe.json'
+import thinking from './thinking.json'
+import timeline from './timeline.json'
+
+export default { archive, comment, common, content, error, friends, membership, note, post, projects, says, search, site, skill, subscribe, thinking, timeline }

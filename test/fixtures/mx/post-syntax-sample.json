@@ -1,0 +1,59 @@
+{
+  "data": {
+    "id": "183590000000000002",
+    "title": "mx 原生语法样例",
+    "slug": "mx-syntax-sample",
+    "text": "标准 GFM 部分。\n\n## 二级标题\n\n- 列表项一\n- 列表项二\n\n| 列 A | 列 B |\n| --- | --- |\n| 1 | 2 |\n\n> 普通引用\n\n```ts\nconst a: number = 1\n```\n\n## GFM Alert\n\n> [!NOTE]\n> 提示内容\n\n> [!WARNING]\n> 警告内容\n\n## 数学公式\n\n行内 $E = mc^2$ 公式。\n\n$$\n\\sum_{i=1}^{n} i = \\frac{n(n+1)}{2}\n$$\n\n## Mermaid\n\n```mermaid\ngraph LR\n  A[写作] --> B[预览]\n  B --> C[发布]\n```\n\n## 行内扩展\n\n剧透：||这里是被遮住的内容||\n\n提及：[示例]{GH@octocat} 和 {TW@example}\n\n高亮：==重点内容==　插入：++新增内容++\n\n## 图片（带 caption）\n\n![示例图](https://example.com/a.png \"这是图注\")\n\n## LiteXML 自有块（未知类型要安全忽略）\n\n<node type=\"stock\" id=\"blk_demo\" data='{\"symbol\":\"AAPL\",\"variant\":\"kline\"}' />\n\n<node type=\"unknown-future-block\" data='{\"x\":1}' />\n",
+    "content": null,
+    "content_format": "markdown",
+    "summary": "覆盖 mx 的原生语法，用来核对 admin 预览与博客端的渲染",
+    "images": null,
+    "meta": {
+      "type": "tech"
+    },
+    "tags": [
+      "syntax",
+      "sample"
+    ],
+    "modified_at": "2026-09-20T14:24:01.487Z",
+    "category_id": "183582728225034240",
+    "copyright": true,
+    "is_published": true,
+    "is_premium": false,
+    "read_count": 0,
+    "like_count": 0,
+    "pin_at": null,
+    "pin_order": null,
+    "created_at": "2026-09-20T14:24:01.487Z",
+    "category": {
+      "id": "183582728225034240",
+      "name": "技术",
+      "slug": "tech",
+      "type": 0
+    }
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "183590000000000002": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "interaction": {
+      "is_liked": false
+    },
+    "enrichments": {},
+    "insights": {
+      "has_in_locale": false
+    },
+    "related": [],
+    "tts": {
+      "available": false
+    }
+  }
+}

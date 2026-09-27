@@ -1,0 +1,14 @@
+{
+  "chooseWhatWant": "Choose what you want to subscribe to.",
+  "couldntSubscribePlease": "Couldn't subscribe. Please try again later.",
+  "emailSubscription": "Email subscription",
+  "getEmailWhenever": "Get an email whenever something new is published.",
+  "invalidEmailSubscription": "Invalid email or subscription choice.",
+  "invalidEmailUp": "Invalid email (up to 50 characters).",
+  "newDiaryEntries": "New diary entries",
+  "newPosts": "New posts",
+  "ownerHasntEnabled": "The owner hasn't enabled email subscriptions yet.",
+  "subscribe": "Subscribe",
+  "whatSubscribe": "What to subscribe to",
+  "youreSubscribedTheres": "You're subscribed. There's an unsubscribe link at the bottom of every email."
+}

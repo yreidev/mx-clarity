@@ -1,0 +1,30 @@
+{
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "size: Too big: expected number to be <=100",
+    "details": {
+      "errors": [
+        {
+          "field": "size",
+          "path": [
+            "size"
+          ],
+          "code": "too_big",
+          "message": "Too big: expected number to be <=100"
+        }
+      ],
+      "issues": [
+        {
+          "origin": "number",
+          "code": "too_big",
+          "maximum": 100,
+          "inclusive": true,
+          "path": [
+            "size"
+          ],
+          "message": "Too big: expected number to be <=100"
+        }
+      ]
+    }
+  }
+}

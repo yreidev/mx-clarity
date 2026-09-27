@@ -1,0 +1,48 @@
+{
+  "data": {
+    "user": {
+      "id": "183582625582026752",
+      "username": "devowner",
+      "name": "Dev Owner",
+      "avatar": "https://cravatar.cn/avatar/aacc15ab45e2ac4925e52b6a667c93e6?d=retro",
+      "mail": "dev@localhost.test",
+      "last_login_time": "2026-09-23T15:26:25.316Z",
+      "role": "owner",
+      "email": "dev@localhost.test",
+      "image": "https://cravatar.cn/avatar/aacc15ab45e2ac4925e52b6a667c93e6?d=retro",
+      "handle": "devowner",
+      "display_username": "Dev Owner",
+      "created_at": "2026-09-20T14:11:48.803Z"
+    },
+    "seo": {
+      "title": "My Little World",
+      "description": "Hi, welcome!",
+      "icon": "",
+      "icon_dark": "",
+      "keywords": []
+    },
+    "url": {
+      "ws_url": "http://localhost:2333",
+      "server_url": "http://localhost:2333",
+      "web_url": "http://localhost:2323"
+    },
+    "comment_options": {
+      "disable_comment": false,
+      "allow_guest_comment": true
+    },
+    "latest_note_id": {
+      "nid": 1,
+      "id": "183610000000000001"
+    },
+    "theme": {
+      "article_type_by_category": {
+        "技术": "tech",
+        "杂谈": "story"
+      },
+      "show_stats": true
+    },
+    "ai": {
+      "enable_summary": false
+    }
+  }
+}

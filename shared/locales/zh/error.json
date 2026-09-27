@@ -1,0 +1,11 @@
+{
+  "contentDoesntExist": "内容不存在或已被删除",
+  "contentServiceTemporarily": "内容服务暂时不可用，请稍后再试",
+  "invalidSignature": "签名不对",
+  "pleaseSubmitSites": "请从本站页面提交",
+  "requestTooLarge": "请求太大",
+  "siteErrorInvalid": "站点程序错误：请求参数不合法",
+  "siteMisconfigurationFront": "站点配置错误：前台调用了需要鉴权的接口",
+  "tooManyRequests": "请求太频繁，请稍后再试",
+  "youreClickingToo": "点得太快了，歇一会儿再试"
+}

@@ -1,0 +1,14 @@
+{
+  "chooseWhatWant": "購読する内容を選んでください",
+  "couldntSubscribePlease": "購読できませんでした。しばらくしてからもう一度お試しください",
+  "emailSubscription": "メール購読",
+  "getEmailWhenever": "新しいコンテンツが公開されたら、メールでお知らせします。",
+  "invalidEmailSubscription": "メールアドレスまたは購読内容が正しくありません",
+  "invalidEmailUp": "メールアドレスの形式が正しくありません（50字まで）",
+  "newDiaryEntries": "新しい日記",
+  "newPosts": "新しい記事",
+  "ownerHasntEnabled": "管理人はまだメール購読を開始していません",
+  "subscribe": "購読",
+  "whatSubscribe": "購読内容",
+  "youreSubscribedTheres": "購読が完了しました。配信停止のリンクは各メールの末尾にあります"
+}

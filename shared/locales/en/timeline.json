@@ -1,0 +1,28 @@
+{
+  "all": "All",
+  "compact": "Compact",
+  "dayYearElapsed": "Day {day} of the year · {percent}% elapsed",
+  "diaryEntries": {
+    "one": "{n} diary entry",
+    "other": "{n} diary entries"
+  },
+  "filter": "Filter",
+  "memories": "Memories",
+  "monthEntries": {
+    "one": "Month {month}, {n} entry",
+    "other": "Month {month}, {n} entries"
+  },
+  "monthLabel": "{month}",
+  "nothingHereYet": "Nothing here yet",
+  "nothingMatches": "Nothing matches",
+  "overview": "Overview",
+  "posts": {
+    "one": "{n} post",
+    "other": "{n} posts"
+  },
+  "posts2": "Posts",
+  "postsDiaryEntries": "Posts and diary entries from {site}, in chronological order.",
+  "relaxed": "Relaxed",
+  "timelineCantLoaded": "The timeline can't be loaded right now",
+  "view": "View"
+}

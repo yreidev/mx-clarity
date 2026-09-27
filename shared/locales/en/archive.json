@@ -1,0 +1,11 @@
+{
+  "archiveAllPosts": "Archive of all posts on {site}.",
+  "columns": "Columns",
+  "density": "Density",
+  "posts": {
+    "one": "{n} post",
+    "other": "{n} posts"
+  },
+  "spacing": "Spacing",
+  "yO": "y/o"
+}

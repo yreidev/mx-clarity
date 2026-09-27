@@ -1,0 +1,80 @@
+<script setup lang="ts">
+defineProps<{
+	hasAside?: boolean
+}>()
+
+const t = useT()
+const layoutStore = useLayoutStore()
+const { avoidTargets } = storeToRefs(layoutStore)
+
+const panelRef = useTemplateRef('blog-panel')
+const { transform } = useAvoidTransform(panelRef, avoidTargets)
+</script>
+
+<template>
+<div
+	id="blog-panel"
+	ref="blog-panel"
+	:class="{ 'has-active': layoutStore.state !== 'none' }"
+	:style="{ transform }"
+>
+	<button
+		v-if="hasAside"
+		class="toggle-aside widescreen-only"
+		:class="{ active: layoutStore.state === 'aside' }"
+		:aria-label="t('site.toggleSidebar')"
+		@click="layoutStore.toggle('aside')"
+	>
+		<Icon class="rtl-flip" name="tabler:align-right" />
+	</button>
+
+	<Icon v-show="false" name="tabler:layout-sidebar-filled" />
+	<button
+		class="toggle-sidebar mobile-only"
+		:class="{ active: layoutStore.state === 'sidebar' }"
+		:aria-label="t('site.toggleMenu')"
+		@click="layoutStore.toggle('sidebar')"
+	>
+		<Icon class="rtl-flip" :name="layoutStore.state === 'sidebar' ? 'tabler:layout-sidebar-filled' : 'tabler:layout-sidebar'" />
+	</button>
+</div>
+</template>
+
+<style lang="scss" scoped>
+#blog-panel {
+	contain: paint;
+	position: fixed;
+	inset-inline-end: min(1rem, 5%);
+	bottom: min(2rem, 5%);
+	border-radius: 0.5rem;
+	background-color: var(--c-bg-a50);
+	backdrop-filter: blur(0.5rem);
+	font-size: 1.4rem;
+	transition: transform 0.1s;
+	z-index: var(--z-index-popover);
+
+	@media (max-height: $breakpoint-phone) {
+		display: flex;
+	}
+
+	&.has-active {
+		box-shadow: var(--box-shadow-1), var(--box-shadow-3);
+	}
+}
+
+button {
+	display: block;
+	padding: 0.5rem;
+	transition: all 0.2s;
+
+	&:hover {
+		background-color: var(--c-bg-a80);
+		color: var(--c-primary);
+	}
+
+	&.active {
+		background-color: var(--ld-bg-active);
+		color: var(--c-primary);
+	}
+}
+</style>

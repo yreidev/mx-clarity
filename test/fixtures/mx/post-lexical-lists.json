@@ -1,0 +1,60 @@
+{
+  "data": {
+    "id": "186000000000000101",
+    "title": "示例：列表里的代码块",
+    "slug": "sample-list-code",
+    "text": "## 开始之前\n\n这篇示例演示在有序列表中间插入代码块。普通文字里也可以出现反引号 \\` 这样的字符，投影成 Markdown 时会被转义。\n\n1. 确认本机已经装好 Node.js。\n2. 安装依赖：\n\n```bash\n   npm install --save-dev example-cli\n```\n\n3. 生成配置：\n\n```bash\n   npx example-cli init --dir ./config && ls ./config\n```\n\n## 每个命令做了什么\n\n- `npm install`：安装本地开发要用的命令行工具。\n- `npx example-cli init`：在 `./config` 下生成一份默认配置，已有的文件不会被覆盖。\n\n### Windows 上的写法\n\n```powershell\nSet-Location C:\\Users\\example\\project\n$env:EXAMPLE_HOME = \"C:\\Tools\\example\"\nnpx example-cli init --dir .\\config\n```\n\n## 注意事项\n\n- 命令都要在项目根目录执行。\n- 提示权限不足时，先检查目录是否可写。\n\n以上内容只是示例，照着做也不会改动你的系统。",
+    "content": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"开始之前\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"vUAJwEYH\"},\"tag\":\"h2\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"这篇示例演示在有序列表中间插入代码块。普通文字里也可以出现反引号 ` 这样的字符，投影成 Markdown 时会被转义。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"twbEKUdO\"},\"textFormat\":0,\"textStyle\":\"\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"确认本机已经装好 Node.js。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"安装依赖：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":2}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"xNyNTBUC\"},\"listType\":\"number\",\"start\":1,\"tag\":\"ol\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"Xa7YGCri\"},\"code\":\"   npm install --save-dev example-cli\",\"language\":\"bash\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"生成配置：\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":3}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"HoiWnrQX\"},\"listType\":\"number\",\"start\":3,\"tag\":\"ol\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"Lfk0N29h\"},\"code\":\"   npx example-cli init --dir ./config && ls ./config\",\"language\":\"bash\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"每个命令做了什么\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"a7IgQ9Vm\"},\"tag\":\"h2\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":16,\"mode\":\"normal\",\"style\":\"\",\"text\":\"npm install\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"：安装本地开发要用的命令行工具。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":1},{\"children\":[{\"detail\":0,\"format\":16,\"mode\":\"normal\",\"style\":\"\",\"text\":\"npx example-cli init\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"：在 \",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":16,\"mode\":\"normal\",\"style\":\"\",\"text\":\"./config\",\"type\":\"text\",\"version\":1},{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\" 下生成一份默认配置，已有的文件不会被覆盖。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":2}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"pIGnwICA\"},\"listType\":\"bullet\",\"start\":1,\"tag\":\"ul\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Windows 上的写法\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"QT-WomD0\"},\"tag\":\"h3\"},{\"type\":\"code-block\",\"version\":1,\"$\":{\"blockId\":\"DCMfpwzN\"},\"code\":\"Set-Location C:\\\\Users\\\\example\\\\project\\n$env:EXAMPLE_HOME = \\\"C:\\\\Tools\\\\example\\\"\\nnpx example-cli init --dir .\\\\config\",\"language\":\"powershell\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"注意事项\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"heading\",\"$\":{\"blockId\":\"EnmQkWWc\"},\"tag\":\"h2\"},{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"命令都要在项目根目录执行。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"提示权限不足时，先检查目录是否可写。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"listitem\",\"value\":2}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"list\",\"$\":{\"blockId\":\"TBgBW4HO\"},\"listType\":\"bullet\",\"start\":1,\"tag\":\"ul\"},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"以上内容只是示例，照着做也不会改动你的系统。\",\"type\":\"text\",\"version\":1}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"paragraph\",\"$\":{\"blockId\":\"NlFeiT9a\"},\"textFormat\":0,\"textStyle\":\"\"}],\"direction\":null,\"format\":\"\",\"indent\":0,\"version\":1,\"type\":\"root\"}}",
+    "content_format": "lexical",
+    "summary": "这篇示例文章演示有序列表中间穿插代码块，以及行内代码和注意事项列表。",
+    "images": [],
+    "meta": {},
+    "tags": [
+      "示例",
+      "列表",
+      "代码块",
+      "行内代码",
+      "排版"
+    ],
+    "modified_at": "2022-02-18T08:00:00.000Z",
+    "category_id": "186000000000000201",
+    "copyright": true,
+    "is_published": true,
+    "is_premium": false,
+    "read_count": 0,
+    "like_count": 0,
+    "pin_at": null,
+    "pin_order": null,
+    "created_at": "2022-02-16T06:30:00.000Z",
+    "category": {
+      "id": "186000000000000201",
+      "name": "工具",
+      "slug": "tools",
+      "type": 0
+    }
+  },
+  "meta": {
+    "view": "detail",
+    "translation": {
+      "186000000000000101": {
+        "article": {
+          "is_translated": false,
+          "source_lang": null,
+          "target_lang": "zh",
+          "available_translations": []
+        }
+      }
+    },
+    "interaction": {
+      "is_liked": false
+    },
+    "enrichments": {},
+    "insights": {
+      "has_in_locale": false
+    },
+    "related": [],
+    "tts": {
+      "available": false
+    }
+  }
+}

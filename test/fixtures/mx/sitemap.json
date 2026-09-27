@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "url": "http://localhost:2323/lexical-page",
+      "published_at": "2026-09-24T02:24:50.279Z"
+    },
+    {
+      "url": "http://localhost:2323/link",
+      "published_at": "2026-09-24T02:24:50.272Z"
+    },
+    {
+      "url": "http://localhost:2323/about",
+      "published_at": "2026-09-24T02:24:50.272Z"
+    },
+    {
+      "url": "http://localhost:2323/notes/2",
+      "published_at": "2026-09-24T01:08:06.315Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/tech/xss-probe",
+      "published_at": "2026-09-21T00:34:51.037Z"
+    },
+    {
+      "url": "http://localhost:2323/notes/1",
+      "published_at": "2026-09-20T15:40:26.637Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/tech/mx-syntax-sample",
+      "published_at": "2026-09-20T14:24:01.487Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/tech/hello-world",
+      "published_at": "2026-09-20T14:13:12.648Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/share/sample-weekend-trip",
+      "published_at": "2022-09-09T04:20:00.000Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/essay/sample-step-by-step",
+      "published_at": "2022-06-23T09:10:00.000Z"
+    },
+    {
+      "url": "http://localhost:2323/posts/tools/sample-list-code",
+      "published_at": "2022-02-18T08:00:00.000Z"
+    }
+  ]
+}

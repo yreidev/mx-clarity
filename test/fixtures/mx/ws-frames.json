@@ -1,0 +1,56 @@
+[
+  {
+    "v": 1,
+    "event": "gateway.connect",
+    "payload": "WebSocket connected"
+  },
+  {
+    "v": 1,
+    "event": "visitor.online",
+    "payload": {
+      "online": 1,
+      "timestamp": "2026-09-24T03:37:27.301Z"
+    }
+  },
+  {
+    "v": 1,
+    "event": "comment.create",
+    "payload": {
+      "id": "184872548264054784",
+      "refType": "post",
+      "refId": "183590000000000001",
+      "author": "示例读者",
+      "mail": "reader@example.test",
+      "url": null,
+      "text": "一条示例评论",
+      "state": 0,
+      "parentCommentId": null,
+      "rootCommentId": null,
+      "replyCount": 0,
+      "latestReplyAt": null,
+      "isDeleted": false,
+      "deletedAt": null,
+      "pin": false,
+      "isWhispers": false,
+      "avatar": "https://cravatar.cn/avatar/3d2103e0ba81d0304817a7ced63dc657?d=retro",
+      "authProvider": null,
+      "meta": null,
+      "readerId": null,
+      "editedAt": null,
+      "anchor": null,
+      "location": null,
+      "isOwnerReply": false,
+      "countryCode": null,
+      "createdAt": "2026-09-24T03:37:30.272Z"
+    }
+  },
+  {
+    "v": 1,
+    "event": "article.read_count_update",
+    "payload": {
+      "count": 2,
+      "id": "183590000000000001",
+      "type": "post"
+    }
+  }
+]

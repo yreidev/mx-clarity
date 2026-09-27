@@ -1,0 +1,19 @@
+{
+  "all": "全部",
+  "compact": "密",
+  "dayYearElapsed": "今年第 {day} 天 · 已过 {percent}%",
+  "diaryEntries": "{n}篇日记",
+  "filter": "筛选",
+  "memories": "回忆",
+  "monthEntries": "{month} 月，{n} 篇",
+  "monthLabel": "{month} 月",
+  "nothingHereYet": "还没有内容",
+  "nothingMatches": "没有符合的内容",
+  "overview": "概览",
+  "posts": "{n}篇文章",
+  "posts2": "文章",
+  "postsDiaryEntries": "{site}的文章与日记，按时间排列。",
+  "relaxed": "舒",
+  "timelineCantLoaded": "时间线暂时无法加载",
+  "view": "视图"
+}

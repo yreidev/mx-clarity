@@ -1,0 +1,18 @@
+{
+  "enterKeywordUp": "Enter a keyword (up to 50 characters).",
+  "navigate": "Navigate",
+  "noResults": "No results",
+  "nothingFound": "Nothing found for \"{keyword}\".",
+  "resultsFound": {
+    "one": "{n} result found",
+    "other": "{n} results found"
+  },
+  "search": "Search: {keyword}",
+  "searchKeywords": "Search keywords",
+  "searchPostsDiary": "Search posts, diary, and pages",
+  "searchTemporarilyUnavailable": "Search is temporarily unavailable",
+  "select": "Select",
+  "typeKeywordPress": "Type a keyword and press Enter to search.",
+  "typeSearch": "Type to search",
+  "viewSearchPage": "View on the search page"
+}

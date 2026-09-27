@@ -1,0 +1,15 @@
+{
+  "enterKeywordUp": "キーワードは必須です。50字まで",
+  "navigate": "移動",
+  "noResults": "結果なし",
+  "nothingFound": "「{keyword}」に関する内容は見つかりませんでした",
+  "resultsFound": "{n}件の結果",
+  "search": "検索：{keyword}",
+  "searchKeywords": "検索キーワード",
+  "searchPostsDiary": "記事・日記・ページを検索",
+  "searchTemporarilyUnavailable": "検索は一時的に利用できません",
+  "select": "選択",
+  "typeKeywordPress": "キーワードを入力し、Enterで検索",
+  "typeSearch": "入力して検索",
+  "viewSearchPage": "検索ページで見る"
+}

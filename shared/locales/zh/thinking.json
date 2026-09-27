@@ -1,0 +1,14 @@
+{
+  "allThinking": "全部碎碎念",
+  "comment": "评论",
+  "couldntLoadThinking": "碎碎念暂时无法加载",
+  "dislike": "踩，{count}",
+  "dislikedClickAgain": "已踩，{count}，再点撤销",
+  "failedLoadRetry": "加载失败，重试",
+  "like": "赞，{count}",
+  "likedClickAgain": "已赞，{count}，再点撤销",
+  "loadMore": "加载更多",
+  "noThinkingPosts": "还没有碎碎念",
+  "thinking": "碎碎念：{excerpt}",
+  "thinkingFrom": "{site}的碎碎念。"
+}

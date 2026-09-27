@@ -1,0 +1,15 @@
+{
+  "enterKeywordUp": "关键词要填，最多 50 字",
+  "navigate": "切换",
+  "noResults": "无结果",
+  "nothingFound": "没有找到和「{keyword}」相关的内容",
+  "resultsFound": "找到 {n} 条结果",
+  "search": "搜索：{keyword}",
+  "searchKeywords": "搜索关键词",
+  "searchPostsDiary": "搜文章、日记、页面",
+  "searchTemporarilyUnavailable": "搜索暂时不可用",
+  "select": "选择",
+  "typeKeywordPress": "输入关键词，回车搜索",
+  "typeSearch": "键入开始搜索",
+  "viewSearchPage": "在搜索页查看"
+}

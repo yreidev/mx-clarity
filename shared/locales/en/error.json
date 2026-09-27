@@ -1,0 +1,11 @@
+{
+  "contentDoesntExist": "This content doesn't exist or has been deleted.",
+  "contentServiceTemporarily": "The content service is temporarily unavailable. Please try again later.",
+  "invalidSignature": "Invalid signature.",
+  "pleaseSubmitSites": "Please submit from this site's pages.",
+  "requestTooLarge": "Request too large.",
+  "siteErrorInvalid": "Site error: invalid request parameters.",
+  "siteMisconfigurationFront": "Site misconfiguration: the front end called an API that requires authentication.",
+  "tooManyRequests": "Too many requests. Please try again later.",
+  "youreClickingToo": "You're clicking too fast. Take a break and try again."
+}

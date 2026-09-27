@@ -1,0 +1,18 @@
+{
+  "data": {
+    "user": {
+      "id": "183582625582026752",
+      "name": "Dev Owner"
+    },
+    "seo": {
+      "title": "My Little World",
+      "description": "Hi, welcome!",
+      "icon": "",
+      "icon_dark": "",
+      "keywords": []
+    },
+    "url": {
+      "web_url": "http://localhost:2323"
+    }
+  }
+}

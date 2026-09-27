@@ -1,0 +1,7 @@
+{
+  "aiSkill": "{site}의 AI Skill",
+  "copyPrompt": "프롬프트 복사",
+  "pleaseReadFollow": "이 Skill을 읽고 따라 주세요: {url}",
+  "skillNotFound": "Skill을 찾을 수 없습니다",
+  "viewRawMarkdown": "원본 Markdown 보기"
+}
