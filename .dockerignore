@@ -9,3 +9,4 @@ test
 .env
 .env.*
 !.env.example
+docs
