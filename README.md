@@ -5,7 +5,7 @@
 像官方主题一样：用现成的镜像，只配 core 的地址，站点信息与主题配置都在 admin 里改，不用改代码、不用重新构建。
 默认是中文站：向 core 取内容按中文（开了 AI 翻译时取中文译文）。在主题配置里开了多语言的，另有 `/<语言>/...` 的 AI 译文版，界面也换成那个语言。界面文字有中文、英文、日文、韩文，其余语言的前缀版用英文界面（见「主题配置」的 `i18n`）。
 
-**演示站：<https://demo.starssr.com>**，跑的就是发布的镜像。里面有一篇[把主题能显示的东西尽量都放进去的示例文章](https://demo.starssr.com/posts/demo/mx-clarity-showcase)：排版、代码与公式、图片与视频、投票、地图、股票、链接卡片，还有划词评论。
+**演示站：<https://blog.june.ink>**，跑的就是发布的镜像。里面有一篇[把主题能显示的东西尽量都放进去的示例文章](https://blog.june.ink/posts/demo/mx-clarity-showcase)：排版、代码与公式、图片与视频、投票、地图、股票、链接卡片，还有划词评论。
 
 <p>
 <img src="docs/screenshots/home.jpg" alt="首页：左侧导航，中间文章列表，右侧统计、最近动态与技术信息（浅色）" width="49%">
@@ -17,7 +17,7 @@
 
 | | blog-v3 | mx-clarity |
 |---|---|---|
-| 内容 | 仓库里的 Markdown（Nuxt Content） | mx-space core（在 core 14.13.0 上开发与验证） |
+| 内容 | 仓库里的 Markdown（Nuxt Content） | mx-space core（在 core 14.14.5 上开发与验证） |
 | 正文 | MDC | mx 的 Lexical 富文本与 Markdown 两条路径，渲染成同一套组件 |
 | 评论 | Twikoo | mx 的评论：楼中楼、匿名与社交登录两种身份；排序、表情、读者改自己的评论、举报、按链接定位到某一条、划词评论（选中正文里的一段来评论）、新评论实时出现 |
 | 运行方式 | 静态站 | Node 服务（SSR）：页面由主题渲染，匿名访客的页面整页缓存；页面上的评论、点赞、登录、实时连接由浏览器直接请求同源的 core（`/api/v3`、`/ws/web`，见下文「浏览器直连 core」） |
