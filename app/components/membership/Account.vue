@@ -83,7 +83,7 @@ async function remove() {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .account {
 	display: grid;
 	gap: 0.6em;

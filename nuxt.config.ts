@@ -52,12 +52,12 @@ export default defineNuxtConfig({
 	],
 
 	css: [
-		'@/assets/css/animation.scss',
-		'@/assets/css/article.scss',
-		'@/assets/css/color.scss',
-		'@/assets/css/font.scss',
-		'@/assets/css/main.scss',
-		'@/assets/css/reusable.scss',
+		'@/assets/css/animation.css',
+		'@/assets/css/article.css',
+		'@/assets/css/color.css',
+		'@/assets/css/font.css',
+		'@/assets/css/main.css',
+		'@/assets/css/reusable.css',
 	],
 
 	// @keep-sorted
@@ -157,6 +157,13 @@ export default defineNuxtConfig({
 	/** 在生产环境启用 sourcemap */
 	// sourcemap: true,
 
+	// 样式写标准 CSS 嵌套，由 postcss-nesting 转换（上游 blog-v3 3.8.0 起不再用 Sass）
+	postcss: {
+		plugins: {
+			'postcss-nesting': {},
+		},
+	},
+
 	vite: {
 		build: {
 			// 超过 500 kB 的都是按需加载的单个第三方模块，没法再拆：maplibre-gl（约 1 MB）、shiki 的大语法（C++、Emacs Lisp）
@@ -168,13 +175,6 @@ export default defineNuxtConfig({
 				// 去掉 JSDoc：服务端产物还要经 Nitro 的 rollup 再打包一遍，
 				// rollup 读不懂写在 JSDoc 里的 `@__NO_SIDE_EFFECTS__`（@vueuse/shared 的 injectLocal）
 				output: { comments: { jsdoc: false } },
-			},
-		},
-		css: {
-			preprocessorOptions: {
-				scss: {
-					additionalData: '@use "@/assets/css/_variable.scss" as *;',
-				},
 			},
 		},
 		define: {
@@ -197,7 +197,6 @@ export default defineNuxtConfig({
 		'@bikariya/image-viewer',
 		'@bikariya/modals',
 		'@bikariya/shiki',
-		'@nuxt/a11y',
 		'@nuxt/hints',
 		'@nuxt/icon',
 		'@nuxt/image',

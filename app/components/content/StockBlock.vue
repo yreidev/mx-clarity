@@ -169,7 +169,7 @@ const range52 = computed(() => props.price && props.low52 && props.high52 && pro
 </figure>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .stock-bar-info {
 	display: flex;
 	flex-wrap: wrap;

@@ -186,7 +186,7 @@ onBeforeUnmount(() => {
 </dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .peek {
 	width: min(56rem, 92vw);
 	height: min(86vh, 60rem);

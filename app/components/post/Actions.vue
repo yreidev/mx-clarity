@@ -8,7 +8,7 @@
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-actions {
 	display: flex;
 	flex-wrap: wrap;

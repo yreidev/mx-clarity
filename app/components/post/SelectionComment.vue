@@ -99,7 +99,7 @@ function comment() {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .selection-bar {
 	display: inline-flex;
 	gap: 0.1em;
@@ -111,7 +111,7 @@ function comment() {
 	background-color: var(--c-bg);
 	font-size: 0.85em;
 	transform: translateX(-50%);
-	// 在右下角的浮动按钮之上（手机上浮条贴着选区下方，可能正好落在按钮那里）
+	/* 在右下角的浮动按钮之上（手机上浮条贴着选区下方，可能正好落在按钮那里） */
 	z-index: calc(var(--z-index-popover) + 1);
 
 	> button {

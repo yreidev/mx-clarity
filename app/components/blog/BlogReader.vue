@@ -29,7 +29,7 @@ const consoleUrl = computed(() => (me.value?.isOwner ? adminHomeUrlOf({ adminUrl
 </a>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .blog-reader {
 	display: flex;
 	align-items: center;

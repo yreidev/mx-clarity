@@ -121,7 +121,7 @@ const railStyle = computed(() => ({
 </aside>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .presence-rail {
 	position: fixed;
 	width: 2px;
@@ -129,7 +129,7 @@ const railStyle = computed(() => ({
 	background-color: var(--c-border);
 	z-index: 10;
 
-	@media (max-width: $breakpoint-widescreen) {
+	@media (max-width: 1080px) {
 		display: none;
 	}
 

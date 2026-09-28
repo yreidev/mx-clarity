@@ -20,7 +20,7 @@ const t = useT()
 </Tooltip>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .md-table {
 	position: relative;
 	margin: 1rem 0;
@@ -30,7 +30,7 @@ const t = useT()
 	word-break: break-all;
 
 	table.scroll {
-		contain: layout; // KaTeX 撑开宽度
+		contain: layout; /* KaTeX 撑开宽度 */
 		display: block;
 		white-space: nowrap;
 		word-break: normal;
@@ -46,7 +46,7 @@ const t = useT()
 	> thead {
 		position: sticky;
 		top: 0;
-		z-index: 1; // ProseA 图标会透到表头上方
+		z-index: 1; /* ProseA 图标会透到表头上方 */
 	}
 
 	th {

@@ -13,16 +13,13 @@
 	:target {
 		border-radius: 0.2rem;
 		animation: highlight 3s;
-
-		@keyframes highlight {
-			50% { background-color: var(--c-primary-soft); }
-		}
 	}
 
-	>:where(h1, h2, h3, h4, h5, h6) {
+	> :where(h1, h2, h3, h4, h5, h6) {
 		margin: 1.6em 0 0.8em;
 		font-family: var(--font-creative);
 		font-weight: 550;
+		-webkit-font-smoothing: antialiased;
 		color: var(--c-text);
 	}
 
@@ -151,7 +148,7 @@
 	}
 }
 
-// 站点暂不支持显示的块（占位段落、画板的文字清单）与投票的静态列表
+/* 站点暂不支持显示的块（占位段落、画板的文字清单）与投票的静态列表 */
 .article .mx-unsupported {
 	color: var(--c-text-2);
 
@@ -167,26 +164,26 @@
 	border-radius: 0.8em;
 }
 
-// AI 洞察「跳回原文」、划词评论定位时闪一下的那段文字（CSS Custom Highlight API）
+/* AI 洞察「跳回原文」、划词评论定位时闪一下的那段文字（CSS Custom Highlight API） */
 ::highlight(mx-quote) {
 	background-color: var(--c-primary-soft);
 }
 
-// 划词评论的正文（SelectionComment.vue 加的类）：手机上压掉 iOS 的系统长按菜单
+/* 划词评论的正文（SelectionComment.vue 加的类）：手机上压掉 iOS 的系统长按菜单 */
 @media (pointer: coarse) {
 	.article.selection-commentable {
 		-webkit-touch-callout: none;
 	}
 }
 
-// 段落边栏（BlockGutter.vue）：宽屏上正文右侧留出放图标的位置
+/* 段落边栏（BlockGutter.vue）：宽屏上正文右侧留出放图标的位置 */
 @media (min-width: 1081px) {
 	.article.has-block-gutter {
 		padding-inline-end: 2rem;
 	}
 }
 
-// 朗读正在读的那一块：很淡的主题色底（Tts.vue 按块 id 加上去）
+/* 朗读正在读的那一块：很淡的主题色底（Tts.vue 按块 id 加上去） */
 .tts-reading {
 	border-radius: 0.3em;
 	box-shadow: 0 0 0 0.3em color-mix(in srgb, var(--c-primary) 8%, transparent);
@@ -194,19 +191,19 @@
 	transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-// 悬停联动：鼠标停在评论的「引用」上时正文里那一段
+/* 悬停联动：鼠标停在评论的「引用」上时正文里那一段 */
 ::highlight(mx-comment-hover) {
 	background-color: color-mix(in srgb, var(--c-primary) 14%, transparent);
 }
 
-// 被划词评论过的文字：点下划线处弹出这段的评论
+/* 被划词评论过的文字：点下划线处弹出这段的评论 */
 ::highlight(mx-comment) {
 	text-decoration: underline dotted var(--c-primary);
 	text-decoration-thickness: 2px;
 	text-underline-offset: 0.25em;
 }
 
-// GitHub 文件与 Gist 的嵌入（服务端取来换成代码块）：下面一行小字链接
+/* GitHub 文件与 Gist 的嵌入（服务端取来换成代码块）：下面一行小字链接 */
 .article .github-embed > .github-embed-link {
 	margin-top: -0.6rem;
 	font-size: 0.85em;
@@ -221,3 +218,8 @@
 	}
 }
 
+@keyframes highlight {
+	50% {
+		background-color: var(--c-primary-soft);
+	}
+}

@@ -160,7 +160,7 @@ function onUnlocked(opened: import('~/types/note').NoteDetail) {
 </ZError>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-detail-meta {
 	margin: 0.5rem 1.5rem 0;
 }

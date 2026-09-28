@@ -66,7 +66,7 @@ async function submit() {
 </form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .link-apply {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(14em, 1fr));

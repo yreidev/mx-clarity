@@ -94,7 +94,7 @@ onMounted(() => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .video {
 	contain: paint;
 	border-radius: 0.8rem;

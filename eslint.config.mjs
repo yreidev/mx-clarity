@@ -1,4 +1,6 @@
 import antfu from '@antfu/eslint-config'
+import css from '@zinkawaii/eslint-config-css'
+import { defineConfig } from 'eslint/config'
 
 export default antfu({
 	// Markdown 只有说明文档，代码块是讲解用的片段；eslint 对它的自动修复会把代码块的结束标记并到上一行（实测弄坏过文档）
@@ -7,12 +9,17 @@ export default antfu({
 		indent: 'tab',
 	},
 	pnpm: true,
+	// jsonc 的规则只在 JSON 上可用，写进全局 rules 会作用到别的文件、让整个检查加载失败
+	jsonc: {
+		overrides: {
+			'jsonc/indent': ['error', 2],
+		},
+	},
 	// @keep-sorted
 	rules: {
-		'jsonc/indent': ['error', 2],
 		'vue/block-lang': ['warn', {
 			script: { lang: ['ts', 'tsx'] },
-			style: { lang: ['scss'] },
+			style: { lang: ['css'], allowNoLang: true },
 		}],
 		'vue/enforce-style-attribute': ['warn', {
 			allow: ['scoped'],
@@ -69,4 +76,15 @@ export default antfu({
 	rules: {
 		'style/eol-last': ['warn', 'never'],
 	},
-})
+}).append({
+	// 全局样式的 CSS 检查，与上游 blog-v3 相同，取代原来的 Stylelint。组件里的 <style> 不在这条检查里（上游也是如此）
+	files: ['app/**/*.css'],
+	extends: defineConfig(css),
+	rules: {
+		'css/no-important': 'off',
+		'css-stylistic/indentation': ['error', 'tab'],
+	},
+}).setDefaultIgnores(prevs => [
+	...prevs,
+	'**/*.css',
+])

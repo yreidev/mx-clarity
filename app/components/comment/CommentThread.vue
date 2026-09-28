@@ -114,7 +114,7 @@ useLiveMessages((message) => {
 </CommentItem>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .comment-replies {
 	display: grid;
 	gap: 1em;

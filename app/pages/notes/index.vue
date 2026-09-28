@@ -11,7 +11,7 @@ const { data, error, refresh } = await useMxNotes(page)
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/" :suffix="t('common.diary')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/" :suffix="t('common.diary')" tag="h1" />
 
 <div class="note-list proper-height">
 	<div class="note-list-nav">
@@ -35,7 +35,7 @@ const { data, error, refresh } = await useMxNotes(page)
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-list {
 	margin: 1rem;
 }

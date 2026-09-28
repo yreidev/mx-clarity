@@ -6,16 +6,12 @@ export const useSearchStore = defineStore('search', () => {
 	const modalStore = useModalStore()
 
 	const word = ref('')
-	const debouncedWord = refDebounced(word)
+	const { text } = useTextSelection()
+	// 按钮上显示的字：选中的文字，其次上次搜的词；都没有时由按钮自己显示「搜索」（按界面语言）
+	const label = computed(() => text.value.trim() || word.value)
 
-	const {
-		open: _open,
-		close: _close,
-	} = modalStore.use(() => h(LazyPopoverSearch, {
-		onClose: () => {
-			_close()
-			layoutStore.close()
-		},
+	const { open, close } = modalStore.use(() => h(LazyPopoverSearch, {
+		onClose: layoutStore.close,
 	}), {
 		unique: true,
 		duration: 200,
@@ -24,14 +20,14 @@ export const useSearchStore = defineStore('search', () => {
 	// 从外部调用时应该操作 layoutStore
 	watch(() => layoutStore.state, (state) => {
 		if (state !== 'search')
-			return _close()
+			return close()
 
-		word.value = window.getSelection()?.toString().trim() || word.value
-		_open()
+		word.value = text.value.trim() || word.value
+		open()
 	})
 
 	return {
 		word,
-		debouncedWord,
+		label,
 	}
 })

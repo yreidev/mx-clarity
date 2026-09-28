@@ -108,7 +108,7 @@ const hasChart = computed(() => Boolean(props.chartWidth && props.chartHeight &&
 </figure>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .map-block {
 	margin: 1.5em 0;
 	padding: 0.9em 1.1em;
@@ -138,8 +138,8 @@ const hasChart = computed(() => Boolean(props.chartWidth && props.chartHeight &&
 	border-radius: 0.5em;
 	background-color: var(--c-bg-2);
 
-	// 手机上按示意图的宽高比只有 200px 上下高：拖不开，底图的署名（小地图上先展开，拖动后才收起）还要占掉三分之一
-	@media (max-width: $breakpoint-phone) {
+	/* 手机上按示意图的宽高比只有 200px 上下高：拖不开，底图的署名（小地图上先展开，拖动后才收起）还要占掉三分之一 */
+	@media (max-width: 528px) {
 		min-height: 18rem;
 	}
 }

@@ -65,7 +65,7 @@ const t = useT()
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .toc {
 	position: relative;
 

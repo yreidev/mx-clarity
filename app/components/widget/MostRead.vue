@@ -18,7 +18,7 @@ const { data } = useMxReadingBoard()
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 ol {
 	display: grid;
 	gap: 0.2em;

@@ -72,7 +72,7 @@ function articleLabel(article: MembershipMe['articles'][number]) {
 
 <template>
 <div class="membership proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="t('common.membership')" tag="h1" />
 	</div>
 
@@ -186,7 +186,7 @@ function articleLabel(article: MembershipMe['articles'][number]) {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .membership {
 	display: grid;
 	gap: 1.5rem;

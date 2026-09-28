@@ -130,7 +130,7 @@ onMounted(() => {
 </template>
 
 <div class="timeline proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="t('common.timeline')" tag="h1" />
 	</div>
 
@@ -214,7 +214,7 @@ onMounted(() => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .timeline {
 	padding: 1rem;
 }

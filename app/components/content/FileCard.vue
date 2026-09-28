@@ -54,7 +54,7 @@ const t = useT()
 </a>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .file-card {
 	display: flex;
 	align-items: center;

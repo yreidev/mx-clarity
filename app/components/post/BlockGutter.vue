@@ -125,7 +125,7 @@ onBeforeUnmount(() => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .block-gutter {
 	position: fixed;
 	top: 0;

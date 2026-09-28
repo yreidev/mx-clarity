@@ -1,6 +1,5 @@
-import type { ArticleDetail, ArticleOrderType, ArticleProps } from '~/types/article'
+import type { ArticleDetail } from '~/types/article'
 import type { ThemeConfig } from '~/types/theme'
-import { orderBy } from 'es-toolkit/array'
 
 /**
  * 获取已加载的文章内容/元信息。文章、日记、独立页的详情共用 `mxPostKey`；
@@ -14,74 +13,6 @@ export function useArticle(path?: MaybeRefOrGetter<string | undefined>) {
 	return {
 		post: computed(() => detail.value?.article),
 		toc: computed(() => detail.value?.toc),
-	}
-}
-
-interface UseCategoryOptions {
-	bindQuery?: string
-}
-
-export function useCategory(list: MaybeRefOrGetter<ArticleProps[]>, options?: UseCategoryOptions) {
-	const { bindQuery } = options || {}
-
-	const category = bindQuery
-		? useRouteQuery(bindQuery, undefined)
-		: ref<string | undefined>()
-
-	const categories = computed(() => [...new Set(toValue(list).map(item => item.categories?.[0]))])
-
-	const listCategorized = computed(
-		() => toValue(list).filter(
-			item => !category.value || item.categories?.[0] === category.value,
-		),
-	)
-
-	return {
-		category,
-		categories,
-		listCategorized,
-	}
-}
-
-interface UseArticleSortOptions {
-	bindDirectionQuery?: string
-	bindOrderQuery?: string
-	initialAscend?: boolean
-	initialOrder?: ArticleOrderType
-}
-
-export function useArticleSort(list: MaybeRefOrGetter<ArticleProps[]>, options?: UseArticleSortOptions) {
-	const appConfig = useAppConfig()
-	const {
-		bindDirectionQuery,
-		bindOrderQuery,
-		initialAscend = false,
-		initialOrder = appConfig.pagination.sortOrder || 'date',
-	} = options || {}
-
-	const sortOrder = bindOrderQuery
-		? useRouteQuery(bindOrderQuery, initialOrder)
-		: ref<ArticleOrderType>(initialOrder)
-
-	const booleanQueryTransformer = {
-		get: (val: string) => val === 'true',
-		set: (val: boolean) => val.toString(),
-	}
-
-	const isAscending = bindDirectionQuery
-		? useRouteQuery(bindDirectionQuery, initialAscend.toString(), { transform: booleanQueryTransformer })
-		: ref<boolean>(initialAscend)
-
-	const listSorted = computed(() => orderBy(
-		toValue(list),
-		[sortOrder.value, 'date'],
-		[isAscending.value ? 'asc' : 'desc'],
-	))
-
-	return {
-		sortOrder,
-		isAscending,
-		listSorted,
 	}
 }
 

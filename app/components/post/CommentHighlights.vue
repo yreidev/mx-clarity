@@ -237,8 +237,8 @@ onBeforeUnmount(() => {
 </Teleport>
 </template>
 
-<style lang="scss" scoped>
-// 正文往里缩一个头像加间距，与昵称对齐
+<style scoped>
+/* 正文往里缩一个头像加间距，与昵称对齐 */
 .anchor-preview {
 	--avatar: 20px;
 	--avatar-gap: 0.5em;

@@ -69,7 +69,7 @@ if (!post.value) {
 </ZError>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .preview-banner {
 	display: flex;
 	align-items: center;

@@ -43,7 +43,7 @@ function remember(lang: UiLang) {
 </nav>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .ui-language-switch {
 	display: flex;
 	flex-wrap: wrap;

@@ -384,7 +384,7 @@ Node 版本见 `package.json` 的 `engines`。开发时浏览器直连 core 的�
 | 命令 | 作用 |
 |---|---|
 | `pnpm test` | 单元测试（夹具在 `test/fixtures/mx/`：形状照 core 的真实响应，内容是示例） |
-| `pnpm lint` | ESLint + Stylelint |
+| `pnpm lint` | ESLint（含全局样式的 CSS 检查） |
 | `pnpm typecheck` | 类型检查（页面与组件由 vue-tsc 查） |
 | `pnpm build` | 生产构建，产物在 `.output/` |
 | `pnpm test:e2e` | 页面级测试：先 `pnpm build`，它会起一个假 core 与构建好的主题（前面套一层照 nginx 分流的反代），用本机的 Chrome 逐页打开（`CHROME_PATH` 指定浏览器；找不到就跳过浏览器那部分），不连外网 |
@@ -412,7 +412,6 @@ Node 版本见 `package.json` 的 `engines`。开发时浏览器直连 core 的�
 │   └── utils          # 调 core、缓存（按语言分键）、参数校验、内容安全策略、结构化日志、划词评论的正文核对
 ├── shared/utils       # 前后端共用的纯函数
 ├── shared/locales     # 界面文字：中英日韩各一份，按命名空间分 JSON，键是英文的消息 id（`post.aiTranslation`）
-├── modules           # lan-preview：只在 pnpm dev 时生效，用局域网 IP 访问时的兼容补丁
 ├── test               # 单元测试与夹具；e2e 下是页面级测试（假 core 与浏览器）
 ├── scripts/probe      # 探针
 ├── scripts/site-proxy.mjs # 本地用的站点反代：照 nginx 分流（e2e 与本机跑生产构建时用）

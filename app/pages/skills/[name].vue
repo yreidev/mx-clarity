@@ -64,7 +64,7 @@ else {
 <ZError v-else icon="line-md:document-delete-twotone" :title="t('skill.skillNotFound')" />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .skill {
 	padding: 1rem;
 }

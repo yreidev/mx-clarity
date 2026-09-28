@@ -184,7 +184,7 @@ else {
 </ZError>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .payment-notice {
 	display: flex;
 	align-items: center;
@@ -197,7 +197,7 @@ else {
 	color: var(--c-text);
 }
 
-// 锁定时正文末尾渐隐，接到付费墙
+/* 锁定时正文末尾渐隐，接到付费墙 */
 .paywall-preview {
 	mask-image: linear-gradient(to bottom, #000 calc(100% - 8em), transparent);
 }

@@ -56,7 +56,7 @@ async function toggle() {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-insights {
 	margin: 2rem 1.5rem 0;
 	border: 1px solid var(--c-border);

@@ -27,7 +27,7 @@ const t = useT()
 </UtilLink>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-card {
 	margin: 1em 0;
 	border-radius: 0.8em;

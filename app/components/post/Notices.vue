@@ -57,7 +57,7 @@ const aiGenText = computed(() => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-notices {
 	display: flex;
 	flex-direction: column;

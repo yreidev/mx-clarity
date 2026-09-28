@@ -23,7 +23,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
 
 <template>
 <DefineTemplate v-slot="{ post, icon, fallbackIcon, fallbackText, alignEnd }">
-	<UtilLink :to="post?.path" class="surround-link" :align-end>
+	<UtilLink :to="post?.path" class="surround-link" :data-transition-key="post?.path" :align-end>
 		<Icon :class="{ 'rtl-flip': post }" :name="post ? icon : fallbackIcon" />
 		<div class="surround-text">
 			<strong class="title" :class="getPostTypeClassName(post?.type)">
@@ -47,7 +47,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .surround-post {
 	contain: layout;
 	display: flex;
@@ -68,7 +68,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate<{
 	}
 
 	&[align-end] {
-		// direction: rtl 会导致末尾标点居左
+		/* direction: rtl 会导致末尾标点居左 */
 		flex-direction: row-reverse;
 		margin-inline-start: auto;
 		text-align: end;

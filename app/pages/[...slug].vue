@@ -48,8 +48,8 @@ else {
 
 <template>
 <template #aside>
-	<!-- 更换页面时相同 key 的组件不会更新 -->
-	<component :is="widget.comp" v-for="widget in widgets" :key="widget.name" />
+	<!-- 每篇文章拥有独立的目录状态，并在具名插槽内自然入场。 -->
+	<component :is="widget.comp" v-for="widget in widgets" :key="`${post?.path ?? route.path}:${widget.name}`" />
 </template>
 
 <template v-if="post && detail && !removed">
@@ -57,8 +57,10 @@ else {
 	<PostLanguageSwitch :versions :current="shownLang" />
 	<PostTranslationNotice :languages="detail.languages" :original :ref-id="post.meta?.__id" @refresh="refresh()" />
 	<PostExcerpt v-if="excerpt" :excerpt />
+	<!-- 正文使用纯透明度入场，保证 URL 锚点和目录测量不受位移影响。 -->
 	<MxRenderer
 		class="article"
+		data-transition-enter
 		:class="getPostTypeClassName(post.type, { prefix: 'md' })"
 		:body="detail.body"
 		:lang="shownLang"

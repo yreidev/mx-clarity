@@ -79,7 +79,7 @@ function reload() {
 </p>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .translation-notice {
 	display: flex;
 	flex-wrap: wrap;

@@ -79,7 +79,7 @@ const STATUS = computed<Record<MyComment['status'], string | undefined>>(() => (
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .my-comments-title {
 	margin-bottom: 0.6em;
 	font-size: 1.2em;

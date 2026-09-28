@@ -125,7 +125,7 @@ async function submit() {
 </form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .mx-poll-card {
 	margin: 1.5em 0;
 	padding: 1em 1.2em;

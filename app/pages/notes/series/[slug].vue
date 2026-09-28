@@ -25,7 +25,7 @@ else {
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/notes/series" :suffix="data?.topic.name ?? t('note.series')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/notes/series" :suffix="data?.topic.name ?? t('note.series')" tag="h1" />
 
 <div v-if="data" class="topic-detail proper-height">
 	<header class="topic-header">
@@ -57,7 +57,7 @@ else {
 </ZError>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .topic-detail {
 	margin: 1rem;
 }

@@ -7,7 +7,7 @@ const { data: topics, error, refresh } = await useMxTopics()
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/notes" :suffix="t('note.series')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/notes" :suffix="t('note.series')" tag="h1" />
 
 <div class="topic-list proper-height">
 	<ZError v-if="error" icon="tabler:cloud-off" :title="t('note.seriesUnavailableRight')">
@@ -33,7 +33,7 @@ const { data: topics, error, refresh } = await useMxTopics()
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .topic-list {
 	display: grid;
 	gap: 1em;

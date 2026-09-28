@@ -122,11 +122,11 @@ function goTo(id: string) {
 </Teleport>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .anchor-panel-backdrop {
 	position: fixed;
 	inset: 0;
-	// 要盖过右下角的浮动按钮（弹层层级）：手机上抽屉贴底，不然评论框的「发送」被按钮压住
+	/* 要盖过右下角的浮动按钮（弹层层级）：手机上抽屉贴底，不然评论框的「发送」被按钮压住 */
 	z-index: calc(var(--z-index-popover) + 1);
 }
 
@@ -144,8 +144,8 @@ function goTo(id: string) {
 	background-color: var(--c-bg);
 	font-size: 0.9em;
 
-	// 窄屏贴底
-	@media (max-width: $breakpoint-mobile) {
+	/* 窄屏贴底 */
+	@media (max-width: 768px) {
 		inset: auto 0 0;
 		width: 100%;
 		max-height: 80vh;

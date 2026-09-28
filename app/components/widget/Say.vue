@@ -32,7 +32,7 @@ onMounted(next)
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .say-next {
 	display: inline-flex;
 	color: var(--c-text-3);

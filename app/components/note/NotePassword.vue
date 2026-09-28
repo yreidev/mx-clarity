@@ -62,7 +62,7 @@ async function submit() {
 </form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-password {
 	display: grid;
 	justify-items: center;

@@ -62,14 +62,14 @@ onBeforeUnmount(() => clearTimeout(timer))
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .live-notice {
 	display: grid;
 	gap: 0.6em;
 	position: fixed;
 	bottom: max(1rem, env(safe-area-inset-bottom));
 	left: 1rem;
-	// 手机上右下角有浮动按钮，留出它的位置
+	/* 手机上右下角有浮动按钮，留出它的位置 */
 	max-width: min(24rem, calc(100vw - 5rem));
 	z-index: 50;
 }

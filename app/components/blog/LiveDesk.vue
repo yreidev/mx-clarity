@@ -140,7 +140,7 @@ onMounted(async () => {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .live-desk {
 	display: grid;
 	gap: 0.2em;

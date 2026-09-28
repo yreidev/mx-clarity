@@ -51,7 +51,7 @@ const { open } = modalStore.use(
 </figure>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 figcaption {
 	margin-top: -0.5em;
 	font-size: 0.8em;

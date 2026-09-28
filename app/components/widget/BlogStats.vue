@@ -89,8 +89,8 @@ async function likeThisSite() {
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
-// 放在标题行右侧，和其他挂件标题行里的操作一样只是个小图标
+<style scoped>
+/* 放在标题行右侧，和其他挂件标题行里的操作一样只是个小图标 */
 .like-site {
 	display: inline-flex;
 	align-items: center;

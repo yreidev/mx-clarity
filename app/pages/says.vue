@@ -14,7 +14,7 @@ const { data, error, refresh } = await useMxSays(page)
 	<WidgetBlogStats />
 </template>
 
-<BlogHeader class="mobile-only" to="/" :suffix="t('common.quotes')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/" :suffix="t('common.quotes')" tag="h1" />
 
 <div class="say-list proper-height">
 	<ZError v-if="error" icon="tabler:cloud-off" :title="t('says.quotesCantLoaded')">
@@ -40,7 +40,7 @@ const { data, error, refresh } = await useMxSays(page)
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .say-list {
 	margin: 1rem;
 }

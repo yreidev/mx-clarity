@@ -48,7 +48,7 @@ const snippetParts = computed(() => props.snippet ? splitHighlight(props.snippet
 </UtilLink>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .search-item {
 	display: block;
 	margin: 0.5em;

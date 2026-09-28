@@ -11,7 +11,9 @@ const searchStore = useSearchStore()
 const searchInput = ref<HTMLInputElement>()
 const t = useT()
 
-const { word, debouncedWord } = storeToRefs(searchStore)
+const { word } = storeToRefs(searchStore)
+// 每次都要问 core：停顿 200 毫秒再发，免得每敲一个字就发一次请求
+const debouncedWord = refDebounced(word, 200)
 const core = useCoreClient()
 const result = ref<SearchHit[]>([])
 const status = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
@@ -42,15 +44,30 @@ watch(debouncedWord, async (keyword) => {
 
 const isKeyboardMode = ref(false)
 const listResult = useTemplateRef('list-result')
+const resultContent = useTemplateRef('result-content')
+const resultHeight = ref(0)
+
+// 只平滑容器高度；结果节点和键盘选中状态仍即时更新。
+useResizeObserver(resultContent, ([entry]) => {
+	if (entry)
+		resultHeight.value = entry.borderBoxSize[0]?.blockSize ?? entry.contentRect.height
+})
 
 const activeIndex = ref(0)
-const activeItem = computed(() => listResult.value?.children[activeIndex.value] as HTMLLinkElement | undefined)
+const activeItem = () => listResult.value?.children[activeIndex.value] as HTMLAnchorElement | undefined
 
 whenever(() => props.open, focusInput)
 
-watch(debouncedWord, () => {
-	activeIndex.value = 0
-})
+let selectedId: string | undefined
+function onResultsUpdated(items: SearchHit[]) {
+	const retained = items.findIndex(item => item.id === selectedId)
+	activeIndex.value = Math.max(0, retained)
+	selectedId = items[activeIndex.value]?.id
+	if (retained < 0 && listResult.value)
+		listResult.value.scrollTop = 0
+}
+
+watch(result, onResultsUpdated, { flush: 'post' })
 
 useEventListener('mousemove', () => isKeyboardMode.value = false)
 useEventListener('keydown', () => isKeyboardMode.value = true)
@@ -64,19 +81,19 @@ async function focusInput(allSelect = false) {
 
 function updateActiveIndex(index: number, isKeyboard = false) {
 	focusInput()
-	if (index < 0 || index >= result.value?.length)
+	if (index < 0 || index >= (listResult.value?.children.length ?? 0))
 		return
 	activeIndex.value = index
+	selectedId = activeItem()?.dataset.resultId
 	if (isKeyboard)
 		isKeyboardMode.value = true
-	if (activeItem.value && isKeyboardMode.value) {
-		activeItem.value.scrollIntoView({ block: 'nearest' })
-	}
+	if (isKeyboardMode.value)
+		activeItem()?.scrollIntoView({ block: 'nearest' })
 }
 
 function openActiveItem() {
 	// 触发 vue-router 点击事件
-	activeItem.value?.click()
+	activeItem()?.click()
 }
 </script>
 
@@ -100,48 +117,50 @@ function openActiveItem() {
 			>
 		</form>
 
-		<TransitionGroup name="expand">
-			<div v-if="debouncedWord && status === 'success' && !result.length" class="no-result">
-				{{ t('search.noResults') }}
-			</div>
-			<div v-else-if="status === 'error'" class="no-result">
-				{{ t('search.searchTemporarilyUnavailable') }}
-			</div>
+		<div class="search-results" :style="{ height: `${resultHeight}px` }">
+			<div ref="result-content" class="result-content">
+				<div v-if="debouncedWord && status === 'success' && !result.length" class="no-result">
+					{{ t('search.noResults') }}
+				</div>
+				<div v-else-if="status === 'error'" class="no-result">
+					{{ t('search.searchTemporarilyUnavailable') }}
+				</div>
 
-			<menu
-				v-if="result.length"
-				ref="list-result"
-				:key="result.length < 5 ? result.length : result[0]?.id"
-				class="scrollcheck-y search-result"
-			>
-				<PopoverSearchItem
-					v-for="(item, itemIndex) in result"
-					:key="item.id"
-					v-bind="item"
-					:query="debouncedWord"
-					:class="{ active: activeIndex === itemIndex }"
-					@mousemove="updateActiveIndex(itemIndex)"
-				/>
-			</menu>
+				<menu
+					v-show="result.length"
+					ref="list-result"
+					class="scrollcheck-y search-result"
+				>
+					<PopoverSearchItem
+						v-for="(item, itemIndex) in result"
+						:key="item.id"
+						:data-result-id="item.id"
+						v-bind="item"
+						:query="debouncedWord"
+						:class="{ active: activeIndex === itemIndex }"
+						@mousemove="updateActiveIndex(itemIndex)"
+					/>
+				</menu>
 
-			<div v-if="result.length" class="tip" @click="searchInput?.focus()">
-				<Key code="ArrowUp" prevent @press="updateActiveIndex(activeIndex - 1, true)" />
-				<Key code="ArrowDown" prevent @press="updateActiveIndex(activeIndex + 1, true)" />
-				{{ t('search.navigate') }}&emsp;
-				<Key code="Enter" icon @press="openActiveItem" />
-				{{ t('search.select') }}&emsp;
-				<Key code="Escape" :icon="false" @press="$emit('close')" />
-				{{ t('common.close') }}
-				<UtilLink :to="`/search?q=${encodeURIComponent(debouncedWord.trim().slice(0, 50))}`" class="more" @click="$emit('close')">
-					{{ t('search.viewSearchPage') }} <Icon name="tabler:arrow-right" />
-				</UtilLink>
+				<div v-if="result.length" class="tip" @click="searchInput?.focus()">
+					<Key code="ArrowUp" prevent @press="updateActiveIndex(activeIndex - 1, true)" />
+					<Key code="ArrowDown" prevent @press="updateActiveIndex(activeIndex + 1, true)" />
+					{{ t('search.navigate') }}&emsp;
+					<Key code="Enter" icon @press="openActiveItem" />
+					{{ t('search.select') }}&emsp;
+					<Key code="Escape" :icon="false" @press="$emit('close')" />
+					{{ t('common.close') }}
+					<UtilLink :to="`/search?q=${encodeURIComponent(debouncedWord.trim().slice(0, 50))}`" class="more" @click="$emit('close')">
+						{{ t('search.viewSearchPage') }} <Icon name="tabler:arrow-right" />
+					</UtilLink>
+				</div>
 			</div>
-		</TransitionGroup>
+		</div>
 	</div>
 </Transition>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .blog-search {
 	--float-distance: 20vh;
 
@@ -150,7 +169,7 @@ function openActiveItem() {
 	inset: 0;
 	width: 90%;
 	height: fit-content;
-	max-width: $breakpoint-mobile;
+	max-width: 768px;
 	margin: auto;
 	border: 1px solid var(--c-primary);
 	border-radius: 1em;
@@ -173,24 +192,26 @@ function openActiveItem() {
 	}
 }
 
+.search-results {
+	overflow: clip;
+	transition: height var(--motion-duration) var(--motion-easing);
+}
+
+.result-content {
+	display: flow-root;
+}
+
 .no-result {
-	// expand 时不要设置 padding
 	max-height: 5em;
 	line-height: 5em;
 	text-align: center;
 	color: var(--c-text-3);
-	transition: all 0.5s;
 }
 
 .search-result {
 	max-height: 75vh;
 	max-height: 75dvh;
-	transition: all 0.5s;
 	scroll-padding: var(--fadeout-height);
-}
-
-.search-item {
-	transition: background-color 0.1s, opacity 0.2s;
 }
 
 .tip {
@@ -199,23 +220,11 @@ function openActiveItem() {
 	font-size: 0.8em;
 	text-align: center;
 	color: var(--c-text-3);
-	transition: all 0.5s;
 
 	> .more {
 		margin-inline-start: 1em;
 		white-space: nowrap;
 		color: var(--c-primary);
 	}
-}
-
-.expand-enter-active,
-.expand-leave-active {
-	transition: all 0.5s;
-}
-
-.expand-enter-from,
-.expand-leave-to {
-	opacity: 0;
-	max-height: 0;
 }
 </style>

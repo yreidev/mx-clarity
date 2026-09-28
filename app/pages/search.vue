@@ -31,7 +31,7 @@ useSeoMeta({
 
 <template>
 <div class="search-page proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="t('common.search')" tag="h1" />
 	</div>
 
@@ -77,7 +77,7 @@ useSeoMeta({
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .search-page {
 	padding: 1rem;
 }

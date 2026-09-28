@@ -31,7 +31,7 @@ const style = computed(() => Number.isInteger(props.maxHeight) && props.maxHeigh
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .mx-gallery {
 	--gallery-max-height: 24rem;
 

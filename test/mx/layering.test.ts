@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
-const SCANNED = ['app', 'server', 'modules', 'shared']
+const SCANNED = ['app', 'server', 'shared']
 const EXT = /\.(?:[cm]?[jt]s|vue)$/
 
 function walk(dir: string): string[] {

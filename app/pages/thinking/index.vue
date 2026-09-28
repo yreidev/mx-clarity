@@ -30,7 +30,7 @@ async function loadMore() {
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/" :suffix="t('common.thinking')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/" :suffix="t('common.thinking')" tag="h1" />
 
 <div class="thinking-list proper-height">
 	<ZError v-if="error" icon="tabler:cloud-off" :title="t('thinking.couldntLoadThinking')">
@@ -50,7 +50,7 @@ async function loadMore() {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .thinking-list {
 	margin: 1rem;
 }

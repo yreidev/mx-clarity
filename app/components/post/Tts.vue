@@ -233,7 +233,7 @@ onBeforeUnmount(() => {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-tts {
 	display: flex;
 	flex-wrap: wrap;

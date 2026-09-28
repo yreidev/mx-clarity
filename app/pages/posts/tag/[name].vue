@@ -31,7 +31,7 @@ if (!articles.value.length) {
 </template>
 
 <div class="tag-page proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="`#${tagName}`" tag="h1" />
 	</div>
 
@@ -70,7 +70,7 @@ if (!articles.value.length) {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tag-page {
 	padding: 1rem;
 }

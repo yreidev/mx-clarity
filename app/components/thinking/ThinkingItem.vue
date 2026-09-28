@@ -61,7 +61,7 @@ const contextText = computed(() => [props.context?.app, props.context?.window].f
 </article>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .thinking-item {
 	display: grid;
 	gap: 0.6em;

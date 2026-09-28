@@ -30,7 +30,7 @@ const t = useT()
 </nav>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-surround {
 	display: flex;
 	flex-wrap: wrap;

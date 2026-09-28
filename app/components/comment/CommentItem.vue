@@ -299,7 +299,7 @@ async function report() {
 </article>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .comment-item {
 	display: grid;
 	grid-template-columns: auto 1fr;
@@ -308,7 +308,7 @@ async function report() {
 	transition: background-color 0.6s, box-shadow 0.6s;
 	scroll-margin-top: 5rem;
 
-	// 按 #comment-<id> 定位到的那一条
+	/* 按 #comment-<id> 定位到的那一条 */
 	&.highlighted {
 		box-shadow: 0 0 0 0.4em var(--c-primary-soft);
 		background-color: var(--c-primary-soft);
@@ -367,7 +367,7 @@ async function report() {
 		color: var(--c-primary);
 	}
 
-	// 会员：金色，和站长的主色区分开
+	/* 会员：金色，和站长的主色区分开 */
 	&.member {
 		background-color: #F5A62333;
 		color: #B7791F;

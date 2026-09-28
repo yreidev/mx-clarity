@@ -10,9 +10,6 @@ const iconNav = computed(() => {
 const layoutStore = useLayoutStore()
 const searchStore = useSearchStore()
 
-const { text } = useTextSelection()
-const debouncedSelection = refDebounced(text)
-
 // 导航链接取主题配置（admin 的 theme/mx-clarity 片段，默认 8 项）；mx 的独立页接在后面
 const navGroups = computed(() => [{ title: '', items: theme.value.nav }])
 const { data: pageLinks } = useMxPageLinks()
@@ -22,7 +19,7 @@ const t = useT()
 <template>
 <BlogMask
 	:show="layoutStore.state === 'sidebar'"
-	class="mobile-only"
+	class="hide-above-mobile"
 	@click="layoutStore.close()"
 />
 
@@ -34,7 +31,7 @@ const t = useT()
 	<nav class="sidebar-nav scrollcheck-y" :aria-label="t('site.siteNavigation')">
 		<button type="button" class="search-btn sidebar-nav-item gradient-card" @click="layoutStore.toggle('search')">
 			<Icon name="tabler:search" />
-			<span class="nav-text">{{ debouncedSelection || searchStore.word || t('common.search') }}</span>
+			<span class="nav-text">{{ searchStore.label || t('common.search') }}</span>
 			<Key class="keycut" code="K" cmd prevent @press="layoutStore.toggle('search')" />
 		</button>
 
@@ -73,17 +70,21 @@ const t = useT()
 </aside>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 #blog-sidebar {
 	display: flex;
 	flex-direction: column;
 	color: var(--c-text-2);
 
+	@media not (max-width: 768px) {
+		:root[data-article-transition] & { view-transition-name: article-navigation; }
+	}
+
 	&:hover {
 		color: currentcolor;
 	}
 
-	@media (max-width: $breakpoint-mobile) {
+	@media (max-width: 768px) {
 		position: fixed;
 		inset-inline-start: 0;
 		width: 320px;
@@ -158,7 +159,7 @@ const t = useT()
 
 .search-btn {
 	opacity: 0.5;
-	// 原生按钮的默认样式去掉，外观与原先的 div 一致
+	/* 原生按钮的默认样式去掉，外观与原先的 div 一致 */
 	width: 100%;
 	margin: 1rem 0;
 	border: none;

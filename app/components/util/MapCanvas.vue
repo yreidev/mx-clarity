@@ -179,7 +179,7 @@ onBeforeUnmount(() => {
 <div ref="el" class="map-canvas" role="region" :aria-label="t('content.interactiveMapCtrl')" />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .map-canvas {
 	overflow: hidden;
 	width: 100%;

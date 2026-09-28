@@ -252,7 +252,7 @@ async function logout() {
 </form>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .comment-form {
 	display: grid;
 	gap: 0.6em;

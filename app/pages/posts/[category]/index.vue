@@ -73,7 +73,7 @@ else {
 />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .category-page {
 	padding: 1rem;
 }

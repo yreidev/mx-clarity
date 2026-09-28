@@ -44,7 +44,7 @@ const t = useT()
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .post-related {
 	margin: 2rem 1.5rem 0;
 

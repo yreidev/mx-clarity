@@ -28,7 +28,7 @@ function jump() {
 </button>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .insight-ref {
 	display: inline-flex;
 	align-items: center;

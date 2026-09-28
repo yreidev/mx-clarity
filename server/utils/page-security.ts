@@ -7,7 +7,7 @@ import process from 'node:process'
  */
 const ORIGIN = /^https?:\/\/[\w.-]+(?::\d{1,5})?$/i
 
-/** `NUXT_CSP` 的模式；开发时默认只报不拦（@nuxt/a11y 等开发工具会 fetch 外站样式表），显式设了就照设的 */
+/** `NUXT_CSP` 的模式；开发时默认只报不拦（开发工具会 fetch 外站样式表），显式设了就照设的 */
 export function pageCspMode() {
 	return import.meta.dev && !process.env.NUXT_CSP ? 'report-only' : cspModeOf(useRuntimeConfig().csp)
 }

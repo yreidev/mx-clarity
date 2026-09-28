@@ -59,7 +59,7 @@ const Blocks = () => props.body.map(block)
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .comment-body {
 	overflow-wrap: anywhere;
 	line-height: 1.7;

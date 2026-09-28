@@ -25,7 +25,7 @@ const t = useT()
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-meta {
 	display: flex;
 	flex-wrap: wrap;

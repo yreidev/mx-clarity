@@ -27,7 +27,7 @@ if (!tags.value.length && error.value) {
 </template>
 
 <div class="tags-page proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="t('post.tags')" tag="h1" />
 	</div>
 
@@ -55,7 +55,7 @@ if (!tags.value.length && error.value) {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .tags-page {
 	padding: 1rem;
 }

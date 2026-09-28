@@ -30,7 +30,7 @@ const labelOf = (version: LanguageVersion) => version.original ? t('post.origina
 </nav>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .language-switch {
 	display: flex;
 	flex-wrap: wrap;

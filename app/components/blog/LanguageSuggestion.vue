@@ -112,7 +112,7 @@ function never() {
 </Transition>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .lang-suggestion {
 	display: grid;
 	grid-template-columns: auto 1fr;

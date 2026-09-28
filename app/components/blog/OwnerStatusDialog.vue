@@ -113,10 +113,10 @@ defineExpose({ open })
 </dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .owner-status-dialog {
 	width: min(24rem, calc(100vw - 2rem));
-	// 全局重置把外边距清成了 0，原生对话框靠 `margin: auto` 居中
+	/* 全局重置把外边距清成了 0，原生对话框靠 `margin: auto` 居中 */
 	margin: auto;
 	padding: 1.2rem;
 	border: 1px solid var(--c-border);

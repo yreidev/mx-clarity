@@ -38,7 +38,7 @@ function render() {
 </dl>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .chat {
 	margin-inline: 2vw;
 	font-size: 0.9em;
@@ -51,7 +51,7 @@ function render() {
 	}
 
 	> .chat-body {
-		overflow: hidden; // BFC
+		overflow: hidden; /* BFC */
 		width: fit-content;
 		max-width: 90%;
 		margin-bottom: 1em;

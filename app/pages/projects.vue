@@ -21,7 +21,7 @@ const LINKS = computed(() => [
 
 <template>
 <div class="projects proper-height">
-	<div class="mobile-only">
+	<div class="hide-above-mobile">
 		<BlogHeader to="/" :suffix="t('common.projects')" tag="h1" />
 	</div>
 
@@ -66,7 +66,7 @@ const LINKS = computed(() => [
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .projects {
 	padding: 1rem;
 }

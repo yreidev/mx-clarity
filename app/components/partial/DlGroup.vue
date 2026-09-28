@@ -27,7 +27,7 @@ withDefaults(defineProps<{
 </dl>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .dl-group {
 	> div {
 		padding: 0.2em 0;
@@ -39,8 +39,8 @@ withDefaults(defineProps<{
 	}
 }
 
-// 每行三项、列宽相等，上下行对齐；最后一行不满三项时往里挪半列，居中。
-// 每项占两行轨道（标签、数值），标签折成两行时同一行的数值仍在一条线上
+/* 每行三项、列宽相等，上下行对齐；最后一行不满三项时往里挪半列，居中。 */
+/* 每项占两行轨道（标签、数值），标签折成两行时同一行的数值仍在一条线上 */
 .dl-group.small {
 	display: grid;
 	grid-template-columns: repeat(6, 1fr);

@@ -25,7 +25,7 @@ else {
 </script>
 
 <template>
-<BlogHeader class="mobile-only" to="/thinking" :suffix="t('common.thinking')" tag="h1" />
+<BlogHeader class="hide-above-mobile" to="/thinking" :suffix="t('common.thinking')" tag="h1" />
 
 <div v-if="item" class="thinking-detail proper-height">
 	<ThinkingItem v-bind="item" detail />
@@ -45,7 +45,7 @@ else {
 </ZError>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .thinking-detail {
 	margin: 1rem;
 }

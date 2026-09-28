@@ -47,7 +47,7 @@ const uiLang = useUiLang()
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .activity-section + .activity-section {
 	margin-top: 0.8em;
 }

@@ -29,8 +29,8 @@ watchDebounced(online, () => refresh(), { debounce: 3000 })
 </div>
 </template>
 
-<style lang="scss" scoped>
-// 贴在在线人数的上方，不占页脚的高度（页脚在页面最底下，往下展开会被截在屏幕外）
+<style scoped>
+/* 贴在在线人数的上方，不占页脚的高度（页脚在页面最底下，往下展开会被截在屏幕外） */
 .footer-reading {
 	position: absolute;
 	inset-inline-start: 0;

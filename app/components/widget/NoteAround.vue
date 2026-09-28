@@ -44,7 +44,7 @@ const dateOf = (date: string) => toZonedLocaleString(date, timeZone.value, 'date
 </BlogWidget>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .note-around {
 	display: grid;
 	gap: 0.3em;

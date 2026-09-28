@@ -50,7 +50,7 @@ onMounted(async () => {
 </aside>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .blog-updates {
 	position: relative;
 	margin: 1rem;

@@ -76,17 +76,17 @@ defineExpose({ open })
 </dialog>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .subscribe-dialog {
 	width: min(22rem, calc(100vw - 2rem));
-	// 全局重置把外边距清成了 0，原生对话框靠 `margin: auto` 居中
+	/* 全局重置把外边距清成了 0，原生对话框靠 `margin: auto` 居中 */
 	margin: auto;
 	padding: 1.2rem;
 	border: 1px solid var(--c-border);
 	border-radius: 0.8em;
 	box-shadow: 0 1em 3em #0003;
 	background-color: var(--c-bg);
-	// 字号会跟着挂载处继承（页脚小一号），这里定死，放在哪都一样大
+	/* 字号会跟着挂载处继承（页脚小一号），这里定死，放在哪都一样大 */
 	font-size: 1rem;
 	color: var(--c-text);
 

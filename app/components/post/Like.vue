@@ -34,8 +34,8 @@ const { isLiked, shownCount, pending, message, like } = useLike(props.kind, () =
 </div>
 </template>
 
-<style lang="scss" scoped>
-// 已赞的样子要盖过 `PostActions` 里的胶囊样式，多套一层选择器
+<style scoped>
+/* 已赞的样子要盖过 `PostActions` 里的胶囊样式，多套一层选择器 */
 .post-like {
 	display: grid;
 	justify-items: center;

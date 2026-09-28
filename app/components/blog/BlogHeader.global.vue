@@ -50,7 +50,7 @@ const titleFont = computed(() => theme.value.header.titleFont
 </UtilLink>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .blog-header {
 	contain: layout;
 	display: flex;
@@ -73,8 +73,8 @@ const titleFont = computed(() => theme.value.header.titleFont
 	}
 }
 
-// 站名字体在主题配置的 header.titleFont 里设（字体名 + 字体文件地址），没设时用下面的后备字体。
-// 上游用阿里妈妈方圆体（可变字体）只含站名几个字的子集；用它的话先读字体的授权
+/* 站名字体在主题配置的 header.titleFont 里设（字体名 + 字体文件地址），没设时用下面的后备字体。 */
+/* 上游用阿里妈妈方圆体（可变字体）只含站名几个字的子集；用它的话先读字体的授权 */
 .header-title {
 	font-family: "Noto Sans SC", sans-serif;
 	font-size: 1.5em;
@@ -90,7 +90,7 @@ const titleFont = computed(() => theme.value.header.titleFont
 
 .header-subtitle {
 	opacity: 0.5;
-	font-size: 0.8em;
+	font-size: 0.75em;
 }
 
 @keyframes vf-weight {

@@ -38,7 +38,7 @@ const copyFields = computed(() => ({
 </script>
 
 <template>
-<div class="mobile-only">
+<div class="hide-above-mobile">
 	<BlogHeader to="/" :suffix="t('common.friends')" tag="h1" />
 </div>
 
@@ -87,7 +87,7 @@ const copyFields = computed(() => ({
 <PostComment v-if="intro?.article.meta?.__id" :key="intro.article.meta.__id" :ref-id="intro.article.meta.__id" />
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .link-banned {
 	margin: 1rem;
 	font-size: 0.9em;

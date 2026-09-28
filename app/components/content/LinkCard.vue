@@ -41,7 +41,7 @@ const meta = computed(() => [props.site || getDomain(props.link), ...facts.value
 </script>
 
 <template>
-<UtilLink :to="link" class="link-card card" :class="{ 'has-accent': accentStyle }" :style="accentStyle" :title="joinWith([title, description, link])">
+<UtilLink :to="link" class="link-card card" :class="{ 'has-accent': accentStyle }" :style="accentStyle" :data-transition-key="link" :title="joinWith([title, description, link])">
 	<div class="link-card-info">
 		<div class="link-card-title">
 			<Icon v-if="kindIcon" :name="kindIcon" class="link-card-kind" />
@@ -60,7 +60,7 @@ const meta = computed(() => [props.site || getDomain(props.link), ...facts.value
 </UtilLink>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .link-card {
 	display: flex;
 	align-items: center;
@@ -75,7 +75,7 @@ const meta = computed(() => [props.site || getDomain(props.link), ...facts.value
 		margin: 2rem auto;
 	}
 
-	// 溢出显示省略号
+	/* 溢出显示省略号 */
 	.link-card-info {
 		flex-grow: 1;
 		overflow: hidden;
@@ -89,7 +89,7 @@ const meta = computed(() => [props.site || getDomain(props.link), ...facts.value
 		line-clamp: 2;
 	}
 
-	// 内部需要是块元素
+	/* 内部需要是块元素 */
 	.link-card-description {
 		overflow: hidden;
 		opacity: 0.5;

@@ -386,7 +386,7 @@ onMounted(() => {
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .z-comment {
 	margin: 3rem 1rem;
 	scroll-margin-top: 4rem;

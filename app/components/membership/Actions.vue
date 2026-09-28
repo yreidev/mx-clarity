@@ -163,7 +163,7 @@ async function logout() {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .membership-actions {
 	display: grid;
 	justify-items: center;
@@ -176,7 +176,7 @@ async function logout() {
 	justify-content: center;
 	gap: 0.6em;
 
-	// 间距交给 gap；ZButton 相邻时自带的左外边距会让换行后的按钮偏右
+	/* 间距交给 gap；ZButton 相邻时自带的左外边距会让换行后的按钮偏右 */
 	> .z-button {
 		margin: 0;
 	}

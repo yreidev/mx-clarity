@@ -71,7 +71,7 @@ const copy = computed(() => paywallCopyOf(offers.value, canBuyArticle.value, pro
 </section>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .paywall {
 	display: grid;
 	justify-items: center;
@@ -83,7 +83,7 @@ const copy = computed(() => paywallCopyOf(offers.value, canBuyArticle.value, pro
 	background-color: var(--c-bg-2);
 	text-align: center;
 
-	@media (max-width: $breakpoint-mobile) {
+	@media (max-width: 768px) {
 		margin: 1rem 0.5rem;
 		padding: 1.5em 1em;
 	}

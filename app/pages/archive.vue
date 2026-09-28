@@ -23,7 +23,7 @@ useAvoidTarget(tuningRef, showTuning)
 
 const { data: listRaw } = await useMxPosts()
 const { listSorted, isAscending, sortOrder } = useArticleSort(listRaw)
-const { category, categories, listCategorized } = useCategory(listSorted)
+const { category, categories, listCategorized } = useArticleCategory(listSorted)
 
 const listGrouped = computed(() => {
 	const groupList = Object.entries(groupBy(listCategorized.value, getArticleYear))
@@ -79,44 +79,47 @@ function getArticleYear(article: ArticleProps) {
 		</ZSecret>
 	</PostOrderToggle>
 
-	<section
-		v-for="[year, yearGroup] in listGrouped"
-		:key="year"
-		class="archive-group"
-		:class="{ 'hide-info': column > 1 }"
-		:style="{
-			'--archive-item-gap': `${spacing}em`,
-			'--archive-item-column': column,
-		}"
-	>
-		<div class="archive-title">
-			<h2 class="archive-year">
-				{{ year }}
-			</h2>
+	<UtilListTransition v-slot="{ items, state }" :items="listGrouped" :state="sortOrder">
+		<section
+			v-for="[year, yearGroup] in items"
+			:key="year"
+			class="archive-group"
+			:class="{ 'hide-info': column > 1 }"
+			:style="{
+				'--archive-item-gap': `${spacing}em`,
+				'--archive-item-column': column,
+			}"
+		>
+			<div class="archive-title" :data-list-key="`year:${year}`">
+				<h2 class="archive-year">
+					{{ year }}
+				</h2>
 
-			<div v-if="birthYear" class="archive-age">
-				<span>{{ Number(year) - birthYear }}</span>
-				<span class="age-label">{{ t('archive.yO') }}</span>
+				<div v-if="birthYear" class="archive-age">
+					<span>{{ Number(year) - birthYear }}</span>
+					<span class="age-label">{{ t('archive.yO') }}</span>
+				</div>
+
+				<div class="archive-info">
+					<span>{{ t('common.words', { n: yearlyWordCount[year] ?? '' }) }}</span>
+					<span>{{ t('archive.posts', { n: yearGroup?.length ?? 0 }) }}</span>
+				</div>
 			</div>
 
-			<div class="archive-info">
-				<span>{{ t('common.words', { n: yearlyWordCount[year] ?? '' }) }}</span>
-				<span>{{ t('archive.posts', { n: yearGroup?.length ?? 0 }) }}</span>
-			</div>
-		</div>
-
-		<TransitionGroup tag="menu" class="archive-list" name="float-in">
-			<PostArchive
-				v-for="article, index in yearGroup"
-				:key="article.path"
-				v-bind="article"
-				:to="article.path"
-				:show-category="column < 3"
-				:use-updated="sortOrder === 'updated'"
-				:style="getFixedDelay(index * 0.03)"
-			/>
-		</TransitionGroup>
-	</section>
+			<menu class="archive-list">
+				<PostArchive
+					v-for="article, index in yearGroup"
+					:key="article.path"
+					:data-list-key="article.path"
+					v-bind="article"
+					:to="article.path"
+					:show-category="column < 3"
+					:use-updated="state === 'updated'"
+					:style="getFixedDelay(index * 0.03)"
+				/>
+			</menu>
+		</section>
+	</UtilListTransition>
 
 	<div v-if="showTuning" ref="tuning-panel" class="archive-tuning card">
 		<ZSlider
@@ -140,7 +143,7 @@ function getArticleYear(article: ArticleProps) {
 </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .archive-tags {
 	display: flex;
 	flex-wrap: wrap;
@@ -161,7 +164,7 @@ function getArticleYear(article: ArticleProps) {
 }
 
 .archive {
-	padding: 1rem; // 防止内部 outline 被 mask
+	padding: 1rem; /* 防止内部 outline 被 mask */
 	mask-image: linear-gradient(#FFF 50%, #FFF7);
 }
 
