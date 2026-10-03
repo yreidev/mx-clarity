@@ -25,3 +25,6 @@ logs
 
 # Custom
 .vercel
+
+# 本机才有的说明（服务器地址之类），如 .claude/skills/release/demo-site.local.md
+*.local.md

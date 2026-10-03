@@ -108,7 +108,7 @@ docker run -d --name mx-clarity --restart unless-stopped \
 | `NUXT_MX_WEBHOOK_SECRET` | core 的 webhook 签名密钥。设了它，并在 admin 里配好 webhook，内容一改主题就清掉对应的缓存，不用等缓存过期（见下文「内容改了立刻生效」）；不设就不开这个接口 |
 | `TZ` | 主题进程的时区，镜像默认 `Asia/Shanghai`。主题配置里没填 `timeZone` 时，站点时区就用它（见下文「主题配置」） |
 
-镜像标签：`latest`（最新版本）、`1.2.3` / `1.2`（指定版本）、`edge`（`main` 分支的最新提交），只有 `linux/amd64`。同样的镜像也在 `ghcr.io/yreidev/mx-clarity`。自己构建：`docker build -t mx-clarity .`。
+镜像标签：`latest`（最新版本）、`1.2.3` / `1.2`（指定版本）、`edge`（`main` 分支的最新提交），只有 `linux/amd64`。同样的镜像也在 `ghcr.io/yreidev/mx-clarity`。自己构建：`docker build -t mx-clarity .`。每一版改了什么、升级要不要额外操作，见 [CHANGELOG](CHANGELOG.md)（与 GitHub Release 的说明相同）。
 主题的缓存在进程内存里，**只跑一个实例**。
 
 ### 反向代理

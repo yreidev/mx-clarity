@@ -1,4 +1,4 @@
-# lint → 类型检查 → 两个离线探针 → 单测 → 构建 → 页面级测试。
+# lint → 类型检查 → 两个离线探针 → 单测 → 构建 → 页面级测试；打标签发版时先核对发版说明。
 # scripts/probe/live.mjs 要连真实的 mx-space core，不进 CI，升级 core 前在本地跑。
 # 镜像工作流（docker.yml）先调用这里，检查通过了才构建推送。
 # action 固定到提交 SHA（行尾是版本号）：标签可以被改指，SHA 不能
@@ -33,6 +33,10 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+
+      # 打标签发版时，标签、package.json 的版本与 CHANGELOG.md 的这一节要对得上，对不上就不往下构建
+      - if: startsWith(github.ref, 'refs/tags/v')
+        run: node scripts/release-notes.mjs "$GITHUB_REF_NAME" > /dev/null
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint

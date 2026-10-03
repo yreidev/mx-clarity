@@ -1,5 +1,5 @@
 # 构建并推送镜像：推到 main 打 edge；打 v* 标签打版本号，正式版（标签里没有 -）另打 1.2 与 latest。
-# 先跑 ci.yml 的全部检查，通过了才构建。
+# 先跑 ci.yml 的全部检查，通过了才构建；打标签的，镜像推完再发 GitHub Release（正文取 CHANGELOG.md 的这一节）。
 # 总是推 ghcr.io/<仓库所有者>/mx-clarity；仓库配了 DOCKERHUB_USERNAME、DOCKERHUB_TOKEN 两个 secret 时同时推 Docker Hub。
 # action 固定到提交 SHA（行尾是版本号）：这个任务带着推送权限与 Docker Hub 的密钥
 name: 镜像
@@ -87,3 +87,36 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # 正文由 scripts/release-notes.mjs 从 CHANGELOG.md 摘出，拉镜像的命令按实际推了的仓库写。
+  # 标签里有 - 的是预发布；重跑时 Release 已经在了，只更新正文
+  release:
+    needs: image
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+          OWNER: ${{ github.repository_owner }}
+          HAS_DOCKERHUB: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          images="ghcr.io/${OWNER,,}/mx-clarity"
+          if [ "$HAS_DOCKERHUB" = true ]; then images="${DOCKERHUB_USERNAME,,}/mx-clarity $images"; fi
+          RELEASE_IMAGES="$images" node scripts/release-notes.mjs "$TAG" > "$RUNNER_TEMP/notes.md"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          elif [[ "$TAG" == *-* ]]; then
+            gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md" --prerelease --latest=false
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          fi
