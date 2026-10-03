@@ -22,7 +22,7 @@ const uiLang = useUiLang()
 
 		<div class="article-info">
 			<UtilDate
-				v-if="date && (showAllDate || !useUpdated)"
+				v-if="date && (showAllDate || !useUpdated || !updated)"
 				:date
 				icon="tabler:pencil-minus"
 			/>

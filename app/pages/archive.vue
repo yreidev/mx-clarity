@@ -40,7 +40,7 @@ const yearlyWordCount = computed(() =>
 
 function getArticleYear(article: ArticleProps) {
 	try {
-		return toZonedTemporal(article[sortOrder.value] as string, timeZone.value).year.toString()
+		return toZonedTemporal((article[sortOrder.value] ?? article.date) as string, timeZone.value).year.toString()
 	}
 	catch {
 		return ''
@@ -95,7 +95,7 @@ function getArticleYear(article: ArticleProps) {
 					{{ year }}
 				</h2>
 
-				<div v-if="birthYear" class="archive-age">
+				<div v-if="birthYear && year" class="archive-age">
 					<span>{{ Number(year) - birthYear }}</span>
 					<span class="age-label">{{ t('archive.yO') }}</span>
 				</div>

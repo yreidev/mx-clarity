@@ -30,9 +30,10 @@ export function useArticleSort<T extends Pick<ArticleProps, ArticleOrderType | '
 		? useHydratedQuery(bindDirectionQuery, useRouteQuery(bindDirectionQuery, initialAscend.toString(), { transform: booleanQueryTransformer }))
 		: ref<boolean>(initialAscend)
 
+	// mx 里没改过的文章 `updated` 是空的，按创建时间算
 	const listSorted = computed(() => orderBy(
 		toValue(list),
-		[sortOrder.value, 'date'],
+		[(item: T) => item[sortOrder.value] ?? item.date, 'date'],
 		[isAscending.value ? 'asc' : 'desc'],
 	))
 

@@ -9,7 +9,8 @@ const props = defineProps<{
 	icon?: string
 } & ArticleProps>()
 
-const mainDate = computed(() => props.useUpdated ? props.updated : props.date)
+// 没改过的文章 `updated` 是空的，按更新排序时也显示创建日期
+const mainDate = computed(() => props.useUpdated ? props.updated ?? props.date : props.date)
 const timeZone = useSiteTimeZone()
 const t = useT()
 </script>
