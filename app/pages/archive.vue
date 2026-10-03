@@ -56,21 +56,18 @@ function getArticleYear(article: ArticleProps) {
 </template>
 
 <div class="archive proper-height">
-	<p class="archive-tags">
-		<UtilLink to="/posts/tag">
-			<Icon name="tabler:tags" /> {{ t('common.allTags') }}
-		</UtilLink>
-		<UtilLink to="/timeline">
-			<Icon name="tabler:timeline" /> {{ t('common.timeline') }}
-		</UtilLink>
-	</p>
-
 	<PostOrderToggle
 		v-model:is-ascending="isAscending"
 		v-model:sort-order="sortOrder"
 		v-model:category="category"
 		:categories
 	>
+		<!-- 标签索引只有这一个入口；时间线在导航里有，不重复放 -->
+		<UtilLink class="archive-tags" to="/posts/tag">
+			<Icon name="tabler:tags" />
+			<span>{{ t('common.allTags') }}</span>
+		</UtilLink>
+
 		<ZSecret>
 			<ZToggle
 				v-model="showTuning"
@@ -145,22 +142,10 @@ function getArticleYear(article: ArticleProps) {
 
 <style scoped>
 .archive-tags {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.5em 1.2em;
-	margin: 1rem 1rem 0;
-	font-size: 0.9em;
-
-	> a {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.3em;
-		color: var(--c-text-2);
-
-		&:hover {
-			color: var(--c-primary);
-		}
-	}
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2em;
+	white-space: nowrap;
 }
 
 .archive {

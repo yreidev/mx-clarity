@@ -92,8 +92,16 @@ function toggleDirection() {
 	}
 }
 
+/* 占住左侧剩下的空间；左边还放了别的入口时，窄屏下由它让出位置 */
 :deep(.secret-container) {
-	margin-inline-end: auto;
+	flex: 1 1 0;
+	overflow-x: clip;
+	min-width: 0;
+}
+
+/* 让位时只裁掉，不折行撑高整行 */
+:deep(.secret-container > .secret) {
+	width: max-content;
 }
 
 .iconify + span {
