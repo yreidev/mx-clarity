@@ -86,12 +86,14 @@ patchedDependencies:
   '@nuxtjs/mdc': patches/@nuxtjs__mdc.patch
   # IPX 的 Sharp 无法处理 ICO ，但改变运行时 NuxtImg provider 有类型问题 https://github.com/nuxt/image/issues/2174
   ipx: patches/ipx.patch
+  # 重定向路径包含非 ASCII 字符（如中文 slug）时需进行百分比编码
+  nitropack: patches/nitropack.patch
   # adoptedStyleSheet ::highlight 高亮选择器
   plain-shiki: patches/plain-shiki.patch
 
 shamefullyHoist: true
 catalog:
-  '@haklex/rich-headless': 0.42.1
-  '@lexical/headless': 0.49.0
-  '@mx-space/api-client': 5.12.0
-  lexical: 0.49.0
+  '@haklex/rich-headless': 0.67.3
+  '@lexical/headless': 0.53.0
+  '@mx-space/api-client': 6.0.0
+  lexical: 0.53.0

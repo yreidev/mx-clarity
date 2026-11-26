@@ -627,7 +627,8 @@ async function myCommentStatusOf(client: MxClient, id: string): Promise<MyCommen
 			return 'whisper'
 		if (raw.isWhispers)
 			return 'whisper'
-		if (raw.state === 1)
+		// Core 15.2+（#2858）对匿名公开评论裁剪了 state 字段（仅已公开的非悄悄话会返回 200）
+		if (raw.state === 1 || raw.state === undefined)
 			return 'visible'
 		if (raw.state !== 0 || !raw.refId)
 			return 'unknown'

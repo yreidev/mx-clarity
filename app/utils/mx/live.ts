@@ -2,12 +2,12 @@
  * 实时活动的协议处理：浏览器直连 core 的 `/ws/web`（app/composables/useMxLive.ts），帧在这里认、拆、重新组装成主题自己的消息。
  * 纯模块。先按帧头认事件名，只认下面列出的几个，只取页面要用的字段。
  *
- * 注意 core 本身会把 `comment.create`（带评论者明文邮箱，回复还带 IP 与 UA）、各读者阅读位置的会话 id 推给所有访客，
- * 浏览器直连时读者拿得到这些原始帧。
+ * 注意：core 15.2+（#2858）对匿名访客裁剪了 `comment.create` 里的明文邮箱、IP 与 UA；更早期版本以及各读者阅读位置的会话 id 仍会随 `/ws/web` 广播给在线访客。
  */
 import type { LiveServerMessage } from '../../types/live'
 import type { CommentMapOptions } from './comments'
 import type { LiveDeskOptions } from './companion'
+import { langCodeOf } from '~~/shared/utils/lang'
 import { renderCommentBody } from './comment-body'
 import { commentFromModel } from './comments'
 import { liveDeskFrom } from './companion'
@@ -51,7 +51,7 @@ const RELAYED_EVENTS = new Set([
 	'translation.update',
 	'companion_presence.changed',
 ])
-const LANG = /^[a-z]{2,3}(?:-[\da-z]{2,8})?$/i
+const LANG = /^[a-z]{2,3}(?:-[\da-z]{2,8})*$/i
 /** core 的评论状态：垃圾评论（`CommentState.Junk`） */
 const JUNK = 2
 
@@ -116,8 +116,9 @@ export function presenceListOf(raw: unknown, state: RelayState): LiveServerMessa
 function translationOf(raw: string, state: RelayState): LiveServerMessage | undefined {
 	const head = raw.slice(0, 2048)
 	const refId = /"refId":"(\d{1,20})"/.exec(head)?.[1]
-	const lang = /"lang":"([^"]{1,16})"/.exec(head)?.[1]
-	return refId && refId === state.room && lang && LANG.test(lang) ? { type: 'translation', refId, lang: lang.toLowerCase() } : undefined
+	const rawLang = /"lang":"([^"]{1,35})"/.exec(head)?.[1]
+	const lang = rawLang && LANG.test(rawLang) ? langCodeOf(rawLang) : undefined
+	return refId && refId === state.room && lang ? { type: 'translation', refId, lang } : undefined
 }
 
 /** 当前房间的新评论：悄悄话、垃圾评论、已删除的不转；邮箱、IP、UA、归属地、读者 id 不下发 */

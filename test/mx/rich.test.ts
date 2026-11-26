@@ -4,12 +4,12 @@
 import type { MDCElement, MDCRoot } from '@nuxtjs/mdc'
 import { describe, expect, it } from 'vitest'
 import { renderMarkdownBody, sanitizeBody } from '../../app/utils/mx/body'
-import { candleChart, ema, mapChart, sparklinePath, trackDistance } from '../../app/utils/mx/charts'
+import { buildBarChart, buildLineChart, buildPieChart, buildScatterChart, candleChart, ema, formatChartValue, mapChart, sparklinePath, trackDistance } from '../../app/utils/mx/charts'
 import { applyLinkPreviews, linkPreviewOf, previewLookupOf } from '../../app/utils/mx/enrichment'
 import { feedHtmlOf } from '../../app/utils/mx/feed-html'
 import { renderLexicalBody } from '../../app/utils/mx/lexical'
 import { loadPollStates, pollStateFrom, submitVote } from '../../app/utils/mx/polls'
-import { applyImageMeta, embedTargetOf, excalidrawSummaryOf, fileCardPropsOf, fileSizeText, galleryPropsOf, imageMetaOf, imageMetaTableOf, mapPropsOf, mapTrackOf, pollPropsOf, staticPolls, stockPropsOf, trustedTrackUrl } from '../../app/utils/mx/rich-blocks'
+import { applyImageMeta, embedTargetOf, excalidrawSummaryOf, fileCardPropsOf, fileSizeText, galleryPropsOf, imageMetaOf, imageMetaTableOf, mapPropsOf, mapTrackOf, parseChartSpec, pollPropsOf, staticPolls, stockPropsOf, trustedTrackUrl } from '../../app/utils/mx/rich-blocks'
 import { stockBarsFrom, stockQuoteFrom } from '../../app/utils/mx/stocks'
 import { peekTargetOf } from '../../shared/utils/peek'
 import { clientWith, jsonResponse } from './helpers'
@@ -47,12 +47,72 @@ describe('图集、嵌入、文件、画板', () => {
 		expect(first(body).tag).toBe('p')
 	})
 
-	it('画板：数元素、列出文字；远端与坏掉的快照当作没有', () => {
-		const snapshot = JSON.stringify({ elements: [{ type: 'text', text: '标题\n第二行' }, { type: 'rectangle' }, { type: 'text', text: '删掉的', isDeleted: true }] })
-		expect(excalidrawSummaryOf(snapshot)).toEqual({ count: 2, texts: ['标题 第二行'] })
+	it('画板：数元素、列出文字与 richtext 富文本；远端与坏掉的快照当作没有', () => {
+		const snapshot = JSON.stringify({
+			elements: [
+				{ type: 'text', text: '标题\n第二行' },
+				{ type: 'richtext', content: { root: { type: 'root', children: [{ type: 'paragraph', children: [{ type: 'text', text: '富文本说明' }] }] } } },
+				{ type: 'rectangle' },
+				{ type: 'text', text: '删掉的', isDeleted: true },
+			],
+		})
+		expect(excalidrawSummaryOf(snapshot)).toEqual({ count: 3, texts: ['标题 第二行', '富文本说明'] })
 		expect(excalidrawSummaryOf('https://a.example/scene.json')).toBeUndefined()
 		expect(excalidrawSummaryOf('{broken')).toBeUndefined()
 		expect(excalidrawSummaryOf(`{"elements":[${'1,'.repeat(600_000)}1]}`)).toBeUndefined()
+	})
+
+	it('图表：规格校验、数值格式化与 5 种图表的 SVG 几何计算', () => {
+		expect(parseChartSpec('not json')).toBeUndefined()
+		expect(parseChartSpec(JSON.stringify({ type: 'bar', x: '__proto__', series: [{ key: 'v' }], data: [{ v: 1 }] }))).toBeUndefined()
+		expect(parseChartSpec(JSON.stringify({ type: 'pie', x: 'name', series: [{ key: 'v' }], data: Array.from({ length: 7 }, (_, i) => ({ name: `s${i}`, v: 1 })) }))).toBeUndefined()
+		expect(parseChartSpec(JSON.stringify({ type: 'scatter', x: 'x', series: [{ key: 'y' }], data: [{ x: 'bad', y: 1 }] }))).toBeUndefined()
+
+		expect(formatChartValue(1500, { unit: '¥' })).toBe('¥1.5k')
+		expect(formatChartValue(12500, { unit: '¥' })).toBe('¥13k')
+		expect(formatChartValue(42.5, { unit: '%', signed: true })).toBe('+42.5%')
+		expect(formatChartValue(null)).toBe('—')
+
+		const barSpec = parseChartSpec(JSON.stringify({
+			version: 1,
+			type: 'bar',
+			x: 'm',
+			stacked: true,
+			series: [{ key: 'a', label: 'A' }, { key: 'b', label: 'B' }],
+			data: [{ m: 'Jan', a: 10, b: 20 }, { m: 'Feb', a: 30, b: -5 }],
+		}))!
+		expect(buildBarChart(barSpec).bars.length).toBeGreaterThanOrEqual(4)
+
+		const lineSpec = parseChartSpec(JSON.stringify({
+			version: 1,
+			type: 'area',
+			x: 't',
+			stacked: true,
+			series: [{ key: 's1' }, { key: 's2' }],
+			data: [{ t: '1', s1: 10, s2: 5 }, { t: '2', s1: null, s2: 15 }, { t: '3', s1: 20, s2: 10 }],
+		}))!
+		expect(buildLineChart(lineSpec).series).toHaveLength(2)
+
+		const pieSpec = parseChartSpec(JSON.stringify({
+			version: 1,
+			type: 'pie',
+			x: 'k',
+			donut: true,
+			series: [{ key: 'v' }],
+			data: [{ k: '全部', v: 100 }],
+		}))!
+		const pie = buildPieChart(pieSpec)
+		expect(pie.inner).toBeGreaterThan(0)
+		expect(pie.slices[0]!.path).toContain('A')
+
+		const scatterSpec = parseChartSpec(JSON.stringify({
+			version: 1,
+			type: 'scatter',
+			x: 'x',
+			series: [{ key: 'y' }],
+			data: [{ x: 1, y: 2 }, { x: 4, y: 8 }],
+		}))!
+		expect(buildScatterChart(scatterSpec).points).toHaveLength(2)
 	})
 })
 

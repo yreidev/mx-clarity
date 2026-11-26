@@ -7,15 +7,16 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { languagesOf, tagGlossaryOf, tagNamesOf } from '../../app/utils/mx/adapter'
 import { tagNamesIn } from '../../shared/utils/article'
-import { htmlLangOf, localeOf, msg, translate, uiLangOf, visitorNameText } from '../../shared/utils/i18n'
+import { htmlLangOf, localeOf, msg, pageLocaleOf, translate, uiLangOf, visitorNameText } from '../../shared/utils/i18n'
 import { isContentDetailPath, localeRedirectOf, negotiateLang } from '../../shared/utils/lang'
 import { formatNumber } from '../../shared/utils/str'
 import { timeElapse } from '../../shared/utils/time'
 
 describe('界面语言', () => {
 	it('无前缀是中文，日文、韩文有自己的界面，其余前缀一律英文', () => {
-		expect([undefined, 'en', 'ja', 'ko', 'fr', 'de'].map(uiLangOf)).toEqual(['zh', 'en', 'ja', 'ko', 'en', 'en'])
+		expect([undefined, 'zh', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de'].map(uiLangOf)).toEqual(['zh', 'zh', 'zh', 'en', 'ja', 'ko', 'en', 'en'])
 		expect(['zh', 'en', 'ja', 'ko'].map(lang => [localeOf(lang as never), htmlLangOf(lang as never)])).toEqual([['zh-CN', 'zh-CN'], ['en-US', 'en'], ['ja-JP', 'ja'], ['ko-KR', 'ko']])
+		expect([undefined, 'zh', 'zh-TW', 'en', 'ja', 'ko', 'fr'].map(pageLocaleOf)).toEqual(['zh-CN', 'zh-CN', 'zh-TW', 'en-US', 'ja-JP', 'ko-KR', 'en-US'])
 	})
 
 	it('按 id 取当前语言；服务端发来的中文按中文反查成 id 再取；查不到的原样返回', () => {

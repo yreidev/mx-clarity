@@ -10,5 +10,5 @@
   "ownerHasntEnabled": "The owner hasn't enabled email subscriptions yet.",
   "subscribe": "Subscribe",
   "whatSubscribe": "What to subscribe to",
-  "youreSubscribedTheres": "You're subscribed. There's an unsubscribe link at the bottom of every email."
+  "youreSubscribedTheres": "Confirmation email sent (valid for 15 minutes). Click the link inside to finish subscribing; every email includes an unsubscribe link at the bottom."
 }

@@ -270,14 +270,15 @@ describe('我的评论', () => {
 		expect(myCommentPathOf({ refType: 'posts', source: null })).toBeUndefined()
 	})
 
-	it('状态：404 是悄悄话，state 1 已公开，state 0 在公开列表里找得到才算公开', async () => {
+	it('状态：404 是悄悄话，state 1 或裁剪后 state 缺失均已公开，state 0 在公开列表里找得到才算公开', async () => {
 		const rows = [
 			{ id: '901', ref_id: REF, ref_type: 'posts', source: { category_slug: 'tech', slug: 'a' }, source_title: '文章\u0000标题', text: '一', created_at: '2026-09-25T00:00:00.000Z' },
 			{ id: '902', ref_id: REF, ref_type: 'posts', source: { category_slug: 'tech', slug: 'a' }, source_title: '文章', text: '二', created_at: '2026-09-25T00:00:00.000Z' },
 			{ id: '903', ref_id: REF, ref_type: 'posts', source: null, source_title: null, text: '三', created_at: '2026-09-25T00:00:00.000Z' },
 			{ id: '904', ref_id: REF, ref_type: 'posts', source: { category_slug: 'tech', slug: 'a' }, source_title: '文章', text: '四', created_at: '2026-09-25T00:00:00.000Z' },
+			{ id: '905', ref_id: REF, ref_type: 'posts', source: { category_slug: 'tech', slug: 'a' }, source_title: '文章', text: '五', created_at: '2026-09-25T00:00:00.000Z' },
 		]
-		const session = clientWith(() => jsonResponse({ data: { data: rows, meta: { pagination: { page: 1, total: 4, total_pages: 1 } } } }))
+		const session = clientWith(() => jsonResponse({ data: { data: rows, meta: { pagination: { page: 1, total: 5, total_pages: 1 } } } }))
 		const anonymous = clientWith((req) => {
 			const path = pathOf(req)
 			if (path === '/api/v3/comments/901')
@@ -288,12 +289,14 @@ describe('我的评论', () => {
 				return jsonResponse({ data: wire({ id: '903', ref_id: REF, state: 0, root_comment_id: null }) })
 			if (path === '/api/v3/comments/904')
 				return jsonResponse({ data: wire({ id: '904', ref_id: REF, state: 0, root_comment_id: null }) })
+			if (path === '/api/v3/comments/905')
+				return jsonResponse({ data: { id: '905', ref_id: REF, is_whispers: false } })
 			// 公开列表里只有 903
 			return jsonResponse({ data: { data: [{ id: '903' }], meta: { pagination: { page: 1, total_pages: 1 } } } })
 		})
 		const page = await loadMyComments(session.client, anonymous.client, 1)
 		expect(pathOf(session.requests[0]!)).toBe('/api/v3/comments/reader/me')
-		expect(page.items.map(item => [item.id, item.status])).toEqual([['901', 'whisper'], ['902', 'visible'], ['903', 'visible'], ['904', 'pending']])
+		expect(page.items.map(item => [item.id, item.status])).toEqual([['901', 'whisper'], ['902', 'visible'], ['903', 'visible'], ['904', 'pending'], ['905', 'visible']])
 		expect(page.items[0]).toMatchObject({ path: '/posts/tech/a#comment-901', title: '文章标题' })
 		expect(page.items[2]!.path).toBeUndefined()
 		// 查状态不带读者的 cookie

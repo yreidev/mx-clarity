@@ -206,6 +206,22 @@ const EXCALIDRAW_MAX = 1024 * 1024
  * Excalidraw 画板的摘要：只解析内联 JSON（`{elements}` 或 `{data: {elements}}`），数元素、取文字元素里的文字（最多 20 条）。
  * 远端的、`ref:` 的场景不取；快照超过 1 MB、解析失败都当作没有
  */
+const INLINE_CONTAINER_TYPES = new Set(['paragraph', 'heading', 'quote', 'listitem', 'link', 'spoiler', 'ruby', 'autolink'])
+
+function richNodeTextOf(node: unknown, depth = 0): string {
+	if (depth > 20 || typeof node !== 'object' || node === null)
+		return ''
+	const item = node as { type?: unknown, text?: unknown, children?: unknown }
+	if (item.type === 'linebreak')
+		return '\n'
+	if (typeof item.text === 'string')
+		return item.text
+	if (!Array.isArray(item.children))
+		return ''
+	const parts = item.children.map(child => richNodeTextOf(child, depth + 1)).filter(Boolean)
+	return parts.join(typeof item.type === 'string' && INLINE_CONTAINER_TYPES.has(item.type) ? '' : '\n')
+}
+
 export function excalidrawSummaryOf(snapshot: unknown): { count: number, texts: string[] } | undefined {
 	if (typeof snapshot !== 'string' || !snapshot.trim().startsWith('{') || snapshot.length > EXCALIDRAW_MAX)
 		return undefined
@@ -222,8 +238,14 @@ export function excalidrawSummaryOf(snapshot: unknown): { count: number, texts: 
 		return undefined
 	const visible = elements.filter(item => typeof item === 'object' && item !== null && (item as { isDeleted?: unknown }).isDeleted !== true)
 	const texts = visible
-		.filter(item => (item as { type?: unknown }).type === 'text')
-		.map(item => plainOf((item as { text?: unknown }).text, 100))
+		.map((item) => {
+			const el = item as { type?: unknown, text?: unknown, content?: { root?: unknown } }
+			if (el.type === 'text')
+				return plainOf(el.text, 100)
+			if (el.type === 'richtext')
+				return plainOf(richNodeTextOf(el.content?.root), 100)
+			return ''
+		})
 		.filter(Boolean)
 		.slice(0, 20)
 	return { count: visible.length, texts }
@@ -626,4 +648,204 @@ export function sliceLines(text: string, start?: number, end?: number) {
 	const from = Math.min(Math.max(1, start ?? 1), Math.max(1, lines.length))
 	const to = Math.min(lines.length, end ?? lines.length, from + GITHUB_MAX_LINES - 1)
 	return { code: lines.slice(from - 1, to).join('\n'), from, to, total: lines.length }
+}
+
+// ———————————————————————————— 图表（@haklex/rich-ext-chart） ————————————————————————————
+
+export const CHART_TYPES = ['bar', 'line', 'area', 'pie', 'scatter'] as const
+export type ChartType = typeof CHART_TYPES[number]
+
+export interface ChartSeries {
+	key: string
+	label?: string
+	color?: number
+}
+
+export interface ChartFormat {
+	compact?: boolean
+	decimals?: number
+	signed?: boolean
+	unit?: string
+}
+
+export interface ChartReferenceLine {
+	label: string
+	y: number
+}
+
+export type ChartValue = string | number | null
+export type ChartRow = Record<string, ChartValue>
+
+export interface ChartSpec {
+	version: 1
+	type: ChartType
+	x: string
+	series: ChartSeries[]
+	data: ChartRow[]
+	title?: string
+	subtitle?: string
+	note?: string
+	source?: string
+	xLabel?: string
+	stacked?: boolean
+	donut?: boolean
+	highlight?: string
+	format?: ChartFormat
+	refs?: ChartReferenceLine[]
+	y?: { min?: number, max?: number }
+}
+
+const CHART_SPEC_MAX = 64 * 1024
+const CHART_ROW_MAX = 200
+const FORBIDDEN_FIELD_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
+
+function chartFieldKey(value: unknown) {
+	if (typeof value !== 'string')
+		return undefined
+	const trimmed = value.trim()
+	return trimmed.length > 0 && trimmed.length <= 80 && !FORBIDDEN_FIELD_KEYS.has(trimmed) ? trimmed : undefined
+}
+
+function finiteNumber(value: unknown) {
+	return typeof value === 'number' && Number.isFinite(value) ? value : undefined
+}
+
+/** 校验并清洗 @haklex/rich-ext-chart 规格；失败返回 undefined，不把脏 JSON 传给页面 */
+export function parseChartSpec(raw: unknown): ChartSpec | undefined {
+	let input = raw
+	if (typeof raw === 'string') {
+		if (!raw.trim() || raw.length > CHART_SPEC_MAX)
+			return undefined
+		try {
+			input = JSON.parse(raw)
+		}
+		catch {
+			return undefined
+		}
+	}
+	if (typeof input !== 'object' || input === null || Array.isArray(input))
+		return undefined
+	const obj = input as Record<string, unknown>
+	const type = CHART_TYPES.find(t => t === obj.type)
+	const x = chartFieldKey(obj.x)
+	if (!type || !x || !Array.isArray(obj.series) || !obj.series.length || obj.series.length > 6 || !Array.isArray(obj.data))
+		return undefined
+	if (obj.data.length > CHART_ROW_MAX || (type === 'pie' && obj.data.length > 6))
+		return undefined
+
+	const series: ChartSeries[] = []
+	for (const item of obj.series) {
+		if (typeof item !== 'object' || item === null || Array.isArray(item))
+			return undefined
+		const entry = item as Record<string, unknown>
+		const key = chartFieldKey(entry.key)
+		if (!key)
+			return undefined
+		const next: ChartSeries = { key }
+		const label = plainOf(entry.label, 80)
+		if (label)
+			next.label = label
+		if (typeof entry.color === 'number' && Number.isInteger(entry.color))
+			next.color = entry.color
+		series.push(next)
+	}
+	const keys = series.map(s => s.key)
+
+	const data: ChartRow[] = []
+	let hasX = false
+	const presentKeys = new Set<string>()
+	for (const rawRow of obj.data) {
+		if (typeof rawRow !== 'object' || rawRow === null || Array.isArray(rawRow))
+			return undefined
+		const row = rawRow as Record<string, unknown>
+		const clean: ChartRow = {}
+		if (Object.hasOwn(row, x))
+			hasX = true
+		const xVal = row[x]
+		if (type === 'scatter') {
+			if (xVal !== null && xVal !== undefined && finiteNumber(xVal) === undefined)
+				return undefined
+			clean[x] = finiteNumber(xVal) ?? null
+		}
+		else {
+			clean[x] = typeof xVal === 'number' && Number.isFinite(xVal) ? xVal : xVal == null ? null : plainOf(xVal, 80)
+		}
+		for (const key of keys) {
+			if (Object.hasOwn(row, key))
+				presentKeys.add(key)
+			const val = row[key]
+			if (val === null || val === undefined) {
+				clean[key] = null
+				continue
+			}
+			const num = finiteNumber(val)
+			if (num === undefined || (type === 'pie' && num < 0))
+				return undefined
+			clean[key] = num
+		}
+		data.push(clean)
+	}
+	if (data.length > 0 && (!hasX || keys.some(key => !presentKeys.has(key))))
+		return undefined
+
+	const spec: ChartSpec = { version: 1, type, x, series, data }
+	if (obj.highlight !== undefined) {
+		if (typeof obj.highlight !== 'string')
+			return undefined
+		const highlight = plainOf(obj.highlight, 80)
+		if (type !== 'pie' && !keys.includes(highlight))
+			return undefined
+		if (highlight)
+			spec.highlight = highlight
+	}
+	for (const field of ['title', 'subtitle', 'note', 'source', 'xLabel'] as const) {
+		const text = plainOf(obj[field], 200)
+		if (text)
+			spec[field] = text
+	}
+	if (typeof obj.stacked === 'boolean')
+		spec.stacked = obj.stacked
+	if (typeof obj.donut === 'boolean')
+		spec.donut = obj.donut
+	if (typeof obj.format === 'object' && obj.format !== null && !Array.isArray(obj.format)) {
+		const f = obj.format as Record<string, unknown>
+		const format: ChartFormat = {}
+		if (typeof f.compact === 'boolean')
+			format.compact = f.compact
+		if (typeof f.decimals === 'number' && Number.isInteger(f.decimals) && f.decimals >= 0 && f.decimals <= 6)
+			format.decimals = f.decimals
+		if (typeof f.signed === 'boolean')
+			format.signed = f.signed
+		const unit = plainOf(f.unit, 20)
+		if (unit)
+			format.unit = unit
+		if (Object.keys(format).length)
+			spec.format = format
+	}
+	if (Array.isArray(obj.refs)) {
+		const refs = obj.refs.flatMap((rawRef): ChartReferenceLine[] => {
+			if (typeof rawRef !== 'object' || rawRef === null || Array.isArray(rawRef))
+				return []
+			const r = rawRef as Record<string, unknown>
+			const label = plainOf(r.label, 80)
+			const yVal = finiteNumber(r.y)
+			return yVal === undefined ? [] : [{ label, y: yVal }]
+		}).slice(0, 8)
+		if (refs.length)
+			spec.refs = refs
+	}
+	if (typeof obj.y === 'object' && obj.y !== null && !Array.isArray(obj.y)) {
+		const yb = obj.y as Record<string, unknown>
+		const min = finiteNumber(yb.min)
+		const max = finiteNumber(yb.max)
+		if (min !== undefined || max !== undefined)
+			spec.y = { ...min !== undefined ? { min } : {}, ...max !== undefined ? { max } : {} }
+	}
+	return spec
+}
+
+/** 转为 MDC AST 属性（序列化 JSON 字符串，避免被 sanitizeBody 当作绑定对象剥掉） */
+export function chartPropsOf(raw: unknown): Props | undefined {
+	const spec = parseChartSpec(raw)
+	return spec ? { spec: JSON.stringify(spec) } : undefined
 }

@@ -19,7 +19,7 @@ export default defineNuxtConfig({
 			link: [
 				// 主题自己生成的 Atom
 				{ rel: 'alternate', type: 'application/atom+xml', href: '/atom.xml' },
-				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/katex@0.16.44/dist/katex.min.css' },
+				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/katex@0.16.47/dist/katex.min.css' },
 				// "InterVariable", "Inter"
 				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/inter-ui@4.1.1/inter-variable.css' },
 				{ rel: 'stylesheet', href: 'https://s4.zstatic.net/npm/inter-ui@4.1.1/inter.css' },
@@ -83,7 +83,7 @@ export default defineNuxtConfig({
 		},
 		// 服务端代码按实际运行的 Node 版本转译（package.json 的 engines），Nitro 默认的 es2019 不认 BigInt 字面量
 		esbuild: {
-			options: { target: 'node22' },
+			options: { target: 'node26' },
 		},
 		prerender: {
 			// nuxt-llms 固定把 /llms.txt 加进预渲染：构建时的快照会盖住运行时从 mx 生成的内容，构建时连不上 core 还是空的

@@ -313,7 +313,7 @@ describe.skipIf(!chrome)('浏览器', () => {
 		expect([await dialog.getByLabel('新文章').isChecked(), await dialog.getByLabel('新日记').isChecked()]).toEqual([true, false])
 		await dialog.getByRole('textbox').fill('A@example.test')
 		await dialog.getByRole('button', { name: '订阅' }).click()
-		await dialog.getByText(/订阅好了/).waitFor()
+		await dialog.getByText(/确认邮件已发出/).waitFor()
 		const [sent] = coreCalls(/^\/subscribe(?:\?|$)/).filter(request => request.method === 'POST')
 		expect(JSON.parse(sent!.body)).toEqual({ email: 'a@example.test', types: ['post_c'] })
 		expect(String(sent!.headers['user-agent'])).toMatch(/Chrome/)

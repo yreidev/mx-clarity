@@ -148,4 +148,21 @@ describe('订阅源里的全文（feed-html）', () => {
 		expect(premium).toContain('本文为付费文章')
 		expect(wellFormed(withHtml) && wellFormed(premium)).toBe(true)
 	})
+
+	it('demo 演示块保留预览正文；chart 图表块降级为带数据表的引用并转义内容', async () => {
+		const chart = JSON.stringify({
+			version: 1,
+			type: 'line',
+			x: 'day',
+			title: '访问趋势 <1>',
+			series: [{ key: 'uv', label: '访客' }],
+			data: [{ day: 'Mon', uv: 1200 }],
+			source: '统计面板',
+		})
+		const html = await htmlOf(`\`\`\`demo\n**预览**\n\`\`\`\n\n\`\`\`chart\n${chart}\n\`\`\``)
+		expect(html).toContain('<strong>预览</strong>')
+		expect(html).toContain('〔图表〕访问趋势 &lt;1&gt;')
+		expect(html).toContain('<table><thead><tr><th>day</th><th>访客</th></tr></thead><tbody><tr><td>Mon</td><td>1200</td></tr></tbody></table>')
+		expect(html).toContain('统计面板')
+	})
 })

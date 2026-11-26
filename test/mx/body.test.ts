@@ -202,3 +202,20 @@ describe('目录', () => {
 		expect(toc?.links[1]?.children?.map(l => l.text)).toEqual(['Windows 上的写法'])
 	})
 })
+
+describe('路径 B：demo 演示代码块', () => {
+	it('展开为 demo 组件：保留原始语法并在预览分支做预处理与安全清洗', async () => {
+		const raw = '# 演示标题\n\n::: tip\n提示\n:::\n\n<script>alert(1)</script>'
+		const { body } = await renderMarkdownBody(`\`\`\`demo expand\n${raw}\n\`\`\``)
+		const demos: MDCNode[] = []
+		walk(body, node => node.type === 'element' && node.tag === 'demo' && demos.push(node))
+		expect(demos).toHaveLength(1)
+		const demo = demos[0] as { props?: Record<string, unknown>, children?: MDCNode[] }
+		expect(demo.props).toEqual({ raw, meta: 'expand' })
+		const childTags = tagsOf({ type: 'root', children: demo.children ?? [] } as MDCRoot)
+		expect(childTags).toContain('h2')
+		expect(childTags).toContain('alert')
+		expect(childTags).not.toContain('h1')
+		expect(childTags).not.toContain('script')
+	})
+})

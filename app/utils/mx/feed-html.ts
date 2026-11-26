@@ -11,8 +11,9 @@
  */
 import type { MDCElement, MDCNode, MDCRoot } from '@nuxtjs/mdc'
 import { videoSrcOf } from '~~/shared/utils/video'
+import { chartRowLabel, chartRowNumber, chartSeriesName, formatChartValue } from './charts'
 import { escapeXml as escape } from './feed'
-import { pollOptionsOf } from './rich-blocks'
+import { parseChartSpec, pollOptionsOf } from './rich-blocks'
 
 export const FEED_ENTRY_MAX = 100_000
 
@@ -156,6 +157,21 @@ function componentHtml(element: MDCElement, ctx: Context): string | undefined {
 				const who = textOf(child).match(/^\{\.?(.+)\}$/)?.[1]
 				return who ? tag('p', {}, tag('strong', {}, `${escape(who)}：`)) : nodeHtml(child, ctx)
 			}).join(''))
+		case 'demo':
+			return children(element, ctx)
+		case 'chart-block': {
+			const spec = parseChartSpec(stringProp(element, 'spec'))
+			if (!spec)
+				return ''
+			const heading = tag('p', {}, tag('strong', {}, spec.title ? `〔图表〕${escape(spec.title)}` : '〔图表〕'))
+			const subtitle = spec.subtitle ? tag('p', {}, escape(spec.subtitle)) : ''
+			const format = { ...spec.format, compact: false }
+			const table = spec.data.length
+				? tag('table', {}, `${tag('thead', {}, tag('tr', {}, `${tag('th', {}, escape(spec.xLabel || spec.x))}${spec.series.map((_, j) => tag('th', {}, escape(chartSeriesName(spec, j)))).join('')}`))}${tag('tbody', {}, spec.data.map(row => tag('tr', {}, `${tag('td', {}, escape(chartRowLabel(row, spec.x)))}${spec.series.map(se => tag('td', {}, escape(formatChartValue(chartRowNumber(row, se.key), format)))).join('')}`)).join(''))}`)
+				: tag('p', {}, '（暂无数据）')
+			const meta = [spec.note, spec.source].filter(Boolean).map(text => escape(text!)).join(' · ')
+			return tag('blockquote', {}, `${heading}${subtitle}${table}${meta ? tag('p', {}, meta) : ''}`)
+		}
 	}
 	return undefined
 }

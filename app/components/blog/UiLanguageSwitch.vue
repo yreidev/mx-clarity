@@ -8,9 +8,10 @@ import type { UiLang } from '~~/shared/utils/i18n'
  */
 const t = useT()
 const route = useRoute()
-const current = useUiLang()
+const routeLang = useRouteLang()
 const { data: theme } = useMxTheme()
 const cookie = useCookie<string | undefined>(LANG_COOKIE, { path: '/', maxAge: 60 * 60 * 24 * 365, sameSite: 'lax' })
+const active = computed(() => routeLang.value ?? SITE_LANG_CODE)
 
 const options = computed(() => {
 	const path = delocalizePath(route.fullPath)
@@ -34,8 +35,8 @@ function remember(lang: UiLang) {
 		:to="option.to"
 		:lang="htmlLangOf(option.lang)"
 		:hreflang="htmlLangOf(option.lang)"
-		:class="{ active: option.lang === current }"
-		:aria-current="option.lang === current ? 'true' : undefined"
+		:class="{ active: option.lang === active }"
+		:aria-current="option.lang === active ? 'true' : undefined"
 		@click="remember(option.lang)"
 	>
 		{{ option.name }}

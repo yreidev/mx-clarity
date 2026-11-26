@@ -10,5 +10,5 @@
   "ownerHasntEnabled": "주인장이 아직 이메일 구독을 열지 않았습니다.",
   "subscribe": "구독",
   "whatSubscribe": "구독 내용",
-  "youreSubscribedTheres": "구독되었습니다. 모든 메일 하단에 구독 해지 링크가 있습니다."
+  "youreSubscribedTheres": "확인 메일을 보냈습니다(15분간 유효). 메일 안의 링크를 열면 구독이 완료되며, 모든 메일 하단에 구독 해지 링크가 있습니다."
 }

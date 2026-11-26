@@ -11,7 +11,7 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import { translate } from '~~/shared/utils/i18n'
 import { mediaUrlOf, videoSrcOf } from '~~/shared/utils/video'
-import { liteXmlBlockOf } from './rich-blocks'
+import { chartPropsOf, liteXmlBlockOf } from './rich-blocks'
 
 export interface RenderedBody {
 	body: MDCRoot
@@ -259,11 +259,11 @@ function expandInline(value: string, ui: UiLang): MDCNode[] {
 }
 
 /** 路径 B 里映射出来的组件标签（与路径 A 输出的同一批） */
-const COMPONENT_TAGS = new Set(['alert', 'blur', 'card-list', 'folding', 'link-card', 'mermaid', 'pic', 'video-embed'])
+const COMPONENT_TAGS = new Set(['alert', 'blur', 'card-list', 'chart-block', 'demo', 'folding', 'link-card', 'mermaid', 'pic', 'video-embed'])
 /** KaTeX 以外偶尔会出现的 SVG / MathML 元素，不当未知标签处理 */
 const FOREIGN_TAGS = new Set(['svg', 'path', 'g', 'line', 'rect', 'circle', 'ellipse', 'polyline', 'polygon', 'text', 'tspan', 'defs', 'use', 'math', 'mi', 'mn', 'mo', 'mrow', 'msup', 'msub', 'mfrac', 'msqrt', 'mtext', 'semantics', 'annotation'])
 
-const BLOCK_NODE_TAGS = new Set(['alert', 'card-list', 'div', 'folding', 'link-card', 'mermaid', 'p', 'pic', 'video-embed'])
+const BLOCK_NODE_TAGS = new Set(['alert', 'card-list', 'chart-block', 'demo', 'div', 'folding', 'link-card', 'mermaid', 'ol', 'p', 'pic', 'video-embed'])
 const isBlockNode = (node: MDCNode) => node.type === 'element' && BLOCK_NODE_TAGS.has((node as MDCElement).tag)
 
 /** 视频嵌入：`type` 与 `id` 不合格就整个不要；只留组件认得、且类型对的属性 */
@@ -302,6 +302,11 @@ function normalizeNode(node: MDCNode, plain: boolean, ui: UiLang): MDCNode[] {
 	if (element.tag === 'pre' || element.tag === 'code') {
 		if (element.tag === 'pre' && props.language === 'mermaid')
 			return [el('mermaid', { code: String(props.code ?? '') })]
+		if (element.tag === 'pre' && props.language === 'chart') {
+			const chart = chartPropsOf(props.code)
+			if (chart)
+				return [el('chart-block', chart)]
+		}
 		return [element]
 	}
 	const children = mergeMentions(element.children ?? [], ui).flatMap(child => normalizeNode(child, plain, ui))
@@ -328,6 +333,18 @@ function normalizeNode(node: MDCNode, plain: boolean, ui: UiLang): MDCNode[] {
 		return [el('card-list', {}, [el('ul', {}, children.map(child => (child as MDCElement).tag === 'li' ? child : el('li', {}, [child])))])]
 	if (element.tag === 'cell')
 		return [el('li', {}, children)]
+	if (element.tag === 'steps') {
+		const items = children
+			.filter(child => child.type !== 'text' || /\S/.test((child as { value?: string }).value ?? ''))
+			.map(child => (child as MDCElement).tag === 'li' ? child : el('li', {}, [child]))
+		return items.length ? [el('ol', { className: ['mx-steps'] }, items)] : []
+	}
+	if (element.tag === 'step') {
+		const title = typeof props.title === 'string' ? props.title.trim() : ''
+		return [el('li', {}, [...title ? [el('p', { className: ['mx-step-title'] }, [{ type: 'text', value: title }])] : [], ...children])]
+	}
+	if (element.tag === 'demo')
+		return [el('demo', { raw: String(props.raw ?? ''), ...typeof props.meta === 'string' && props.meta ? { meta: props.meta } : {} }, children)]
 	if (element.tag === 'tag')
 		return [el('span', { className: ['mx-tag'] }, [{ type: 'text', value: `#${children.map(c => (c as { value?: string }).value ?? '').join('').trim()}` }])]
 	// video 的投影 `<video src="…" controls>`，与路径 A 一样走 VideoEmbed
@@ -378,6 +395,51 @@ export function normalizeMarkdownBody(body: MDCRoot, ui: UiLang = 'zh') {
 	return body
 }
 
+interface RemarkMdNode {
+	type: string
+	lang?: string | null
+	meta?: string | null
+	value?: string
+	children?: RemarkMdNode[]
+}
+
+function expandDemoNodes(node: RemarkMdNode, parse: (doc: string) => { children: unknown[] }) {
+	if (!Array.isArray(node.children))
+		return
+	node.children = node.children.map((child) => {
+		if (child.type === 'code' && child.lang === 'demo') {
+			const raw = child.value ?? ''
+			return {
+				type: 'containerComponent',
+				name: 'demo',
+				attributes: { raw, meta: child.meta ?? '' },
+				children: parse(preprocessMarkdown(raw)).children as RemarkMdNode[],
+			}
+		}
+		expandDemoNodes(child, parse)
+		return child
+	})
+}
+
+/** 解析阶段将 ```demo 围栏展开为 <demo> 组件 + 预览 Markdown AST，与上游 blog-v3 #75 对齐 */
+function remarkDemo(this: { parser?: (doc: string, file: unknown) => RemarkMdNode, parse: (doc: string) => { children: unknown[] } }) {
+	const parse = this.parser!
+	let depth = 0
+	this.parser = (document, file) => {
+		const tree = parse(document, file)
+		if (depth >= 2)
+			return tree
+		depth++
+		try {
+			expandDemoNodes(tree, doc => this.parse(doc))
+		}
+		finally {
+			depth--
+		}
+		return tree
+	}
+}
+
 export async function renderMarkdownBody(text: string, ui: UiLang = 'zh'): Promise<RenderedBody> {
 	const parsed = await parseMarkdown(preprocessMarkdown(text), {
 		highlight: false,
@@ -385,6 +447,7 @@ export async function renderMarkdownBody(text: string, ui: UiLang = 'zh'): Promi
 		remark: {
 			plugins: {
 				'remark-math': { instance: remarkMath },
+				'remark-demo': { instance: remarkDemo },
 				// mx 里单波浪线是下标（~x~），删除线是 ~~x~~；关掉 GFM 的单波浪线删除线，交给 expandInline
 				'remark-gfm': { options: { singleTilde: false } },
 			},

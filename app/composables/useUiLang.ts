@@ -12,8 +12,8 @@ export function useT() {
 	return (source: string, params?: MessageParams) => translate(lang.value, source, params)
 }
 
-/** 格式化日期、数字用的 locale（`zh-CN` / `en-US`） */
+/** 格式化日期、数字用的 locale（`zh-CN` / `zh-TW` / `en-US`） */
 export function useUiLocale() {
-	const lang = useUiLang()
-	return computed(() => localeOf(lang.value))
+	const lang = useRouteLang()
+	return computed(() => pageLocaleOf(lang.value))
 }

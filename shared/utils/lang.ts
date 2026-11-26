@@ -10,7 +10,7 @@
 export const SITE_LANG_CODE = 'zh'
 
 /** 能开的语言；生效的是它与主题配置的交集 */
-export const CANDIDATE_LANGS = ['en', 'ja', 'ko', 'fr', 'de', 'es', 'ru', 'pt', 'it'] as const
+export const CANDIDATE_LANGS = ['en', 'zh-TW', 'ja', 'ko', 'fr', 'de', 'es', 'ru', 'pt', 'it'] as const
 
 /** 看原文：core 的特殊值，不翻译、给原文（不用知道原文是什么语言） */
 export const ORIGINAL_LANG = 'original'
@@ -24,11 +24,14 @@ const ALIASES: Record<string, string> = {
 	'en-ie': 'en',
 	'en-za': 'en',
 	'zh-cn': 'zh',
+	'zh-sg': 'zh',
 	'zh-hans': 'zh',
-	'zh-hant': 'zh',
-	'zh-tw': 'zh',
+	'zh-hant': 'zh-TW',
+	'zh-tw': 'zh-TW',
+	'zh-hk': 'zh-TW',
+	'zh-mo': 'zh-TW',
 	'cn': 'zh',
-	'tw': 'zh',
+	'tw': 'zh-TW',
 	'jp': 'ja',
 	'ja-jp': 'ja',
 	'kr': 'ko',
@@ -63,15 +66,35 @@ const ISO_639_2: Record<string, string> = {
 	nor: 'no',
 }
 
-/** 照 core 的规则折成两个字母（小写、`_` 换 `-`、别名表、三字母表、取主标签）；认不出是 undefined */
+function zhCodeOf(tag: string) {
+	try {
+		const loc = new Intl.Locale(tag).maximize()
+		if (loc.language === 'zh')
+			return loc.script === 'Hant' ? 'zh-TW' : 'zh'
+	}
+	catch {
+		return undefined
+	}
+	return undefined
+}
+
+/** 照 BCP 47（含 zh-TW 繁简分流）与别名表规整语言代码；认不出是 undefined */
 export function langCodeOf(value: unknown) {
 	if (typeof value !== 'string' || value.length > 35)
 		return undefined
-	const normalized = value.trim().toLowerCase().replaceAll('_', '-')
-	if (!normalized)
+	const raw = value.trim().replaceAll('_', '-')
+	if (!raw)
 		return undefined
+	if (/^(?:zh|cmn|yue|zho|chi)(?:-|$)/i.test(raw)) {
+		const zh = zhCodeOf(raw)
+		if (zh)
+			return zh
+	}
+	const normalized = raw.toLowerCase()
 	const [base = ''] = normalized.split('-')
 	const code = ALIASES[normalized] ?? (normalized.length === 2 ? normalized : normalized.length === 3 ? ISO_639_2[normalized] : base.length === 2 ? base : ISO_639_2[base])
+	if (code === 'zh-TW')
+		return code
 	return code && /^[a-z]{2}$/.test(code) ? code : undefined
 }
 

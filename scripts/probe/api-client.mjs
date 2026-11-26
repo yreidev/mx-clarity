@@ -11,7 +11,7 @@
 import process from 'node:process'
 import { allControllerNames, allControllers, createClient, metaFor, simpleCamelcaseKeys } from '@mx-space/api-client'
 
-const EXPECTED_VERSION = '5.12.0'
+const EXPECTED_VERSION = '6.0.0'
 const ENDPOINT = 'https://api.example.com/api/v3' // 生产前缀 /api/v3（API_VERSION=3）；core 以开发模式运行时无前缀
 
 const failures = []
@@ -97,7 +97,7 @@ check('client.post.post 不存在', typeof client.post?.post, 'undefined')
 console.log('\n已封装方法的请求 URL')
 
 const wrapped = [
-	['post.getList', () => client.post.getList(2, 10, { sortBy: 'createdAt', sortOrder: -1 }), 'GET /posts?page=2&size=10&sortBy=createdAt&sortOrder=-1'],
+	['post.getList', () => client.post.getList(2, 10, { sortBy: 'createdAt', sortOrder: -1 }), 'GET /posts?page=2&size=10&sortBy=createdAt&sortOrder=desc'],
 	['post.getPost', () => client.post.getPost('tech', 'hello-world'), 'GET /posts/tech/hello-world'],
 	['note.getList', () => client.note.getList(1, 10), 'GET /notes?page=1&size=10'],
 	['note.getNoteByNid', () => client.note.getNoteByNid(42), 'GET /notes/nid/42'],

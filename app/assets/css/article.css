@@ -164,6 +164,71 @@
 	border-radius: 0.8em;
 }
 
+/* Lexical / MDC 步骤列表（::: steps / ::: step） */
+.article ol.mx-steps {
+	display: flex;
+	flex-direction: column;
+	gap: 1.4em;
+	position: relative;
+	margin: 1.5em 0;
+	padding: 0;
+	padding-inline-start: 2.2em;
+	counter-reset: mx-step;
+	list-style: none;
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset-inline-start: 0.85em;
+		top: 0.9em;
+		bottom: 0.9em;
+		width: 1px;
+		background-color: var(--c-border);
+	}
+
+	> li {
+		position: relative;
+		min-width: 0;
+		counter-increment: mx-step;
+
+		&::before {
+			content: counter(mx-step);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			inset-inline-start: -2.2em;
+			top: 0.1em;
+			width: 1.7em;
+			height: 1.7em;
+			border-radius: 50%;
+			box-shadow: 0 0 0 1px var(--c-border);
+			background-color: var(--c-bg-1);
+			font-size: 0.85em;
+			font-weight: 600;
+			color: var(--c-text-2);
+			font-variant-numeric: tabular-nums;
+		}
+
+		> .mx-step-title {
+			margin: 0 0 0.4em;
+			font-size: 1.05em;
+			font-weight: 600;
+			line-height: 1.6;
+			color: var(--c-text);
+		}
+
+		> :nth-child(2):last-child,
+		> .mx-step-title + * {
+			margin-top: 0;
+		}
+
+		> :last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
 /* AI 洞察「跳回原文」、划词评论定位时闪一下的那段文字（CSS Custom Highlight API） */
 ::highlight(mx-quote) {
 	background-color: var(--c-primary-soft);

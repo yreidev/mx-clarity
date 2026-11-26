@@ -1,15 +1,15 @@
 # mx-clarity 的镜像：运行时只要 NUXT_MX_API_URL（core 的内网地址，带 /api/v3）
-# 构建与运行都用 glibc 的 node:24-slim（与 CI 相同）：构建产物里 sharp 的二进制是 linux-x64 glibc 的，alpine 跑不了
+# 构建与运行都用 glibc 的 node:26-slim（与 CI 相同）：构建产物里 sharp 的二进制是 linux-x64 glibc 的，alpine 跑不了
 
-FROM node:24-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
-# corepack 按 package.json 的 packageManager 装 pnpm，并校验里面写的 sha512
-RUN corepack enable
+# Node 26 默认不再内置 corepack，先全局安装再按 package.json 的 packageManager 装 pnpm
+RUN npm install -g corepack && corepack enable
 # 安装时的 prepare 脚本要跑 nuxt prepare，需要完整源码，所以先拷全部再装依赖
 COPY . .
 RUN pnpm install --frozen-lockfile && pnpm build
 
-FROM node:24-slim
+FROM node:26-slim
 WORKDIR /app
 ENV NODE_ENV=production \
 	HOST=0.0.0.0 \

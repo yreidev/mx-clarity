@@ -32,6 +32,16 @@ describe('中继只放行白名单', () => {
 		expect(relayCoreFrame(extra)).toEqual({ type: 'read', kind: 'note', id: '9', count: 5 })
 	})
 
+	it('译文更新按 BCP 47 规整语言代码（含 zh-TW）', () => {
+		const room = { room: '42' }
+		expect(relayCoreFrame(JSON.stringify({ v: 1, event: 'translation.create', payload: { refId: '42', lang: 'ja-JP', text: 'x' } }), room))
+			.toEqual({ type: 'translation', refId: '42', lang: 'ja' })
+		expect(relayCoreFrame(JSON.stringify({ v: 1, event: 'translation.update', payload: { refId: '42', lang: 'zh-TW', text: 'x' } }), room))
+			.toEqual({ type: 'translation', refId: '42', lang: 'zh-TW' })
+		expect(relayCoreFrame(JSON.stringify({ v: 1, event: 'translation.update', payload: { refId: '42', lang: 'zh-Hant-HK', text: 'x' } }), room))
+			.toEqual({ type: 'translation', refId: '42', lang: 'zh-TW' })
+	})
+
 	it('字段不对、不是 JSON、太长的帧丢弃', () => {
 		const bad = [
 			'not json',

@@ -241,3 +241,40 @@ describe('路径 B 的行内格式与路径 A 对齐', () => {
 		expect(textOf(body.children[0]!)).toBe('https://a.test/~user/x~y')
 	})
 })
+
+describe('路径 A / B 新增节点：steps 与 chart', () => {
+	it('steps：Lexical 与 Markdown 输出相同的 <ol class="mx-steps"> 结构', async () => {
+		const lex = await render({
+			type: 'steps',
+			version: 1,
+			steps: [
+				{ id: 's1', title: '第一步', content: state(p(t('安装'))) },
+				{ id: 's2', title: '第二步', content: state(p(t('启动'))) },
+			],
+		})
+		const md = await renderMarkdownBody('::: steps\n::: step{title="第一步"}\n安装\n:::\n::: step{title="第二步"}\n启动\n:::\n:::')
+		expect(lex.body.children.map(shape)).toEqual([['ol', ['li', ['p', '第一步'], ['p', '安装']], ['li', ['p', '第二步'], ['p', '启动']]]])
+		expect(md.body.children.map(shape)).toEqual(lex.body.children.map(shape))
+		expect((lex.body.children[0] as MDCElement).props?.className).toEqual(['mx-steps'])
+		expect((md.body.children[0] as MDCElement).props?.className).toEqual(['mx-steps'])
+	})
+
+	it('chart：合法规格在两条路径下输出同构的 chart-block；坏数据在 Lexical 退回占位且不漏 JSON', async () => {
+		const spec = JSON.stringify({
+			version: 1,
+			type: 'bar',
+			x: 'month',
+			series: [{ key: 'pv', label: '访问' }],
+			data: [{ month: 'Jan', pv: 100 }],
+		})
+		const lex = await render({ type: 'chart', version: 1, spec })
+		const md = await renderMarkdownBody(`\`\`\`chart\n${spec}\n\`\`\``)
+		expect(lex.body.children.map(n => (n as MDCElement).tag)).toEqual(['chart-block'])
+		expect(md.body.children.map(n => (n as MDCElement).tag)).toEqual(['chart-block'])
+		expect((lex.body.children[0] as MDCElement).props).toEqual((md.body.children[0] as MDCElement).props)
+
+		const badLex = await render({ type: 'chart', version: 1, spec: '{"type":"pie","x":"k","series":[{"key":"v"}],"data":[{"k":"a","v":-1}]}' })
+		expect((badLex.body.children[0] as MDCElement).props?.className).toEqual(['mx-unsupported'])
+		expect(JSON.stringify(badLex.body)).not.toContain('"type":"pie"')
+	})
+})

@@ -2,7 +2,7 @@
  * 邮件订阅（core 的 `/subscribe`）。纯模块，浏览器直连 core 时调用。
  *
  * core 只在发文章、日记时发信（说说、碎碎念订阅了也收不到），所以只开放 `post_c`、`note_c`。
- * core 不确认邮箱、也不限次数，任何人都能替别人订阅，README 写明
+ * core 16+ 改为提交后发送 15 分钟内有效的确认邮件，点击确认链接后才正式生效。
  */
 import type { SubscribeStatus, SubscribeType } from '../../types/subscribe'
 import type { MxClient } from './client'

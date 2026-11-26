@@ -4,8 +4,19 @@ import { buildAtomFeed } from '../../app/utils/mx/feed'
 import { isSameUnit, isTimeDiffSignificant, isValidTimeZone, resolveTimeZone, timeElapse, toInstantString, toZonedTemporal } from '../../shared/utils/time'
 
 afterEach(() => {
+	vi.restoreAllMocks()
 	vi.useRealTimers()
 })
+
+/** Node 26 原生 Temporal.Now 直接读系统时钟，不走 Date.now()；同步打桩 Temporal.Now 方法 */
+function mockNow(iso: string) {
+	const fixed = Temporal.Instant.from(iso)
+	vi.useFakeTimers({ now: fixed.epochMilliseconds })
+	vi.spyOn(Temporal.Now, 'instant').mockImplementation(() => fixed)
+	vi.spyOn(Temporal.Now, 'zonedDateTimeISO').mockImplementation(tz => fixed.toZonedDateTimeISO(tz ?? Temporal.Now.timeZoneId()))
+	vi.spyOn(Temporal.Now, 'plainDateTimeISO').mockImplementation(tz => fixed.toZonedDateTimeISO(tz ?? Temporal.Now.timeZoneId()).toPlainDateTime())
+	vi.spyOn(Temporal.Now, 'plainDateISO').mockImplementation(tz => fixed.toZonedDateTimeISO(tz ?? Temporal.Now.timeZoneId()).toPlainDate())
+}
 
 describe('站点时区的来源', () => {
 	it('主题配置 ＞ 主题进程的时区 ＞ UTC，认不得的名字跳过', () => {
@@ -51,14 +62,14 @@ describe('换算到站点时区', () => {
 
 	it('toInstantString 与 isTimeDiffSignificant 只看时刻，与时区无关', () => {
 		expect(toInstantString(toZonedTemporal('2024-06-01T00:00:00Z', 'Asia/Shanghai'))).toBe('2024-06-01T00:00:00Z')
-		vi.useFakeTimers({ now: Date.parse('2026-01-01T00:00:00Z') })
+		mockNow('2026-01-01T00:00:00Z')
 		expect(isTimeDiffSignificant('2025-12-31T00:00:00Z', '2020-01-01T00:00:00Z')).toBe(true)
 		expect(isTimeDiffSignificant('2025-12-31T00:00:00Z', '2025-12-31T01:00:00+08:00')).toBe(false)
 	})
 
 	it('timeElapse 从站点时区的现在算起', () => {
 		// UTC 的 2026-01-01 20:00 在东八区已是 1 月 2 日 04:00
-		vi.useFakeTimers({ now: Date.parse('2026-01-01T20:00:00Z') })
+		mockNow('2026-01-01T20:00:00Z')
 		expect(Temporal.Now.plainDateISO('Asia/Shanghai').toString()).toBe('2026-01-02')
 		expect(timeElapse('2026-01-02', 'Asia/Shanghai')).toBe('4小时')
 		expect(timeElapse('2026-01-01', 'UTC')).toBe('20小时')

@@ -48,9 +48,9 @@ for (const [id, message] of Object.entries(CATALOGS.zh)) {
 		ID_OF_ZH.set(text, id)
 }
 
-/** 地址前缀里的语言 → 界面语言：没有前缀是中文，日文、韩文有自己的界面，其余一律英文 */
+/** 地址前缀里的语言 → 界面语言：没有前缀、中文或繁体中文用中文界面，日文、韩文有自己的界面，其余一律英文 */
 export function uiLangOf(routeLang: string | undefined): UiLang {
-	if (!routeLang)
+	if (!routeLang || routeLang === 'zh' || routeLang === 'zh-TW')
 		return 'zh'
 	return routeLang === 'ja' || routeLang === 'ko' ? routeLang : 'en'
 }
@@ -60,6 +60,11 @@ const LOCALES: Record<UiLang, string> = { zh: 'zh-CN', en: 'en-US', ja: 'ja-JP',
 /** 界面语言 → 格式化日期、数字用的 locale */
 export function localeOf(lang: UiLang) {
 	return LOCALES[lang]
+}
+
+/** 路由语言 → 站点 locale（繁体中文页保留 `zh-TW`） */
+export function pageLocaleOf(routeLang: string | undefined): string {
+	return routeLang === 'zh-TW' ? 'zh-TW' : localeOf(uiLangOf(routeLang))
 }
 
 /** 界面语言 → `<html lang>` */

@@ -4,7 +4,7 @@
  * 输出交给与路径 B 相同的渲染器，节点直接指向 blog-v3 的内容组件（Alert、Folding、Pic…），
  * 形状照着 mdc 的产物做，两条路径因此共用同一套组件、同一套标题 id 与目录规则。
  *
- * 节点字段以 `@haklex/rich-headless@0.42.1` 各节点的 exportJSON 为准。
+ * 节点字段以 `@haklex/rich-headless@0.67.3` 各节点的 exportJSON 为准。
  */
 import type { MDCElement, MDCNode, MDCRoot } from '@nuxtjs/mdc'
 import type { UiLang } from '~~/shared/utils/i18n'
@@ -14,7 +14,7 @@ import Slugger from 'github-slugger'
 import { translate } from '~~/shared/utils/i18n'
 import { ANCHOR_BLOCK_TYPES, blockIdOf } from './anchor'
 import { isSafeUrl, MENTION_PLATFORMS, mentionLabelOf, renderMarkdownBody, sanitizeBody } from './body'
-import { embedTargetOf, excalidrawSummaryOf, fileCardPropsOf, galleryPropsOf, imageMetaOf, mapPropsOf, pollPropsOf, staticPollOf, stockPropsOf } from './rich-blocks'
+import { chartPropsOf, embedTargetOf, excalidrawSummaryOf, fileCardPropsOf, galleryPropsOf, imageMetaOf, mapPropsOf, pollPropsOf, staticPollOf, stockPropsOf } from './rich-blocks'
 
 interface LexicalNode {
 	type?: string
@@ -40,6 +40,7 @@ const BLOCK_TAGS = new Set([
 	'alert',
 	'blockquote',
 	'card-list',
+	'chart-block',
 	'chat',
 	'div',
 	'figure',
@@ -462,6 +463,20 @@ async function convert(node: LexicalNode, ctx: Context): Promise<MDCNode[]> {
 				...str(node.caption) ? [el('p', {}, [txt(str(node.caption).slice(0, 200))])] : [],
 				...link && /^https?:\/\//i.test(link) ? [el('p', {}, linkNode(link, [txt(translate(ctx.ui, 'content.viewAlbum'))], '_blank'))] : [],
 			])]
+		}
+		case 'steps': {
+			const items: MDCNode[] = []
+			for (const raw of Array.isArray(node.steps) ? node.steps : []) {
+				const step = typeof raw === 'object' && raw !== null ? raw as Record<string, unknown> : {}
+				const title = str(step.title).trim()
+				const body = await convertState(step.content, ctx)
+				items.push(el('li', {}, [...title ? [el('p', { className: ['mx-step-title'] }, [txt(title)])] : [], ...body]))
+			}
+			return items.length ? [el('ol', { className: ['mx-steps'] }, items)] : []
+		}
+		case 'chart': {
+			const props = chartPropsOf(node.spec)
+			return props ? [el('chart-block', props)] : placeholder(ctx.ui, translate(ctx.ui, 'content.chart'))
 		}
 		default:
 			return placeholder(ctx.ui)

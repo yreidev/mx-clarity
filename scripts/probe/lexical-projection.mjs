@@ -90,14 +90,17 @@ const cases = [
 	['embed', [{ type: 'embed', url: 'https://www.youtube.com/watch?v=x', version: 1 }]],
 	['grid-container（对应 CardList.vue）', [{ children: [para(text('格子内容'))], direction: 'ltr', format: '', indent: 0, type: 'grid-container', version: 1 }]],
 	['poll', [{ type: 'poll', pollId: 'p1', version: 1 }]],
-	['footnote', [para(text('正文'), { type: 'footnote', version: 1, footnoteId: '1' })]],
-	['tag', [para({ type: 'tag', version: 1, tag: 'nuxt' })]],
-	['excalidraw', [{ data: '{}', type: 'excalidraw', version: 1 }]],
-	['rich-quote', [{ children: [para(text('富引用'))], direction: 'ltr', format: '', indent: 0, type: 'rich-quote', version: 1 }]],
-	['code-snippet', [{ type: 'code-snippet', version: 1, snippetId: 's1' }]],
+	['footnote', [para(text('正文'), { type: 'footnote', version: 1, identifier: '1' })]],
+	['footnote-section', [{ type: 'footnote-section', version: 1, definitions: { 1: '脚注说明' } }]],
+	['tag', [para({ type: 'tag', version: 1, text: 'nuxt' })]],
+	['excalidraw', [{ snapshot: '{}', type: 'excalidraw', version: 1 }]],
+	['rich-quote', [{ children: [text('富引用')], direction: 'ltr', format: '', indent: 0, type: 'rich-quote', version: 1, attribution: '来源' }]],
+	['code-snippet', [{ type: 'code-snippet', version: 1, files: [{ filename: 'demo.ts', language: 'ts', code: 'export const x = 1' }] }]],
 	['file', [{ type: 'file', version: 1, src: 'https://example.com/a.pdf', name: 'a.pdf' }]],
-	['nested-doc', [{ type: 'nested-doc', version: 1, docId: 'd1' }]],
-	['dynamic', [{ type: 'dynamic', version: 1, name: 'x' }]],
+	['nested-doc', [{ type: 'nested-doc', version: 1, content: { root: { children: [para(text('嵌套内容'))], direction: 'ltr', format: '', indent: 0, type: 'root', version: 1 } } }]],
+	['dynamic', [{ type: 'dynamic', version: 1, url: 'https://example.com/widget.js', props: {}, initialHeight: 320 }]],
+	['steps', [{ type: 'steps', version: 1, steps: [{ id: 's1', title: '第一步', content: { root: { children: [para(text('步骤内容'))], direction: 'ltr', format: '', indent: 0, type: 'root', version: 1 } } }] }]],
+	['chart', [{ type: 'chart', version: 1, spec: JSON.stringify({ version: 1, type: 'bar', x: 'month', series: [{ key: 'pv', label: '访问' }], data: [{ month: 'Jan', pv: 100 }] }) }]],
 	['chat（user-user）', [{ type: 'chat', version: 1, variant: 'user-user', participants: [{ id: 'a', name: '甲', kind: 'user' }, { id: 'b', name: '乙', kind: 'user' }], messages: [{ participantId: 'a', content: '你好' }, { participantId: 'b', content: '在的' }] }]],
 	['gallery（多图）', [{ type: 'gallery', version: 1, images: [{ src: 'https://e.com/1.png', alt: '图一' }, { src: 'https://e.com/2.png', alt: '图二' }] }]],
 	['ruby（正确属性 reading）', [para({ children: [text('漢字')], direction: 'ltr', format: '', indent: 0, type: 'ruby', version: 1, reading: 'かんじ' })]],
@@ -123,7 +126,7 @@ const cases = [
 ]
 
 console.log('═'.repeat(64))
-console.log('Lexical 节点 → Markdown 真实投影（@haklex/rich-headless 0.42.1）')
+console.log('Lexical 节点 → Markdown 真实投影（@haklex/rich-headless 0.67.3）')
 console.log('═'.repeat(64))
 
 const ok = []

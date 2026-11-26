@@ -7,20 +7,43 @@ import { themeConfigFrom } from '../../app/utils/mx/theme'
 import { delocalizePath, enabledLangsOf, hreflangLinksOf, langCodeOf, languageVersionsOf, localePath, nativeLanguageName, routeLangOf } from '../../shared/utils/lang'
 
 describe('语言代码', () => {
-	it('照 core 的 normalizeLanguageCode：别名、三字母、取主标签；认不出是 undefined', () => {
-		const cases: [unknown, string | undefined][] = [['en', 'en'], ['EN_us', 'en'], ['zh-Hant', 'zh'], ['tw', 'zh'], ['jpn', 'ja'], ['pt-BR', 'pt'], ['fr-CA', 'fr'], ['iw', 'he'], ['xyz', undefined], ['english', undefined], ['', undefined], [undefined, undefined], ['e1', undefined]]
+	it('照 BCP 47（含 zh-TW）与别名表规整；认不出是 undefined', () => {
+		const cases: [unknown, string | undefined][] = [
+			['en', 'en'],
+			['EN_us', 'en'],
+			['en-GB', 'en'],
+			['zh-CN', 'zh'],
+			['zh-SG', 'zh'],
+			['zh-Hans', 'zh'],
+			['zh-TW', 'zh-TW'],
+			['zh-Hant', 'zh-TW'],
+			['zh-HK', 'zh-TW'],
+			['zh_TW', 'zh-TW'],
+			['tw', 'zh-TW'],
+			['jpn', 'ja'],
+			['ja-JP', 'ja'],
+			['pt-BR', 'pt'],
+			['fr-CA', 'fr'],
+			['iw', 'he'],
+			['xyz', undefined],
+			['english', undefined],
+			['', undefined],
+			[undefined, undefined],
+			['e1', undefined],
+		]
 		for (const [input, expected] of cases)
 			expect(langCodeOf(input), String(input)).toBe(expected)
 	})
 
-	it('生效的语言 = 候选 ∩ 配置，按候选的顺序；站点语言、繁体、不在候选里的丢掉', () => {
-		expect(enabledLangsOf(['ja', 'EN', 'zh', 'zh-TW', 'vi', 'ja'])).toEqual(['en', 'ja'])
+	it('生效的语言 = 候选 ∩ 配置（含 zh-TW），按候选的顺序；站点语言与不在候选里的丢掉', () => {
+		expect(enabledLangsOf(['ja', 'EN', 'zh', 'zh-TW', 'zh-HK', 'vi', 'ja'])).toEqual(['en', 'zh-TW', 'ja'])
 		expect(enabledLangsOf('en')).toEqual([])
 	})
 
-	it('地址前缀只认候选', () => {
+	it('地址前缀只认候选（含 zh-TW，区分大小写）', () => {
 		expect(routeLangOf('en')).toBe('en')
-		for (const bad of ['zh', 'EN', 'xx', undefined, ['en']])
+		expect(routeLangOf('zh-TW')).toBe('zh-TW')
+		for (const bad of ['zh', 'zh-tw', 'EN', 'xx', undefined, ['en']])
 			expect(routeLangOf(bad), String(bad)).toBeUndefined()
 	})
 })
@@ -50,6 +73,25 @@ describe('前缀地址', () => {
 	it('本族语名', () => {
 		expect(nativeLanguageName('en')).toBe('English')
 		expect(nativeLanguageName('ja')).toBe('日本語')
+		expect(nativeLanguageName('zh-TW')).toContain('中文')
+	})
+
+	it('繁中前缀（/zh-TW）的 localePath、delocalizePath 与 hreflang', () => {
+		expect(localePath('/posts/tech/a', 'zh-TW')).toBe('/zh-TW/posts/tech/a')
+		expect(delocalizePath('/zh-TW/posts/tech/a')).toBe('/posts/tech/a')
+		expect(delocalizePath('/zh-TW')).toBe('/')
+		const versions = languageVersionsOf('/posts/tech/a', { translated: false, sourceLang: 'zh', available: ['zh-TW', 'en'] }, ['zh-TW', 'en'])
+		expect(versions).toEqual([
+			{ lang: 'zh', path: '/posts/tech/a', original: true },
+			{ lang: 'en', path: '/en/posts/tech/a', original: false },
+			{ lang: 'zh-TW', path: '/zh-TW/posts/tech/a', original: false },
+		])
+		expect(hreflangLinksOf(versions)).toEqual([
+			{ hreflang: 'zh-CN', path: '/posts/tech/a' },
+			{ hreflang: 'en', path: '/en/posts/tech/a' },
+			{ hreflang: 'zh-TW', path: '/zh-TW/posts/tech/a' },
+			{ hreflang: 'x-default', path: '/posts/tech/a' },
+		])
 	})
 })
 
@@ -87,10 +129,10 @@ describe('语言版本与 hreflang', () => {
 })
 
 describe('配置与详情', () => {
-	it('主题配置 i18n.languages：默认空（关闭），只收候选并给出提示', () => {
+	it('主题配置 i18n.languages：默认空（关闭），只收候选（含 zh-TW）并给出提示', () => {
 		expect(themeConfigFrom({}).config.i18n).toEqual({ languages: [] })
-		const { config, warnings } = themeConfigFrom({ i18n: { languages: ['ja', 'en', 'zh-TW'] } })
-		expect(config.i18n.languages).toEqual(['en', 'ja'])
+		const { config, warnings } = themeConfigFrom({ i18n: { languages: ['ja', 'en', 'zh-TW', 'vi'] } })
+		expect(config.i18n.languages).toEqual(['en', 'zh-TW', 'ja'])
 		expect(warnings.some(w => w.includes('i18n.languages'))).toBe(true)
 	})
 
